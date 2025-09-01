@@ -28,7 +28,11 @@ public class Main00 {
     //MOJE API
     private static final String RAPIDAPI_KEY = "3a263e195713aaef25d730cc3cbca2f9";
     private static final String RAPIDAPI_HOST = "v3.football.api-sports.io";
-    private static final String URL = "https://v3.football.api-sports.io/status"; // odpowiednik "get_countries"
+
+    //private static final String URL = "https://v3.football.api-sports.io/status"; // odpowiednik "get_countries"
+//    private static final String URL = "https://v3.football.api-sports.io/fixtures?id=215662"; // odpowiednik "get_countries"
+
+    private static final String URL = "https://v3.football.api-sports.io/fixtures?league=1&season=2022"; // odpowiednik "get_countries"
 
     public static void main(String[] args) throws Exception {
         // Kod tworzący "ufający wszystkim" RestTemplate dla HttpClient 4.x
