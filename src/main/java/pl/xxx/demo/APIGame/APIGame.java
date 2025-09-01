@@ -1,12 +1,9 @@
-package pl.xxx.demo.Match;
+package pl.xxx.demo.APIGame;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
-public class Match {
+public class APIGame {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,5 +12,6 @@ public class Match {
     private String awayTeam;
     private Integer homeScore;
     private Integer awayScore;
+    private String matchDate;
 
 }

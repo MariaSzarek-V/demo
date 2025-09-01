@@ -20,9 +20,8 @@ import java.security.cert.X509Certificate;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.util.Arrays;
 
-public class Main00 {
+public class ApiGamesData {
 
     // Arka API
 //    private static final String API_KEY
@@ -97,19 +96,20 @@ public class Main00 {
 //
             try (Connection conn = DriverManager.getConnection(jdbcUrl, user, password)) {
 
-                String insertSQl = "INSERT INTO matches(homeTeam, awayTeam, homeGoals, awayGoals) VALUES (?, ?, ?, ?)";
+                String insertSQl = "INSERT INTO apigame(home_team, away_team, home_score, away_score, match_date) VALUES (?, ?, ?, ?, ?)";
                 PreparedStatement ps = conn.prepareStatement(insertSQl);
                 for (JsonNode match : matches) {
                     String homeTeam = match.path("teams").path("home").path("name").asText();
                     String awayTeam = match.path("teams").path("away").path("name").asText();
                     String homeGoals = match.path("goals").path("home").asText();
                     String awayGoals = match.path("goals").path("away").asText();
-
+                    String matchDate = match.path("fixture").path("date").asText();
 
                     ps.setString(1, homeTeam);
                     ps.setString(2, awayTeam);
                     ps.setString(3, homeGoals);
                     ps.setString(4, awayGoals);
+                    ps.setString(5, matchDate);
                     ps.addBatch();
                 }
                 ps.executeBatch();

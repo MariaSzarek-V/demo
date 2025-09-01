@@ -72,6 +72,8 @@
             <version>5.3.31</version> <!-- Użyj swojej wersji Springa -->
         </dependency>
 
+
+
     </dependencies>
 
     <build>
