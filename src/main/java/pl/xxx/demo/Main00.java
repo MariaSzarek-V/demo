@@ -1,6 +1,8 @@
 package pl.xxx.demo;
 
 // WAŻNE: Upewnij się, że importy są z org.apache.http, a NIE z org.apache.hc.client5
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -15,6 +17,9 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.SSLContext;
 import java.security.cert.X509Certificate;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.util.Arrays;
 
 public class Main00 {
@@ -80,6 +85,37 @@ public class Main00 {
 
             System.out.println("HTTP " + response.getStatusCodeValue());
             System.out.println(response.getBody());
+
+            //parsowanie json
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode root = objectMapper.readTree(response.getBody()); // moj json
+            JsonNode matches = root.path("response");
+//
+            String jdbcUrl = "jdbc:mysql://localhost:3306/betsdb?useSSL=false&serverTimezone=UTC";
+            String user = "root";
+            String password = "";
+//
+            try (Connection conn = DriverManager.getConnection(jdbcUrl, user, password)) {
+
+                String insertSQl = "INSERT INTO matches(homeTeam, awayTeam, homeGoals, awayGoals) VALUES (?, ?, ?, ?)";
+                PreparedStatement ps = conn.prepareStatement(insertSQl);
+                for (JsonNode match : matches) {
+                    String homeTeam = match.path("teams").path("home").path("name").asText();
+                    String awayTeam = match.path("teams").path("away").path("name").asText();
+                    String homeGoals = match.path("goals").path("home").asText();
+                    String awayGoals = match.path("goals").path("away").asText();
+
+
+                    ps.setString(1, homeTeam);
+                    ps.setString(2, awayTeam);
+                    ps.setString(3, homeGoals);
+                    ps.setString(4, awayGoals);
+                    ps.addBatch();
+                }
+                ps.executeBatch();
+                System.out.println("Zapisano mecze");
+            }
+
         } catch (Exception e) {
             System.err.println("Błąd wywołania API:");
             e.printStackTrace();
