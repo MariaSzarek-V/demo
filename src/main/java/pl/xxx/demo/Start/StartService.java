@@ -1,4 +1,4 @@
-package pl.xxx.demo;
+package pl.xxx.demo.Start;
 
 import org.springframework.stereotype.Service;
 

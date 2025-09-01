@@ -1,4 +1,4 @@
-package pl.xxx.demo;
+package pl.xxx.demo.Start;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,7 +10,6 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-
 public class Start {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
