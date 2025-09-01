@@ -1,0 +1,68 @@
+package pl.xxx.demo;
+
+public class Main01 {
+
+    private static final String RAPIDAPI_KEY = "TWÓJ_KEY";
+    private static final String RAPIDAPI_HOST = "api-football-v1.p.rapidapi.com";
+    private static final String URL = "https://api-football-v1.p.rapidapi.com/v3/fixtures?league=1&season=2022";
+
+    public static void main(String[] args) {
+
+        // 1️⃣ Dane do MySQL
+        String jdbcUrl = "jdbc:mysql://localhost:3306/football?useSSL=false&serverTimezone=UTC";
+        String user = "root";
+        String password = "password";
+
+        try (Connection conn = DriverManager.getConnection(jdbcUrl, user, password)) {
+
+            // Stworzenie tabeli jeśli nie istnieje
+            String createTable = "CREATE TABLE IF NOT EXISTS matches (" +
+                    "id INT AUTO_INCREMENT PRIMARY KEY," +
+                    "homeTeam VARCHAR(255)," +
+                    "awayTeam VARCHAR(255)," +
+                    "homeGoals INT," +
+                    "awayGoals INT)";
+            conn.createStatement().execute(createTable);
+
+            // 2️⃣ Pobranie JSON-a z API
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL))
+                    .header("X-RapidAPI-Key", RAPIDAPI_KEY)
+                    .header("X-RapidAPI-Host", RAPIDAPI_HOST)
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            String json = response.body();
+
+            // 3️⃣ Parsowanie JSON-a
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(json);
+            JsonNode matches = root.path("response");
+
+            // 4️⃣ Wstawienie wszystkich meczów do bazy
+            String insertSql = "INSERT INTO matches(homeTeam, awayTeam, homeGoals, awayGoals) VALUES (?, ?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(insertSql);
+
+            for (JsonNode matchNode : matches) {
+                String homeTeam = matchNode.path("teams").path("home").path("name").asText();
+                String awayTeam = matchNode.path("teams").path("away").path("name").asText();
+                int homeGoals = matchNode.path("goals").path("home").asInt();
+                int awayGoals = matchNode.path("goals").path("away").asInt();
+
+                stmt.setString(1, homeTeam);
+                stmt.setString(2, awayTeam);
+                stmt.setInt(3, homeGoals);
+                stmt.setInt(4, awayGoals);
+                stmt.addBatch();
+            }
+
+            stmt.executeBatch();
+            System.out.println("✅ Zapisano wszystkie mecze do MySQL");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
