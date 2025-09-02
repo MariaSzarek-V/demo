@@ -1,10 +1,15 @@
-package pl.xxx.demo.APIGame;
+package pl.xxx.demo.Game;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Entity
-public class APIGame {
-
+@Getter
+@Setter
+public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -12,6 +17,6 @@ public class APIGame {
     private String awayTeam;
     private Integer homeScore;
     private Integer awayScore;
-    private String matchDate;
+    private LocalDateTime gameDate;
 
 }

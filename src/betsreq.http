@@ -3,3 +3,48 @@
 GET https://v3.football.api-sports.io/status
 x-rapidapi-host:v3.football.api-sports.io
 x-rapidapi-key:3a263e195713aaef25d730cc3cbca2f9
+
+
+
+#PREDICTION requests
+
+### GET all predictions from DB
+GET http://localhost:8080/predictions
+
+###
+
+GET http://localhost:8080/predictions/{{id}}
+//np.id =2
+
+###
+POST http://localhost:8080/predictions
+Content-Type: application/json
+
+{
+  "predictedHomeScore": 0,
+  "predictedAwayScore": 0,
+  "user": {
+    "id": 2
+  },
+  "game": {
+    "id": 3
+  }
+}
+
+
+###
+@id= 3
+PUT http://localhost:8080/predictions/{{id}}
+Content-Type: application/json
+
+{
+  "predictedHomeScore": 3,
+  "predictedAwayScore": 3,
+  "user": {
+    "id": 2
+  },
+  "game": {
+    "id": 3
+  }
+}
+
