@@ -9,4 +9,15 @@ public class RankingDTO {
     private Long userId;
     private String username;
     private Integer totalPoints;
+
+    public RankingDTO(){
+
+    }
+
+    public RankingDTO(Long userId, String username, Integer totalPoints) {
+        this.userId = userId;
+        this.username = username;
+        this.totalPoints = totalPoints;
+    }
 }
+
