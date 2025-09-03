@@ -15,6 +15,7 @@ public class UserPoints {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer points;
+    private Integer pointsTotal;
     @ManyToOne
     private User user;
     @ManyToOne
