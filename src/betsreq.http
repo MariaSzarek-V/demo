@@ -48,3 +48,20 @@ Content-Type: application/json
   }
 }
 
+### game: 2:0 prediction 2:1 - 1 pkt away: home dziala
+POST http://localhost:8080/points
+Content-Type: application/json
+
+{
+  "user": {
+    "id": 1
+  },
+  "game": {
+    "id": 1
+  },
+  "prediction": {
+    "id": 1
+  }
+}
+
+
