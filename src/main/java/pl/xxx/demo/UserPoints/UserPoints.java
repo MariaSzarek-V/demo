@@ -1,4 +1,4 @@
-package pl.xxx.demo;
+package pl.xxx.demo.UserPoints;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -14,12 +14,9 @@ public class UserPoints {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private Integer points; //zdobyte punkty
-
+    private Integer points;
     @ManyToOne
     private User user;
-
     @ManyToOne
     private Game game;
 }
