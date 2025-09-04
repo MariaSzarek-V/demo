@@ -1,5 +1,37 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+###USER POST
 
-###
+POST http://localhost:8080/user
+Content-Type: application/json
+
+{
+  "email": "ania@gmail.com",
+  "password": "password",
+  "username": "ania"
+}
+
+###USER POST
+
+POST http://localhost:8080/user
+Content-Type: application/json
+
+{
+  "email": "kasia@gmail.com",
+  "password": "password",
+  "username": "kasia"
+}
+
+###USER POST
+
+POST http://localhost:8080/user
+Content-Type: application/json
+
+{
+  "email": "gosia@gmail.com",
+  "password": "password",
+  "username": "gosia"
+}
+
+### DELETE USER
+DELETE http://localhost:8080/user/8
+#response body empty
+#usuwanie - daje 200  , nawet jak chce usunac nieistniejacego

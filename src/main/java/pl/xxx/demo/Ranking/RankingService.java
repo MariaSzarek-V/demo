@@ -19,7 +19,6 @@ public class RankingService {
     private final UserPointsRepository userPointsRepository;
 
 
-
     public List<RankingDTO> getRanking() {
         List<User> users = userRepository.findAll();
         List<RankingDTO> ranking = new ArrayList<>();

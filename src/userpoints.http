@@ -1,5 +1,72 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+
+
+### PREDICTION requests
+### GET all predictions from DB
+GET http://localhost:8080/predictions
 
 ###
+
+GET http://localhost:8080/predictions/2
+//np.id =2
+
+###
+POST http://localhost:8080/predictions
+Content-Type: application/json
+
+{
+  "predictedHomeScore": 0,
+  "predictedAwayScore": 2,
+  "user": {
+    "id": 1
+  },
+  "game": {
+    "id": 1
+  }
+}
+
+### user 2 dobry result 1 pkt
+POST http://localhost:8080/predictions
+Content-Type: application/json
+
+{
+  "predictedHomeScore": 1,
+  "predictedAwayScore": 2,
+  "user": {
+    "id": 2
+  },
+  "game": {
+    "id": 1
+  }
+}
+
+### user 3 dobry result 0 pkt
+POST http://localhost:8080/predictions
+Content-Type: application/json
+
+{
+  "predictedHomeScore": 8,
+  "predictedAwayScore": 8,
+  "user": {
+    "id": 3
+  },
+  "game": {
+    "id": 1
+  }
+}
+
+
+
+### ALE CZY JA W OGOLE POTRZEBUJE PUT? tak, jak ktos zmienia typ
+PUT http://localhost:8080/predictions/1
+Content-Type: application/json
+
+{
+  "predictedHomeScore": 3,
+  "predictedAwayScore": 3,
+  "user": {
+    "id": 2
+  },
+  "game": {
+    "id": 3
+  }
+}

@@ -29,9 +29,8 @@ public class UserPointsController {
     }
 
     @PostMapping
-    public UserPoints createUserPoints(@RequestBody UserPoints userPoints) {
-        userPointsService.add(userPoints);
-        return userPoints;
+    public void createUserPoints() {
+        userPointsService.calculateAllUncalculatedPredictions();
     }
 
     @PutMapping("/{id}")

@@ -3,7 +3,8 @@ package pl.xxx.demo.UserPoints;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import pl.xxx.demo.Game.Game;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import pl.xxx.demo.Prediction.Prediction;
 import pl.xxx.demo.User.User;
 
@@ -17,9 +18,8 @@ public class UserPoints {
     private Long id;
     private Integer points;
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
-    @ManyToOne
-    private Game game;
     @ManyToOne
     private Prediction prediction;
 }
