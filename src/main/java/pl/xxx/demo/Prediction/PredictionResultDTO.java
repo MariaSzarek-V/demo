@@ -14,15 +14,7 @@ public class PredictionResultDTO {
     private Integer predictedHomeScore;
     private Integer predictedAwayScore;
 
-    public PredictionResultDTO() {}
+    private Integer points;
 
-    public PredictionResultDTO(String homeTeam, String awayTeam, Integer homeScore, Integer awayScore, Integer predictedHomeScore, Integer predictedAwayScore) {
-        this.homeTeam = homeTeam;
-        this.awayTeam = awayTeam;
-        this.homeScore = homeScore;
-        this.awayScore = awayScore;
-        this.predictedHomeScore = predictedHomeScore;
-        this.predictedAwayScore = predictedAwayScore;
-    }
 
 }
