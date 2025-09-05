@@ -24,6 +24,10 @@ public class PredictionService {
         return predictionRepository.findAll();
     }
 
+    public List<Prediction> getPredictionsByUserId(Long userId) {
+        return predictionRepository.findByUserId(userId);
+    }
+
 
 
 

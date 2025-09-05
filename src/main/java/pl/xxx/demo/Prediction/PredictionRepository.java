@@ -12,5 +12,7 @@ public interface PredictionRepository extends JpaRepository<Prediction, Long> {
     List<Prediction> findByCalculatedFalse();
 
     List<Prediction> findByCalculatedTrue();
+
+    List<Prediction> findByUserId(Long userId);
 }
 
