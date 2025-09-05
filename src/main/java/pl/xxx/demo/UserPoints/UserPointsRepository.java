@@ -19,6 +19,7 @@ public interface UserPointsRepository extends JpaRepository<UserPoints, Long> {
     Integer sumPointsByUserId(@Param("userId") Long userId);
 
     List<UserPoints> findByUser(User user);
+    Optional <UserPoints> findByPrediction(Prediction prediction);
 
 
 }

@@ -5,6 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import pl.xxx.demo.Game.Game;
+import pl.xxx.demo.User.User;
+import pl.xxx.demo.UserPoints.UserPoints;
+import pl.xxx.demo.UserPoints.UserPointsRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,10 +19,12 @@ public class PredictionController {
 
     private final PredictionService predictionService;
     private final PredictionRepository predictionRepository;
+    private final UserPointsRepository userPointsRepository;
 
-    public PredictionController(PredictionService predictionService, PredictionRepository predictionRepository) {
+    public PredictionController(PredictionService predictionService, PredictionRepository predictionRepository, UserPointsRepository userPointsRepository) {
         this.predictionService = predictionService;
         this.predictionRepository = predictionRepository;
+        this.userPointsRepository = userPointsRepository;
     }
 
     @GetMapping("")
@@ -74,19 +79,27 @@ public class PredictionController {
     }
 
     private PredictionResultDTO convertToPredictionResultDTO(Prediction prediction) {
-        PredictionResultDTO predictionResultDTO = new PredictionResultDTO();
-        predictionResultDTO.setHomeTeam(Optional.ofNullable(prediction.getGame())
-                .map(Game::getHomeTeam).orElse("no game found"));
-        predictionResultDTO.setAwayTeam(Optional.ofNullable(prediction.getGame())
-                .map(Game::getAwayTeam).orElse("no game found"));
-        predictionResultDTO.setHomeScore(Optional.ofNullable(prediction.getGame())
-                .map(Game::getHomeScore).orElse(-1));
-        predictionResultDTO.setAwayScore(Optional.ofNullable(prediction.getGame())
-                .map(Game::getAwayScore).orElse(-1));
-        predictionResultDTO.setPredictedHomeScore(prediction.getPredictedHomeScore());
-        predictionResultDTO.setPredictedAwayScore(prediction.getPredictedAwayScore());
+        PredictionResultDTO dto = new PredictionResultDTO();
 
-        return predictionResultDTO;
+        dto.setUsername(Optional.ofNullable(prediction.getUser())
+                .map(User::getUsername).orElse("no user"));
+        dto.setHomeTeam(Optional.ofNullable(prediction.getGame())
+                .map(Game::getHomeTeam).orElse("no game found"));
+        dto.setAwayTeam(Optional.ofNullable(prediction.getGame())
+                .map(Game::getAwayTeam).orElse("no game found"));
+        dto.setHomeScore(Optional.ofNullable(prediction.getGame())
+                .map(Game::getHomeScore).orElse(-1));
+        dto.setAwayScore(Optional.ofNullable(prediction.getGame())
+                .map(Game::getAwayScore).orElse(-1));
+        dto.setPredictedHomeScore(prediction.getPredictedHomeScore());
+        dto.setPredictedAwayScore(prediction.getPredictedAwayScore());
+
+        Integer userPoints = userPointsRepository.findByPrediction(prediction)
+                        .map(UserPoints::getPoints)
+                                .orElse(-1);
+        dto.setPoints(userPoints);
+
+        return dto;
     }
 
 }
