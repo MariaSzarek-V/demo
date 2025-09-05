@@ -38,9 +38,10 @@ public class UserPointsController {
         return userPointsService.update(id, userPoints);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUserPoints(@PathVariable Long id) {
-        userService.delete(id);
-    }
+// NIEPOTRZEBNE, PUNKTY SIE SAME LICZA NIE MA CO ICH USUWAC
+//    @DeleteMapping("/{id}")
+//    public void deleteUserPoints(@PathVariable Long id) {
+//        userPointsService.delete(id);
+//    }
 
 }

@@ -4,9 +4,11 @@ POST http://localhost:8080/user
 Content-Type: application/json
 
 {
-  "email": "ania@gmail.com",
+  "email": "admin@gmail.com",
   "password": "password",
-  "username": "ania"
+  "username": "adminek",
+  "userRole": "ADMIN"
+
 }
 
 ###USER POST
@@ -17,7 +19,8 @@ Content-Type: application/json
 {
   "email": "kasia@gmail.com",
   "password": "password",
-  "username": "kasia"
+  "username": "kasia",
+  "userRole": "USER"
 }
 
 ###USER POST
@@ -28,10 +31,30 @@ Content-Type: application/json
 {
   "email": "gosia@gmail.com",
   "password": "password",
-  "username": "gosia"
+  "username": "gosia",
+  "userRole": "USER"
 }
 
 ### DELETE USER
-DELETE http://localhost:8080/user/8
+DELETE http://localhost:8080/user/3
 #response body empty
 #usuwanie - daje 200  , nawet jak chce usunac nieistniejacego
+
+
+###
+GET http://localhost:8080/user
+
+###
+GET http://localhost:8080/user/2
+
+###
+PUT http://localhost:8080/user/2
+Content-Type: application/json
+
+{
+  "email": "xxxx@gmail.com",
+  "password": "password",
+  "username": "xxxx",
+  "userRole": "USER"
+}
+

@@ -1,9 +1,10 @@
-package pl.xxx.demo.Prediction;
+package pl.xxx.demo.PredictionResult;
 
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.xxx.demo.Game.Game;
+import pl.xxx.demo.Prediction.Prediction;
 import pl.xxx.demo.User.User;
 import pl.xxx.demo.UserPoints.UserPoints;
 

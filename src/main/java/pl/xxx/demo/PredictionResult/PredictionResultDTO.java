@@ -1,4 +1,4 @@
-package pl.xxx.demo.Prediction;
+package pl.xxx.demo.PredictionResult;
 
 import lombok.Getter;
 import lombok.Setter;

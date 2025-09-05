@@ -1,7 +1,8 @@
-package pl.xxx.demo.Prediction;
+package pl.xxx.demo.PredictionResult;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.xxx.demo.Prediction.PredictionRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;

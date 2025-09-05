@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container mt-4">
+    <h1 class="mb-3">Lista meczów</h1>
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-light">
+        <tr>
+            <th>ID</th>
+            <th>Mecz</th>
+            <th>Typowany wynik</th>
+            <th class="text-end">Akcje</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="g : ${games}">
+            <td th:text="${g.id}"></td>
+            <td>
+                <span th:text="${g.homeTeam}"></span> vs <span th:text="${g.awayTeam}"></span>
+            </td>
+            <td>
+                <!-- Formularz edycji -->
+                <form th:if="${editId == g.id}" th:action="@{/app/games/update}" method="post" class="d-flex gap-1">
+                    <input type="hidden" name="id" th:value="${g.id}"/>
+                    <input type="number" class="form-control" name="predictedHomeScore"
+                           th:value="${g.predictedHomeScore}" min="0"/>
+                    <span>:</span>
+                    <input type="number" class="form-control" name="predictedAwayScore"
+                           th:value="${g.predictedAwayScore}" min="0"/>
+                    <button type="submit" class="btn btn-success btn-sm">Zapisz</button>
+                    <a th:href="@{/app/games}" class="btn btn-secondary btn-sm">Anuluj</a>
+                </form>
+                <!-- Widok tylko do odczytu -->
+                <span th:if="${editId != g.id}">
+                    <span th:text="${g.predictedHomeScore}"></span> :
+                    <span th:text="${g.predictedAwayScore}"></span>
+                </span>
+            </td>
+            <td class="text-end">
+                <a th:if="${editId != g.id}" class="btn btn-sm btn-outline-primary"
+                   th:href="@{|/app/games/edit/${g.id}|}">Typuj mecz</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+
+</html>

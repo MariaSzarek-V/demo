@@ -1,24 +1,4 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
-
-
-###
+### wywolanie metody - punkty za predykcje (
+#symulacja, ze mecz sie zakonczyl i punkty automatycznie sie zliczaja
 POST http://localhost:8080/points
-Content-Type: application/json
 
-### w sumie tu nie powinno byc jsona, tylko wywolaj metody licz punkty
-POST http://localhost:8080/points
-Content-Type: application/json
-
-{
-  "user": {
-    "id": 1
-  },
-  "game": {
-    "id": 1
-  },
-  "prediction": {
-    "id": 1
-  }
-}
