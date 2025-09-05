@@ -24,6 +24,7 @@ public class PredictionService {
         return predictionRepository.findAll();
     }
 
+
     public Optional<Prediction> get(Long id) {
         return predictionRepository.findById(id);
     }

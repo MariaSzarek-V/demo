@@ -10,5 +10,7 @@ import java.util.List;
 public interface PredictionRepository extends JpaRepository<Prediction, Long> {
 
     List<Prediction> findByCalculatedFalse();
+
+    List<Prediction> findByCalculatedTrue();
 }
 
