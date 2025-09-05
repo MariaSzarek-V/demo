@@ -7,9 +7,10 @@ import lombok.*;
 @Getter
 @Setter
 public class GamePredictionDTO {
-    private Long id;
+    private Long gameId;
     private String homeTeam;
     private String awayTeam;
     private Integer predictedHomeScore;
     private Integer predictedAwayScore;
+    private Long predictionId;
 }

@@ -2,6 +2,7 @@ package pl.xxx.demo.Game;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.xxx.demo.Prediction.Prediction;
 import pl.xxx.demo.Prediction.PredictionRepository;
 import pl.xxx.demo.Prediction.PredictionService;
 
@@ -22,14 +23,25 @@ public class GameService {
     }
 
     public List<GamePredictionDTO> getGamesWithPredictions() {
-        return predictionRepository.findAll().stream()
-                .map(pred -> new GamePredictionDTO(
-                        pred.getId(),
-                        pred.getGame().getHomeTeam(),
-                        pred.getGame().getAwayTeam(),
-                        pred.getPredictedHomeScore(),
-                        pred.getPredictedAwayScore()
-                ))
+        List<Game> games = gameRepository.findAll();
+        List<Prediction> predictions = predictionRepository.findAll();
+
+        return games.stream()
+                .map(game -> {
+                    Prediction prediction = predictions.stream()
+                            .filter(p -> p.getGame().getId().equals(game.getId()))
+                            .findFirst()
+                            .orElse(null);
+
+                    return new GamePredictionDTO(
+                            game.getId(),
+                            game.getHomeTeam(),
+                            game.getAwayTeam(),
+                            prediction != null ? prediction.getPredictedHomeScore() : null,
+                            prediction != null ? prediction.getPredictedAwayScore() : null,
+                            prediction != null ? prediction.getId() : null
+                    );
+                })
                 .collect(Collectors.toList());
     }
 

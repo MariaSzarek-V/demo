@@ -19,29 +19,26 @@ public class GameViewController {
 
     @GetMapping
     public String listGames(Model model) {
-        List<GamePredictionDTO> games = gameService.getGamesWithPredictions();
-        model.addAttribute("games", games);
+        model.addAttribute("games", gameService.getGamesWithPredictions());
         model.addAttribute("editId", null);
         return "ranking/games";
     }
 
     // Przejście w tryb edycji
-    @GetMapping("/edit/{id}")
-    public String editGame(@PathVariable Long id, Model model) {
+    @GetMapping("/edit/{gameId}")
+    public String editGame(@PathVariable Long gameId, Model model) {
         model.addAttribute("games", gameService.getGamesWithPredictions());
-        model.addAttribute("editId", id); // ustawiamy ID do edycji
+        model.addAttribute("editId", gameId);
         return "ranking/games";
     }
 
     // Zapis wyniku
     @PostMapping("/update")
-    public String updateGame(@RequestParam Long id,
+    public String updateGame(@RequestParam(required = false) Long predictionId,
+                             @RequestParam Long gameId,
                              @RequestParam int predictedHomeScore,
                              @RequestParam int predictedAwayScore) {
-        Prediction prediction = new Prediction();
-        prediction.setPredictedHomeScore(predictedHomeScore);
-        prediction.setPredictedAwayScore(predictedAwayScore);
-        predictionService.update(id, prediction);
-        return "redirect:/app/games"; // wracamy do listy
+        predictionService.saveOrUpdate(predictionId, gameId, predictedHomeScore, predictedAwayScore);
+        return "redirect:/app/games";
     }
 }
