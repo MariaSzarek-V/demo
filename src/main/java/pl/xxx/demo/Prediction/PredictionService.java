@@ -30,22 +30,6 @@ public class PredictionService {
     }
 
 
-
-
-//
-//    public List<PredictionResultDTO> getPredictionResults() {
-//        List<Prediction> predictions = predictionRepository.findAll();
-//        PredictionResultDTO dto = new PredictionResultDTO();
-//        dto.setHomeScore();
-//
-//        return dto;
-//    }
-
-//
-
-
-
-
     public Optional<Prediction> get(Long id) {
         return predictionRepository.findById(id);
     }
