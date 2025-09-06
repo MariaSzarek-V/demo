@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pl.xxx.demo.Prediction.PredictionRepository;
 import pl.xxx.demo.Prediction.PredictionService;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,19 @@ public class PredictionResultViewController {
         return "prediction-result";
     }
 
+    @GetMapping("/my")
+    public String getPredictionForLoggedUser(Principal principal, Model model) {
+        String username = principal.getName();
+        List<PredictionResultDTO> predictionsUserId = predictionRepository.findByUserUsername(username)
+                .stream()
+                .map(predictionResultMapper::convertToPredictionResultDTO)
+                .collect(Collectors.toList());
+        model.addAttribute("predictions", predictionsUserId);
+        return "prediction-result";
 
+    }
+
+// predykcje po id usera - jeszcze z czasow bez logowania
     @GetMapping("/{id}")
     public String getById(Model model, @PathVariable Long id) {
         List<PredictionResultDTO> predictionsUserId = predictionRepository.findByUserId(id)
