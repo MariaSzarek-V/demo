@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.xxx.demo.Prediction.Prediction;
 import pl.xxx.demo.Prediction.PredictionService;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("app/games")
@@ -21,7 +18,7 @@ public class GameViewController {
     public String listGames(Model model) {
         model.addAttribute("games", gameService.getGamesWithPredictions());
         model.addAttribute("editId", null);
-        return "ranking/games";
+        return "games";
     }
 
     // Przejście w tryb edycji
@@ -29,7 +26,7 @@ public class GameViewController {
     public String editGame(@PathVariable Long gameId, Model model) {
         model.addAttribute("games", gameService.getGamesWithPredictions());
         model.addAttribute("editId", gameId);
-        return "ranking/games";
+        return "games";
     }
 
     // Zapis wyniku

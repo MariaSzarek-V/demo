@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>Strona główna</title>
+</head>
+<body>
+
+<h1>Witaj na stronie głównej!</h1>
+
+<!-- Jeśli użytkownik jest zalogowany -->
+<div sec:authorize="isAuthenticated()">
+  <p>Zalogowany jako: <strong sec:authentication="name"></strong></p>
+  <p>Twoje role: <strong sec:authentication="principal.authorities"></strong></p>
+  <form th:action="@{/logout}" method="post">
+    <button type="submit">🚪 Wyloguj</button>
+  </form>
+</div>
+
+<!-- Jeśli użytkownik nie jest zalogowany -->
+<div sec:authorize="isAnonymous()">
+  <p>Jesteś niezalogowany. <a th:href="@{/login}">Zaloguj się</a></p>
+</div>
+
+<hr>
+
+<!-- Linki do innych stron -->
+<ul>
+  <li><a th:href="@{/}">🏠 Strona główna</a></li>
+  <li><a th:href="@{/userzy}">👤 Strona użytkownika</a> (dla USER lub ADMIN)</li>
+  <li><a th:href="@{/admin}">🛠 Panel administratora</a> (tylko ADMIN)</li>
+</ul>
+
+</body>
+</html>

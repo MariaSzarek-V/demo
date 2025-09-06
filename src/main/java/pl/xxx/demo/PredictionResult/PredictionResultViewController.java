@@ -1,8 +1,6 @@
 package pl.xxx.demo.PredictionResult;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +26,7 @@ public class PredictionResultViewController {
     public String predictionResultView(Model model) {
         List<PredictionResultDTO> predictions = predictionResultService.getPredictionResults();
         model.addAttribute("predictions", predictions);
-        return "ranking/prediction-result";
+        return "prediction-result";
     }
 
 
@@ -39,7 +37,7 @@ public class PredictionResultViewController {
                 .map(predictionResultMapper::convertToPredictionResultDTO)
                 .collect(Collectors.toList());
         model.addAttribute("predictions", predictionsUserId);
-        return "ranking/prediction-result";
+        return "prediction-result";
 
     }
 
