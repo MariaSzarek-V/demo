@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class GameService {
+
     private final GameRepository gameRepository;
     private final PredictionRepository predictionRepository;
-
 
 
     public List<Game> getAll(){

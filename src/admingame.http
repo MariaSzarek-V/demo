@@ -1,0 +1,30 @@
+
+###
+GET http://localhost:8080/api/admin/games
+Content-Type: application/json
+
+
+
+###
+
+GET http://localhost:8080/api/admin/games/5
+
+    Content-Type: application/json
+
+###
+POST http://localhost:8080/api/admin/games
+Content-Type: application/json
+
+{
+  "id": 0,
+  "homeTeam": "aaaa",
+  "awayTeam": "blblaaab",
+  "homeScore": 0,
+  "awayScore": 0,
+  "gameDate": "zzz",
+  "gameStatus": "SCHEDULED"
+}
+
+###
+PUT http://localhost:8080/api/admin/games/{{id}}?
+    id={{$random.integer(100)}}

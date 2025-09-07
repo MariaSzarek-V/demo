@@ -3,6 +3,7 @@ package pl.xxx.demo.Game;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import pl.xxx.demo.Enum.GameStatus;
 
 import java.time.LocalDateTime;
 
@@ -18,5 +19,8 @@ public class Game {
     private Integer homeScore;
     private Integer awayScore;
     private LocalDateTime gameDate;
+    @Enumerated(EnumType.STRING)
+    private GameStatus gameStatus = GameStatus.SCHEDULED;
+
 
 }
