@@ -16,9 +16,9 @@ public class HomeController {
         return "admin"; // tylko ADMIN
     }
 
-    @GetMapping("/userzy")
+    @GetMapping("/index")
     public String user() {
-        return "user"; // USER lub ADMIN
+        return "index"; // USER lub ADMIN
     }
 
     @GetMapping("/login")

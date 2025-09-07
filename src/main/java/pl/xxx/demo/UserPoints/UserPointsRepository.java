@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface UserPointsRepository extends JpaRepository<UserPoints, Long> {
 
-//    Optional<Integer> sumPointsByUserId(Long userId);
+// tu chyba nie jest potrzebne query
 
     @Query("SELECT SUM(up.points) FROM UserPoints up WHERE up.user.id = :userId")
     Integer sumPointsByUserId(@Param("userId") Long userId);

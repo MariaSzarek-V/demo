@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/app/prediction-result")
+@RequestMapping("/prediction-result")
 @RequiredArgsConstructor
 public class PredictionResultViewController {
 

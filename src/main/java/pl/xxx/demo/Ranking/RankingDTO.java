@@ -10,7 +10,7 @@ public class RankingDTO {
     private String username;
     private Integer totalPoints;
 
-    public RankingDTO(){
+    public RankingDTO() {
 
     }
 

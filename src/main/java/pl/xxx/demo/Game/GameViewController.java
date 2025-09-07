@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.xxx.demo.Prediction.PredictionService;
 
 @Controller
-@RequestMapping("app/games")
+@RequestMapping("games")
 @RequiredArgsConstructor
 public class GameViewController {
 
@@ -36,6 +36,6 @@ public class GameViewController {
                              @RequestParam int predictedHomeScore,
                              @RequestParam int predictedAwayScore) {
         predictionService.saveOrUpdate(predictionId, gameId, predictedHomeScore, predictedAwayScore);
-        return "redirect:/app/games";
+        return "redirect:/games";
     }
 }

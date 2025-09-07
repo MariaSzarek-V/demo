@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/ranking")
+@RequestMapping("/api/ranking")
 @RequiredArgsConstructor
 public class RankingController {
 

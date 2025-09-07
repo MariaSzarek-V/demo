@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/prediction-result")
+@RequestMapping("/api/prediction-result")
 public class PredictionResultController {
 
     private final PredictionResultService predictionResultService;
