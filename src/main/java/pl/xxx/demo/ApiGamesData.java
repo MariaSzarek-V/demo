@@ -20,6 +20,9 @@
 //import java.sql.Connection;
 //import java.sql.DriverManager;
 //import java.sql.PreparedStatement;
+//import java.sql.Timestamp;
+//import java.time.LocalDateTime;
+//import java.time.format.DateTimeFormatter;
 //
 //public class ApiGamesData {
 //
@@ -96,7 +99,7 @@
 ////
 //            try (Connection conn = DriverManager.getConnection(jdbcUrl, user, password)) {
 //
-//                String insertSQl = "INSERT INTO game(home_team, away_team, home_score, away_score, game_date) VALUES (?, ?, ?, ?, ?)";
+//                String insertSQl = "INSERT INTO game(home_team, away_team, home_score, away_score, game_date, game_status) VALUES (?, ?, ?, ?, ?, ?)";
 //                PreparedStatement ps = conn.prepareStatement(insertSQl);
 //                for (JsonNode match : matches) {
 //                    String homeTeam = match.path("teams").path("home").path("name").asText();
@@ -110,6 +113,8 @@
 //                    ps.setString(3, homeGoals);
 //                    ps.setString(4, awayGoals);
 //                    ps.setString(5, matchDate);
+//                    ps.setTimestamp(5, Timestamp.valueOf(LocalDateTime.parse(matchDate, DateTimeFormatter.ISO_DATE_TIME)));
+//                    ps.setString(6, "SCHEDULED");
 //                    ps.addBatch();
 //                }
 //                ps.executeBatch();

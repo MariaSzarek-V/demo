@@ -21,7 +21,7 @@ public class AdminGameController {
     }
 
     @GetMapping("/{id}")
-    public Game getGame(@RequestParam Long id) {
+    public Game getGame(@PathVariable Long id) {
         return adminGameService.getGameById(id);
     }
 
@@ -33,11 +33,14 @@ public class AdminGameController {
 
     @PutMapping("/{id}")
     public Game updateGame(@PathVariable Long id, @RequestBody Game game) {
-        adminGameService.updateGame(game);
+        adminGameService.updateGame(id, game);
         return game;
-
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteGame(@PathVariable Long id) {
+        adminGameService.deleteGame(id);
+    }
 
 
 
