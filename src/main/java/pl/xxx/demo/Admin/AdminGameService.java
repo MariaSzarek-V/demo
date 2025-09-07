@@ -2,8 +2,10 @@ package pl.xxx.demo.Admin;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.xxx.demo.Enum.GameStatus;
 import pl.xxx.demo.Game.Game;
 import pl.xxx.demo.Game.GameRepository;
+import pl.xxx.demo.UserPoints.UserPointsService;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ public class AdminGameService {
 
 
     private final GameRepository gameRepository;
+    private final UserPointsService userPointsService;
 
     public List<Game> getAllGames() {
         return gameRepository.findAll();
@@ -35,8 +38,10 @@ public class AdminGameService {
         existingGame.setGameDate(game.getGameDate());
         existingGame.setGameStatus(game.getGameStatus());
         gameRepository.save(existingGame);
-
-        return gameRepository.findById(id).orElse(null);
+        if (existingGame.getGameStatus() == GameStatus.FINISHED) {
+            userPointsService.calculatePredictionForGame(existingGame);
+        }
+        return existingGame;
     }
 
     public void deleteGame(Long id) {

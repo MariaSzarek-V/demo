@@ -10,7 +10,7 @@ import pl.xxx.demo.User.User;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
+
 
 @Service
 public class UserPointsService {
@@ -33,7 +33,33 @@ public class UserPointsService {
         return userPointsRepository.findById(id);
     }
 
+    public void calculatePredictionForGame(Game game) {
+        /**
+         * DONE!!!!
+         * medoda do podlliczenia punktow za predykcje
+         * gdy admin zmieni status meczu na completed
+         * do wykorzystania w adminGameController
+         */
+        List<Prediction> predictions = predictionRepository.findByGameId(game.getId());
+        for (Prediction prediction : predictions) {
+            int points = calculatePointsForGame(prediction);
+            User user = prediction.getUser();
+            UserPoints userPoints = new UserPoints();
+            userPoints.setUser(user);
+            userPoints.setPoints(points);
+            userPoints.setPrediction(prediction);
+            userPointsRepository.save(userPoints);
+            prediction.setCalculated(true);
+            predictionRepository.save(prediction);
+        }
+    }
+
     public void calculateAllUncalculatedPredictions() {
+        /**
+         * to jest to samo co calculatePredictionForGame
+         * czyli funkcja wyzej , przemyslec
+         * czy ja tego w ogole potrzebuje
+         */
         List<Prediction> allUncalculatedPredictions = predictionRepository.findByCalculatedFalse();
 
         for (Prediction prediction : allUncalculatedPredictions) {
@@ -70,7 +96,6 @@ public class UserPointsService {
     }
 
 
-
     public int calculatePointsForGame(Prediction prediction) {
         int pointsForGame = 0;
         int predictedHomeScore = prediction.getPredictedHomeScore();
@@ -78,7 +103,7 @@ public class UserPointsService {
         Game game = prediction.getGame();
         int gameHomeScore = game.getHomeScore();
         int gameAwayScore = game.getAwayScore();
-        Enum<GameResult> gameResult= GameResult.getGameResult(gameHomeScore, gameAwayScore);
+        Enum<GameResult> gameResult = GameResult.getGameResult(gameHomeScore, gameAwayScore);
 
         Enum<GameResult> predictedResult = GameResult.getGameResult(predictedHomeScore, predictedAwayScore);
 
@@ -120,10 +145,7 @@ public class UserPointsService {
 //
 
 
-
-
     }
-
 
 
 }

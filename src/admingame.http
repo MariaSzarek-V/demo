@@ -21,7 +21,7 @@ Content-Type: application/json
 }
 
 ###
-PUT http://localhost:8080/api/admin/games/134
+PUT http://localhost:8080/api/admin/games/1
 Content-Type: application/json
 
 {
@@ -33,5 +33,17 @@ Content-Type: application/json
   "gameStatus": "SCHEDULED"
 }
 
+###
+PUT http://localhost:8080/api/admin/games/1
+Content-Type: application/json
+
+{
+  "homeTeam": "aaaa",
+  "awayTeam": "qq",
+  "homeScore": 2,
+  "awayScore": 0,
+  "gameDate": "2025-09-07T15:00:00",
+  "gameStatus": "FINISHED"
+}
 ###
 DELETE http://localhost:8080/api/admin/games/134

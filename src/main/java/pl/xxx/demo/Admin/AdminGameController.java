@@ -3,8 +3,11 @@ package pl.xxx.demo.Admin;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import pl.xxx.demo.Enum.GameStatus;
 import pl.xxx.demo.Game.Game;
 import pl.xxx.demo.Game.GameService;
+import pl.xxx.demo.UserPoints.UserPoints;
+import pl.xxx.demo.UserPoints.UserPointsService;
 
 import java.util.List;
 
@@ -14,6 +17,7 @@ import java.util.List;
 public class AdminGameController {
 
     private final AdminGameService adminGameService;
+    private final UserPointsService userPointsService;
 
     @GetMapping
     public List<Game> getGames() {
@@ -33,6 +37,10 @@ public class AdminGameController {
 
     @PutMapping("/{id}")
     public Game updateGame(@PathVariable Long id, @RequestBody Game game) {
+        /**
+         * update game ze sprawdzeniem czy mecz zakoncony,
+         * jesli FINISHED to podliczenie punktow dla userow, ktorzy wytypowali mecz
+         */
         adminGameService.updateGame(id, game);
         return game;
     }
