@@ -1,8 +1,10 @@
 package pl.xxx.demo.Ranking;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@NoArgsConstructor
 @Getter
 @Setter
 public class RankingDTO {
@@ -10,9 +12,6 @@ public class RankingDTO {
     private String username;
     private Integer totalPoints;
 
-    public RankingDTO() {
-
-    }
 
     public RankingDTO(Long userId, String username, Integer totalPoints) {
         this.userId = userId;
