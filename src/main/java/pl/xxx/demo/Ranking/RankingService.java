@@ -2,24 +2,24 @@ package pl.xxx.demo.Ranking;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.xxx.demo.Game.Game;
 import pl.xxx.demo.User.User;
 import pl.xxx.demo.User.UserRepository;
-import pl.xxx.demo.UserPoints.UserPoints;
 import pl.xxx.demo.UserPoints.UserPointsRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class RankingService {
 
     private final UserRepository userRepository;
     private final UserPointsRepository userPointsRepository;
 
 
-    public List<RankingDTO> getRanking() {
+
+    public List<RankingDTO> getCurrentRanking() {
         List<User> users = userRepository.findAll();
         List<RankingDTO> ranking = new ArrayList<>();
         for (User user : users) {
@@ -39,4 +39,8 @@ public class RankingService {
         ranking.sort((a, b) -> b.getTotalPoints() - a.getTotalPoints());
         return ranking;
     }
+
+//    public void createRankingHistorySnapshot(Long gameId){
+//        Game game = gameRepository
+//    }
 }

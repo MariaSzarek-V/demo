@@ -3,6 +3,7 @@ package pl.xxx.demo.RankingHistory;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import pl.xxx.demo.User.User;
 
 import java.time.LocalDateTime;
 
@@ -10,20 +11,32 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(
-        name = "ranking_history",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"gameId", "userId"})
+        //gwarancja, że jeden user ma jeden wpis rankingu na jeden mecz
+        uniqueConstraints = @UniqueConstraint(columnNames = {"game_id", "user_id"})
 )
 public class RankingHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime createdAt;
+
+    // nie Game game, bo mi wystarczy tylko id meczu
+    @Column(nullable = false)
     private Long gameId;
-    private Long userId;
-    private String username;
+
+    //tutaj caly usae i dlatego tez rankignHistoryDTO/
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
+    private User user;
+
+    @JoinColumn(nullable = false)
     private Integer totalPoints;
 
+    @Column(nullable = false)
+    private Integer position;
+
+    @Column(nullable = false)
+    private Integer positionChange;
 
 
 

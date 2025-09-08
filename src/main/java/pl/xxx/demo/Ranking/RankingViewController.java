@@ -16,7 +16,7 @@ public class RankingViewController {
 
     @GetMapping
     public String list(Model model) {
-        List<RankingDTO> ranking = rankingService.getRanking();
+        List<RankingDTO> ranking = rankingService.getCurrentRanking();
         model.addAttribute("ranking", ranking);
         return "ranking";
     }

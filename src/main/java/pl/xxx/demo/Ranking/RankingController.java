@@ -1,6 +1,5 @@
 package pl.xxx.demo.Ranking;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +18,7 @@ public class RankingController {
 
     @GetMapping
     public ResponseEntity<List<RankingDTO>> getRanking() {
-        List<RankingDTO> rankingDTOList = rankingService.getRanking();
+        List<RankingDTO> rankingDTOList = rankingService.getCurrentRanking();
         return ResponseEntity.ok(rankingDTOList);
     }
 

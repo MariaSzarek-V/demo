@@ -28,6 +28,7 @@ public class AdminGameService {
         gameRepository.save(game);
     }
     public Game updateGame(Long id, Game game) {
+        //TODO : zmienic nazwe na finalize game ? a osobno zrobic na update game?
         Game existingGame = gameRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Game not found with id " + id));
 
