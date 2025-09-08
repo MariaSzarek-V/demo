@@ -1,0 +1,89 @@
+<!-- START GENAI -->
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Panel typowania</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+        }
+        .sidebar {
+            min-width: 220px;
+            max-width: 220px;
+            background-color: #0d6efd;
+            color: white;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px 15px;
+        }
+        .sidebar a:hover {
+            background-color: #0b5ed7;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+
+<!-- PANEL BOCZNY -->
+<div class="sidebar">
+    <h4 class="p-3">Menu</h4>
+    <a th:href="@{/view/games}"><i class="bi bi-calendar-event"></i> Mecze</a>
+    <a th:href="@{/view/predictions}"><i class="bi bi-pencil-square"></i> Typy</a>
+    <a th:href="@{/view/ranking}"><i class="bi bi-trophy"></i> Ranking</a>
+</div>
+
+<!-- TREŚĆ GŁÓWNA -->
+<div class="content">
+    <h2 class="mb-4">Lista meczów</h2>
+
+    <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${message}">Operacja zakończona sukcesem.</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Zamknij"></button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Drużyna Gospodarzy</th>
+                <th>Drużyna Gości</th>
+                <th>Data</th>
+                <th>Wynik</th>
+                <th class="text-end">Akcje</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="g : ${games}">
+                <td th:text="${g.id}">1</td>
+                <td th:text="${g.homeTeam}">Gospodarz</td>
+                <td th:text="${g.awayTeam}">Gość</td>
+                <td th:text="${#temporals.format(g.date, 'yyyy-MM-dd HH:mm')}">2024-06-01 18:00</td>
+                <td th:text="${g.score}">-</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-primary" th:href="@{|/games/${g.id}|}">Podgląd</a>
+                    <a class="btn btn-sm btn-outline-secondary" th:href="@{|/games/${g.id}/edit|}">Edytuj</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

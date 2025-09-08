@@ -10,6 +10,8 @@ import pl.xxx.demo.User.User;
 
 
 @Entity
+
+//uniqueConstrains = @UniqueConstraint(columnNames = {"user_id", "prediction_id"})
 @Getter
 @Setter
 public class UserPoints {
