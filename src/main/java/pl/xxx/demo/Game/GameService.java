@@ -2,6 +2,7 @@ package pl.xxx.demo.Game;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.xxx.demo.Enum.GameStatus;
 import pl.xxx.demo.Prediction.Prediction;
 import pl.xxx.demo.Prediction.PredictionRepository;
 import pl.xxx.demo.Prediction.PredictionService;
@@ -20,6 +21,17 @@ public class GameService {
 
     public List<Game> getAll(){
         return gameRepository.findAll();
+    }
+
+    public Optional<Game> get(Long id){
+        return gameRepository.findById(id);
+    }
+
+    public List<Game> getUpcomingGames(){
+        return gameRepository.findByGameStatus(GameStatus.SCHEDULED);
+    }
+    public List<Game> getFinishedGames(){
+        return gameRepository.findByGameStatus(GameStatus.FINISHED);
     }
 
     public List<GamePredictionDTO> getGamesWithPredictions() {
@@ -45,7 +57,5 @@ public class GameService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<Game> get(long id){
-        return gameRepository.findById(id);
-    }
+
 }

@@ -11,6 +11,13 @@ import pl.xxx.demo.UserPoints.UserPointsService;
 
 import java.util.List;
 
+
+/*
+widok dla admina
+moze miec osobny get dla meczy, pod warunkiem ze mecze
+dla niezalogowanych sa widoczne ze statusem scheduled
+czyli jest roznica w metodzie
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/admin/games")

@@ -46,4 +46,5 @@ Content-Type: application/json
   "gameStatus": "FINISHED"
 }
 ###
-DELETE http://localhost:8080/api/admin/games/134
+DELETE http://localhost:8080/api/admin/games/2
+

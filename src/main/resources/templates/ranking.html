@@ -13,6 +13,7 @@
 
   <div class="table-responsive">
     <table class="table table-striped table-hover align-middle">
+      <thead>
       <tr>
         <th>Nr</th>
         <th>Użytkownik</th>
@@ -23,7 +24,7 @@
       <tbody>
       <tr th:each="row,iter : ${ranking}">
         <td th:text="${iter.index + 1}">1</td>
-        <td th:text="${row.username}">jan.kowalski</td>
+        <td th:text="${{row.user.username}}">jan.kowalski</td>
         <td th:text="${row.totalPoints}">0</td>
       </tr>
       <tr th:if="${#lists.isEmpty(ranking)}">

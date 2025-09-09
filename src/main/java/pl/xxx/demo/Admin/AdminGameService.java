@@ -3,11 +3,14 @@ package pl.xxx.demo.Admin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.xxx.demo.Enum.GameStatus;
+import pl.xxx.demo.Error.GameAlreadyFinishedException;
+import pl.xxx.demo.Error.GameNotFoundException;
 import pl.xxx.demo.Game.Game;
 import pl.xxx.demo.Game.GameRepository;
 import pl.xxx.demo.UserPoints.UserPointsService;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -46,8 +49,16 @@ public class AdminGameService {
     }
 
     public void deleteGame(Long id) {
-        gameRepository.deleteById(id);
+        Game game = gameRepository.findById(id)
+                .orElseThrow(() -> new GameNotFoundException(id));
+
+        if (GameStatus.FINISHED.equals(game.getGameStatus())) {
+            throw new GameAlreadyFinishedException(id);
+        }
+
+        gameRepository.delete(game);
     }
+
 
 
 
