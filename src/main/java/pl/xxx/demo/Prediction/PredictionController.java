@@ -1,7 +1,8 @@
 package pl.xxx.demo.Prediction;
-
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import pl.xxx.demo.User.User;
 import pl.xxx.demo.UserPoints.UserPointsRepository;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/predictions")
+@RequestMapping("/api/predictions")
 public class PredictionController {
 
     private final PredictionService predictionService;
@@ -22,21 +23,30 @@ public class PredictionController {
         this.userPointsRepository = userPointsRepository;
     }
 
-    @GetMapping("")
-    public List<Prediction> getAllPredictions() {
-        return predictionService.getAll();
+//    @GetMapping("")
+//    public List<Prediction> getAllPredictions() {
+//        return predictionService.getAll();
+//    }
+//
+
+//    @GetMapping("/{id}")
+//    public ResponseEntity<Prediction> getPredictionById(@PathVariable Long id) {
+//        Optional<Prediction> predictionById = predictionService.get(id);
+//        if (predictionById.isPresent()) {
+//            return ResponseEntity.ok(predictionById.get());
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+    @GetMapping("/my")
+    public List<Prediction> getMyPredictions() {
+        return predictionService.getMyPredictions();
     }
 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Prediction> getPredictionById(@PathVariable Long id) {
-        Optional<Prediction> predictionById = predictionService.get(id);
-        if (predictionById.isPresent()) {
-            return ResponseEntity.ok(predictionById.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+
+
+
 
     @PostMapping
     public Prediction createPrediction(@RequestBody Prediction prediction) {
@@ -44,12 +54,15 @@ public class PredictionController {
         return prediction;
     }
 
+    //TODO - dodac warunek, ze tylko jesli mecz nie jest rozpoczety
     @PutMapping("/{id}")
     public Prediction updatePrediction(@PathVariable Long id, @RequestBody Prediction prediction) {
         predictionService.update(id, prediction);
         return prediction;
     }
 
+
+    // nie wiem czy jest potrzbene???/
 
     @DeleteMapping("/{id}")
     public void deletePrediction(@PathVariable Long id) {

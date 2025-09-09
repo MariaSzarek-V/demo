@@ -3,10 +3,14 @@ package pl.xxx.demo.Prediction;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.xxx.demo.Game.GameRepository;
 import pl.xxx.demo.User.User;
+import pl.xxx.demo.User.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,11 +22,13 @@ import java.util.Optional;
 public class PredictionService {
     private final PredictionRepository predictionRepository;
     private final GameRepository gameRepository;
+    private final UserRepository userRepository;
 
 
     public Prediction add(Prediction prediction) {
         return predictionRepository.save(prediction);
     }
+
 //    public Prediction add(Long GameId, PredictionDTO predictionDTO, User user) {
 //        Prediction prediction = PredictionMapper.toEntity(predictionDTO);
 //        return predictionRepository.save(prediction);
@@ -63,13 +69,24 @@ public class PredictionService {
         return predictionRepository.findAll();
     }
 
-    public List<Prediction> getPredictionsByUserId(Long userId) {
-        return predictionRepository.findByUserId(userId);
-    }
+//    public List<PredictionDTO> getPredictionsByUserId(Long userId) {
+//        List<Prediction> predictions = predictionRepository.findByUserId(userId);
+//        return predictionMapper.
+//    }
 
+//
+//    public Optional<Prediction> get(Long id) {
+//        return predictionRepository.findById(id);
+//    }
 
-    public Optional<Prediction> get(Long id) {
-        return predictionRepository.findById(id);
+    public List<Prediction> getMyPredictions() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        List<Prediction> myPredictions = predictionRepository.findByUserId(currentUser.getId());
+        return myPredictions;
     }
 
     public void update(Long id, Prediction prediction) {

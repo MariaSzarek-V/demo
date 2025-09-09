@@ -13,25 +13,22 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+
     @Bean
     @Order(1)
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
-        System.out.println("ŁADUJE: apiFilterChain");
         http
                 .securityMatcher("/api/**")
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/predictions/my").authenticated()
                         .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .addFilterBefore((request, response, chain) -> {
-                    String uri = ((jakarta.servlet.http.HttpServletRequest) request).getRequestURI();
-                    System.out.println("API filter chain obsługuje: " + uri);
-                    chain.doFilter(request, response);
-                }, org.springframework.web.filter.CorsFilter.class);
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // lub STATELESS z JWT
+                );
         return http.build();
+
     }
 
     @Bean
