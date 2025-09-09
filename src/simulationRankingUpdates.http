@@ -1,0 +1,83 @@
+#game, user, prediction for 6 games, dla 5 graczy
+#empty ranking history, empty userpoints
+
+###admin oznacza 1 mecz jako zakonczony
+# user_points zaktualizowane, 5 wpisow,
+# prediction, kolumna calculated oznaczona jako true
+PUT http://localhost:8080/api/admin/games/1
+Content-Type: application/json
+
+{
+  "homeTeam": "Qatar",
+  "awayTeam": "Ecuador",
+  "homeScore": 0,
+  "awayScore": 2,
+  "gameDate": "2025-09-07T15:00:00",
+  "gameStatus": "FINISHED"
+}
+
+###pobranie current rankingu
+GET http://localhost:8080/api/ranking/current
+#ranking wyswietla sie na konsoli
+
+###zapisanie current rankingu po 1 meczu
+POST http://localhost:8080/api/ranking/save-to-history/1
+# mam 6 wpisow dodanych, za 6 userow, wszyscy przypisani do game id 6 ,
+# przypisane pozycje, wszyscy position change 0, total points sie zgadza, userid na koniec
+
+
+
+
+
+###admin oznacza 2 mecz jako zakonczony
+# user_points zaktualizowane, 5 wpisow,
+# prediction, kolumna calculated oznaczona jako true
+PUT http://localhost:8080/api/admin/games/2
+Content-Type: application/json
+
+{
+  "homeTeam": "England",
+  "awayTeam": "Iran",
+  "homeScore": 6,
+  "awayScore": 2,
+  "gameDate": "2025-09-07T15:00:00",
+  "gameStatus": "FINISHED"
+}
+
+###pobranie current rankingu
+GET http://localhost:8080/api/ranking/current
+#ranking wyswietla sie na konsoli
+
+###zapisanie current rankingu po 1 meczu
+POST http://localhost:8080/api/ranking/save-to-history/2
+# mam 6 wpisow dodanych, za 6 userow, wszyscy przypisani do game id 6 ,
+# przypisane pozycje, wszyscy position change 0, total points sie zgadza, userid na koniec
+
+
+
+
+
+
+###admin oznacza 3 mecz jako zakonczony
+# user_points zaktualizowane, 5 wpisow,
+# prediction, kolumna calculated oznaczona jako true
+PUT http://localhost:8080/api/admin/games/3
+Content-Type: application/json
+
+{
+  "homeTeam": "Senegal",
+  "awayTeam": "netherlands",
+  "homeScore": 0,
+  "awayScore": 2,
+  "gameDate": "2025-09-07T15:00:00",
+  "gameStatus": "FINISHED"
+}
+
+###pobranie current rankingu
+GET http://localhost:8080/api/ranking/current
+#ranking wyswietla sie na konsoli
+
+###zapisanie current rankingu po 1 meczu
+POST http://localhost:8080/api/ranking/save-to-history/3
+# mam 6 wpisow dodanych, za 6 userow, wszyscy przypisani do game id 6 ,
+# przypisane pozycje, wszyscy position change 0, total points sie zgadza, userid na koniec

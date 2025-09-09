@@ -4,4 +4,6 @@ GET https://examples.http-client.intellij.net/get
 
 ###
 ###
-GET http://localhost:8080/api/ranking
+GET http://localhost:8080/api/ranking/current
+###
+POST http://localhost:8080/api/ranking/save-to-history/1
