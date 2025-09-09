@@ -24,7 +24,7 @@ public class RankingController {
     public ResponseEntity<String> saveToHistory(@PathVariable("gameId") String gameId) {
         try {
             rankingService.saveCurrentRankingToHistory(Long.valueOf(gameId));
-            return ResponseEntity.ok("Rankign saved for gameid " + gameId);
+            return ResponseEntity.ok("Ranking saved for gameid " + gameId);
 
         } catch (Exception e){
             return ResponseEntity.internalServerError()
