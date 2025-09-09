@@ -1,10 +1,7 @@
 package pl.xxx.demo.Ranking;
 
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import pl.xxx.demo.Game.Game;
 import pl.xxx.demo.RankingHistory.RankingHistory;
 import pl.xxx.demo.RankingHistory.RankingHistoryRepository;
 import pl.xxx.demo.User.User;
@@ -72,7 +69,11 @@ public class RankingService {
     }
 
     private Integer calculatePositionChange(Long gameId, User user, Integer currentPosition) {
-        Optional<RankingHistory> lastHistory = rankingHistoryRepository.findTopByGameIdAndUserOrderByIdDesc(gameId, user);
+        Optional<Long> previousGameId = rankingHistoryRepository.findPreviousGameId(gameId);
+        if (previousGameId.isEmpty()){
+            return 0;
+        }
+        Optional<RankingHistory> lastHistory = rankingHistoryRepository.findByGameIdAndUser(previousGameId.get(), user);
         if (lastHistory.isPresent()) {
             Integer lastPosition = lastHistory.get().getPosition();
             return lastPosition - currentPosition;

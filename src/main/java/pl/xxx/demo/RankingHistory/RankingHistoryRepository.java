@@ -1,6 +1,8 @@
 package pl.xxx.demo.RankingHistory;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pl.xxx.demo.User.User;
 
@@ -27,4 +29,11 @@ public interface RankingHistoryRepository extends JpaRepository<RankingHistory, 
 
     //3 pierwszych userow z meczu o id ??
     List<User> findTop3ByGameIdOrderByTotalPointsDesc(Long gameId);
+
+    //znajdz najwyzsze gameID ktore jest mniejsze od podanego
+    @Query("select max(rh.gameId) from RankingHistory rh WHere rh.gameId < :currentGameId")
+    Optional<Long> findPreviousGameId(@Param("currentGameId") Long currentGameId);
+
+    //znajdz wpis dla usera i konkretnego gameId
+    Optional<RankingHistory> findByGameIdAndUser(Long gameId, User user);
 }
