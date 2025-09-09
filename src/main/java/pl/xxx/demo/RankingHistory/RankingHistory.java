@@ -24,7 +24,7 @@ public class RankingHistory {
     @Column(nullable = false)
     private Long gameId;
 
-    //tutaj caly usae i dlatego tez rankignHistoryDTO/
+    //tutaj caly user i dlatego tez rankignHistoryDTO/
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private User user;

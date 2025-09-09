@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ###pobranie current rankingu
-GET http://localhost:8080/api/ranking/current
+GET http://localhost:8080/api/ranking
 #ranking wyswietla sie na konsoli
 
 ###zapisanie current rankingu po 1 meczu
@@ -45,7 +45,7 @@ Content-Type: application/json
 }
 
 ###pobranie current rankingu
-GET http://localhost:8080/api/ranking/current
+GET http://localhost:8080/api/ranking
 #ranking wyswietla sie na konsoli
 
 ###zapisanie current rankingu po 1 meczu
@@ -74,7 +74,7 @@ Content-Type: application/json
 }
 
 ###pobranie current rankingu
-GET http://localhost:8080/api/ranking/current
+GET http://localhost:8080/api/ranking
 #ranking wyswietla sie na konsoli
 
 ###zapisanie current rankingu po 1 meczu

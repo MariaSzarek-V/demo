@@ -14,7 +14,7 @@ public class RankingController {
 
     private final RankingService rankingService;
 
-    @GetMapping("/current")
+    @GetMapping
     public ResponseEntity<List<RankingDTO>> getRanking() {
         List<RankingDTO> rankingDTOList = rankingService.getCurrentRanking();
         return ResponseEntity.ok(rankingDTOList);
