@@ -1,27 +1,30 @@
 package pl.xxx.demo.User;
 
-import lombok.Builder;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Component
-public class UserMapper {
+public class UserDTOMapper {
 
-    public UserDTO convertToUserDTO(User user) {
+    public static UserDTO convertToUserDTO(User user) {
         return UserDTO
                 .builder()
                 .username(user.getUsername())
                 .build();
     }
 
+    public static List<UserDTO> convertToUserDTOList(List<User> users) {
+        return users
+                .stream()
+                .map(user -> convertToUserDTO(user))
+                .collect(Collectors.toList());
+    }
 
 
-//    public static List<EmployeeLocationDTO> mapEmployeeToDTO(List<Employee> employees) {
-//        return employees
-//                .stream()
-//                .map(employee -> convertToEmployeeDTO(employee))
-//                .collect(Collectors.toList());
-//    }
+
 //    private static EmployeeLocationDTO convertToEmployeeDTO(Employee employee) {
 //        EmployeeLocationDTO employeeLocationDTO = new EmployeeLocationDTO();
 //        employeeLocationDTO.setEmployeeId(employee.getId());

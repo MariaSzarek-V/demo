@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
 
@@ -14,21 +14,21 @@ public class UserController {
         this.userService = userService;
     }
 
-//    @GetMapping("")
-//    public List<User> getAllUsers() {
-//        return userService.getAll();
-//    }
+    @GetMapping("")
+    public List<UserDTO> getAllUsers() {
+        return userService.getAll();
+    }
 
     @GetMapping("/{id}")
     public UserDTO getUserById(@PathVariable Long id) {
         return userService.get(id);
     }
-//
-//    @PostMapping
-//    public User createUser(@RequestBody User user) {
-//        userService.add(user);
-//        return user;
-//    }
+
+    @PostMapping
+    public UserCreateDTO createUser(@RequestBody UserCreateDTO user) {
+        userService.add(user);
+        return user;
+    }
 //
 //    @PutMapping("/{id}")
 //    public User updateUser(@PathVariable Long id, @RequestBody User user) {
