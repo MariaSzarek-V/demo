@@ -1,5 +1,8 @@
 package pl.xxx.demo.Prediction;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +28,7 @@ public class Prediction {
     @ManyToOne
     @JoinColumn(name = "game_id", nullable = false)
     private Game game;
+    @JsonIgnore
     private Boolean calculated = false;
 
 }

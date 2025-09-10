@@ -18,7 +18,7 @@ public class PredictionResultController {
     private final PredictionResultService predictionResultService;
     private final PredictionRepository predictionRepository;
     private final PredictionResultMapper predictionResultMapper;
-    //sprawdzenie PredictionDTO
+
     @GetMapping
     public List<PredictionResultDTO> getAll() {
         return predictionResultService.getPredictionResults();

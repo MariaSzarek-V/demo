@@ -2,6 +2,7 @@ package pl.xxx.demo.Prediction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import pl.xxx.demo.Enum.GameStatus;
 import pl.xxx.demo.User.User;
 import pl.xxx.demo.UserPoints.UserPointsRepository;
 
@@ -23,30 +24,26 @@ public class PredictionController {
         this.userPointsRepository = userPointsRepository;
     }
 
-//    @GetMapping("")
-//    public List<Prediction> getAllPredictions() {
-//        return predictionService.getAll();
-//    }
-//
-
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Prediction> getPredictionById(@PathVariable Long id) {
-//        Optional<Prediction> predictionById = predictionService.get(id);
-//        if (predictionById.isPresent()) {
-//            return ResponseEntity.ok(predictionById.get());
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
     @GetMapping("/my")
     public List<Prediction> getMyPredictions() {
         return predictionService.getMyPredictions();
     }
 
+    @GetMapping("/my/gamestatus/{status}")
+    public List<Prediction> getMyPredictionsByStatus(@PathVariable GameStatus status) {
+        return predictionService.getMyPredictionsByStatus(status);
+    }
 
 
-
-
+    @GetMapping("/{id}")
+    public ResponseEntity<Prediction> getPredictionById(@PathVariable Long id) {
+        Optional<Prediction> predictionById = predictionService.get(id);
+        if (predictionById.isPresent()) {
+            return ResponseEntity.ok(predictionById.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @PostMapping
     public Prediction createPrediction(@RequestBody Prediction prediction) {
@@ -54,13 +51,21 @@ public class PredictionController {
         return prediction;
     }
 
-    //TODO - dodac warunek, ze tylko jesli mecz nie jest rozpoczety
     @PutMapping("/{id}")
     public Prediction updatePrediction(@PathVariable Long id, @RequestBody Prediction prediction) {
         predictionService.update(id, prediction);
         return prediction;
     }
 
+    @GetMapping("/game/{gameId}")
+    public List<Prediction> getAllPredictionsForGame(@PathVariable Long gameId) {
+        return predictionService.getPredictionsByGameId(gameId);
+    }
+
+    @GetMapping("/scheduled-games")
+    public List<Prediction> getAllPredictionsForScheduledGames() {
+        return predictionService.getPredictionsForScheduledGames();
+    }
 
     // nie wiem czy jest potrzbene???/
 
