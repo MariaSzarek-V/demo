@@ -32,7 +32,8 @@ public class RankingService {
             }
 
             RankingDTO dto = new RankingDTO(
-                    new UserDTO(user.getId(), user.getUsername()),
+//                    new UserDTO(user.getId(), user.getUsername()),
+                    new UserDTO(user.getUsername()),
                     totalPoints
             );
             ranking.add(dto);
@@ -43,13 +44,12 @@ public class RankingService {
     }
 
 
-    //@Transactional?
     public void saveCurrentRankingToHistory(Long gameId){
         List<RankingDTO> currentRanking = getCurrentRanking();
 
         for (int i=0; i<currentRanking.size(); i++){
             RankingDTO rankingDTO = currentRanking.get(i);
-            User user = userRepository.findById(rankingDTO.getUser().getId())
+            User user = userRepository.findByUsername(rankingDTO.getUser().getUsername())
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
             Integer positionChange = calculatePositionChange(gameId, user, i+1);

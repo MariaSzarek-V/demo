@@ -14,31 +14,30 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("")
-    public List<User> getAllUsers() {
-        return userService.getAll();
-    }
+//    @GetMapping("")
+//    public List<User> getAllUsers() {
+//        return userService.getAll();
+//    }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
-        return userService.get(id)
-                .orElseThrow(() -> new RuntimeException("nie dziala"));
+    public UserDTO getUserById(@PathVariable Long id) {
+        return userService.get(id);
     }
-
-    @PostMapping
-    public User createUser(@RequestBody User user) {
-        userService.add(user);
-        return user;
-    }
-
-    @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
-        return userService.update(id, user);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userService.delete(id);
-    }
-
+//
+//    @PostMapping
+//    public User createUser(@RequestBody User user) {
+//        userService.add(user);
+//        return user;
+//    }
+//
+//    @PutMapping("/{id}")
+//    public User updateUser(@PathVariable Long id, @RequestBody User user) {
+//        return userService.update(id, user);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public void deleteUser(@PathVariable Long id) {
+//        userService.delete(id);
+//    }
+//
 }
