@@ -4,15 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.xxx.demo.User.UserDTO;
+import pl.xxx.demo.User.UserResponseDTO;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 public class RankingDTO {
-    private UserDTO user;
+    private String username;
     private Integer totalPoints;
 
 }
-

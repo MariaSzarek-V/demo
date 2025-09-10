@@ -29,8 +29,18 @@ public class PredictionService {
     private final UserRepository userRepository;
 
 
-    public Prediction add(Prediction prediction) {
-        return predictionRepository.save(prediction);
+
+    public PredictionResponseDTO add(PredictionRequestDTO dto) {
+        Game game = gameRepository.findById(dto.getGameId())
+                .orElseThrow(() -> new RuntimeException("Game not found"));
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Prediction prediction = PredictionRequestDTOMapper.convertToPrediction(dto, game, user);
+        predictionRepository.save(prediction);
+        return PredictionResponseDTOMapper.convertToPredictionResponseDTO(prediction);
     }
 
 
@@ -38,17 +48,22 @@ public class PredictionService {
         return predictionRepository.findById(id);
     }
 
-    public List<Prediction> getMyPredictions() {
+    /*
+zwraca predictions dla zalogowanego usera
+ */
+
+    public List<PredictionResponseDTO> getMyPredictions() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
 
         User currentUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
         List<Prediction> myPredictions = predictionRepository.findByUserId(currentUser.getId());
-        return myPredictions;
+        return PredictionResponseDTOMapper.convertToPredictionResponseDTO(myPredictions);
     }
 
-    public List<Prediction> getMyPredictionsByStatus(GameStatus status) {
+
+    public List<PredictionResponseDTO> getMyPredictionsByGameStatus(GameStatus status) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
 
@@ -56,10 +71,10 @@ public class PredictionService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         List<Prediction> myPredictions = predictionRepository.findByUserIdAndGameGameStatus(currentUser.getId(), status);
-        return myPredictions;
+        return PredictionResponseDTOMapper.convertToPredictionResponseDTO(myPredictions);
     }
 
-    public void update(Long id, Prediction prediction) {
+    public void update(Long id, PredictionRequestDTO dto) {
         Prediction existingPrediction = predictionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("No such prediction to update"));
 
@@ -68,13 +83,14 @@ public class PredictionService {
         if (game.getGameDate().isBefore(LocalDateTime.now(ZoneOffset.UTC))) {
             throw new IllegalStateException("Nie można edytować przewidywania po rozpoczęciu meczu");
         }
-        existingPrediction.setPredictedHomeScore(prediction.getPredictedHomeScore());
-        existingPrediction.setPredictedAwayScore(prediction.getPredictedAwayScore());
+        existingPrediction.setPredictedHomeScore(dto.getPredictedHomeScore());
+        existingPrediction.setPredictedAwayScore(dto.getPredictedAwayScore());
     }
 
 
-    public List<Prediction> getPredictionsByGameId(Long gameId) {
-        return predictionRepository.findByGameId(gameId);
+    public List<PredictionResponseDTO> getPredictionsByGameId(Long gameId) {
+        List<Prediction> predictions = predictionRepository.findByGameId(gameId);
+        return PredictionResponseDTOMapper.convertToPredictionResponseDTO(predictions);
     }
 
     public List<Prediction> getPredictionsForScheduledGames() {

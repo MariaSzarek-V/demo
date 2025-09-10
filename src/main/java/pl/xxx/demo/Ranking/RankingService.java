@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.xxx.demo.RankingHistory.RankingHistory;
 import pl.xxx.demo.RankingHistory.RankingHistoryRepository;
 import pl.xxx.demo.User.User;
-import pl.xxx.demo.User.UserDTO;
+
 import pl.xxx.demo.User.UserRepository;
 import pl.xxx.demo.UserPoints.UserPointsRepository;
 
@@ -31,12 +31,8 @@ public class RankingService {
                 totalPoints = 0;
             }
 
-            RankingDTO dto = new RankingDTO(
-//                    new UserDTO(user.getId(), user.getUsername()),
-                    new UserDTO(user.getUsername()),
-                    totalPoints
-            );
-            ranking.add(dto);
+            ranking.add(new RankingDTO(user.getUsername(), totalPoints));
+
 
         }
         ranking.sort((a, b) -> b.getTotalPoints() - a.getTotalPoints());
@@ -49,7 +45,7 @@ public class RankingService {
 
         for (int i=0; i<currentRanking.size(); i++){
             RankingDTO rankingDTO = currentRanking.get(i);
-            User user = userRepository.findByUsername(rankingDTO.getUser().getUsername())
+            User user = userRepository.findByUsername(rankingDTO.getUsername())
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
             Integer positionChange = calculatePositionChange(gameId, user, i+1);

@@ -24,14 +24,14 @@ public class UserPointsService {
         this.predictionRepository = predictionRepository;
         this.gameRepository = gameRepository;
     }
-
-    public List<UserPoints> getAll() {
-        return userPointsRepository.findAll();
-    }
-
-    public Optional<UserPoints> get(Long id) {
-        return userPointsRepository.findById(id);
-    }
+//
+//    public List<UserPoints> getAll() {
+//        return userPointsRepository.findAll();
+//    }
+//
+//    public Optional<UserPoints> get(Long id) {
+//        return userPointsRepository.findById(id);
+//    }
 
     public void calculatePredictionForGame(Game game) {
         /**

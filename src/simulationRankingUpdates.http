@@ -20,12 +20,6 @@ Content-Type: application/json
 GET http://localhost:8080/api/ranking
 #ranking wyswietla sie na konsoli
 
-###zapisanie current rankingu po 1 meczu
-POST http://localhost:8080/api/ranking/save-to-history/1
-# mam 6 wpisow dodanych, za 6 userow, wszyscy przypisani do game id 6 ,
-# przypisane pozycje, wszyscy position change 0, total points sie zgadza, userid na koniec
-
-
 
 
 
@@ -47,13 +41,6 @@ Content-Type: application/json
 ###pobranie current rankingu
 GET http://localhost:8080/api/ranking
 #ranking wyswietla sie na konsoli
-
-###zapisanie current rankingu po 1 meczu
-POST http://localhost:8080/api/ranking/save-to-history/2
-# mam 6 wpisow dodanych, za 6 userow, wszyscy przypisani do game id 6 ,
-# przypisane pozycje, wszyscy position change 0, total points sie zgadza, userid na koniec
-
-
 
 
 
@@ -77,7 +64,3 @@ Content-Type: application/json
 GET http://localhost:8080/api/ranking
 #ranking wyswietla sie na konsoli
 
-###zapisanie current rankingu po 1 meczu
-POST http://localhost:8080/api/ranking/save-to-history/3
-# mam 6 wpisow dodanych, za 6 userow, wszyscy przypisani do game id 6 ,
-# przypisane pozycje, wszyscy position change 0, total points sie zgadza, userid na koniec

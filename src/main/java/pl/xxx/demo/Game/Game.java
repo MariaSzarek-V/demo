@@ -25,6 +25,7 @@ public class Game {
     private String awayTeam;
     private Integer homeScore;
     private Integer awayScore;
+    @NotBlank
     private LocalDateTime gameDate;
     @Enumerated(EnumType.STRING)
     private GameStatus gameStatus = GameStatus.SCHEDULED;

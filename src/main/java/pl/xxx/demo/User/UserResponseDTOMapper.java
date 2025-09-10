@@ -7,16 +7,16 @@ import java.util.stream.Collectors;
 
 
 @Component
-public class UserDTOMapper {
+public class UserResponseDTOMapper {
 
-    public static UserDTO convertToUserDTO(User user) {
-        return UserDTO
+    public static UserResponseDTO convertToUserDTO(User user) {
+        return UserResponseDTO
                 .builder()
                 .username(user.getUsername())
                 .build();
     }
 
-    public static List<UserDTO> convertToUserDTOList(List<User> users) {
+    public static List<UserResponseDTO> convertToUserDTOList(List<User> users) {
         return users
                 .stream()
                 .map(user -> convertToUserDTO(user))

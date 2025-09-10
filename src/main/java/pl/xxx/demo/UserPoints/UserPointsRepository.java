@@ -13,12 +13,10 @@ import java.util.Optional;
 @Repository
 public interface UserPointsRepository extends JpaRepository<UserPoints, Long> {
 
-// tu chyba nie jest potrzebne query
 
     @Query("SELECT SUM(up.points) FROM UserPoints up WHERE up.user.id = :userId")
     Integer sumPointsByUserId(@Param("userId") Long userId);
 
-    List<UserPoints> findByUser(User user);
     Optional <UserPoints> findByPrediction(Prediction prediction);
 
 

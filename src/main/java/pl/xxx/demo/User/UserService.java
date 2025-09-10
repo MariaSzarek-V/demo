@@ -9,23 +9,23 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final UserDTOMapper userMapper;
-    private final UserCreateDTOMapper userCreateDTOMapper;
+    private final UserResponseDTOMapper userMapper;
+    private final UserRequestDTOMapper userCreateDTOMapper;
 
 
-    public List<UserDTO> getAll() {
+    public List<UserResponseDTO> getAll() {
         List <User> users = userRepository.findAll();
         return userMapper.convertToUserDTOList(users);
     }
 
-    public UserDTO get(Long id) {
+    public UserResponseDTO get(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return userMapper.convertToUserDTO(user);
     }
 
-    public User add(UserCreateDTO userCreateDTO) {
-        User user = userCreateDTOMapper.convertToUser(userCreateDTO);
+    public User add(UserRequestDTO userRequestDTO) {
+        User user = userCreateDTOMapper.convertToUser(userRequestDTO);
         return userRepository.save(user);
     }
 //

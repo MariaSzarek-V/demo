@@ -7,6 +7,7 @@ import pl.xxx.demo.Error.GameAlreadyFinishedException;
 import pl.xxx.demo.Error.GameNotFoundException;
 import pl.xxx.demo.Game.Game;
 import pl.xxx.demo.Game.GameRepository;
+import pl.xxx.demo.Ranking.RankingService;
 import pl.xxx.demo.UserPoints.UserPointsService;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class AdminGameService {
 
     private final GameRepository gameRepository;
     private final UserPointsService userPointsService;
+    private final RankingService rankingService;
 
     public List<Game> getAllGames() {
         return gameRepository.findAll();
@@ -30,6 +32,12 @@ public class AdminGameService {
     public void addGame(Game game) {
         gameRepository.save(game);
     }
+
+    /*
+    metoda update mecz,
+    po zmianie na FINISHED przez admina:
+    zliczaja sie punkty userow i zapisuje sie ranking
+     */
     public Game updateGame(Long id, Game game) {
         //TODO : zmienic nazwe na finalize game ? a osobno zrobic na update game?
         Game existingGame = gameRepository.findById(id)
@@ -44,6 +52,7 @@ public class AdminGameService {
         gameRepository.save(existingGame);
         if (existingGame.getGameStatus() == GameStatus.FINISHED) {
             userPointsService.calculatePredictionForGame(existingGame);
+            rankingService.saveCurrentRankingToHistory(existingGame.getId());
         }
         return existingGame;
     }

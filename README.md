@@ -1,10 +1,12 @@
 ADMIN
 - CRUD dla game
-- zmiana statusu meczu na finished wywołuje podliczenie punktów za typ
+- zmiana statusu meczu na finished wywołuje:
+  - podliczenie punktów za typ
+  - zapis rankignu do bazy danych 
 
 RANKING
 - bezstanowy, aktualizuje sie przy każdym get
 
 RANKING HISTORY
-- żeby nie odpytywac bazy danych co chwile, tylko raz jak sie aktualizuje wynik meczu 
-
+- historia rankignu, zmian pozycji userow, spadkow i awansow
+- 

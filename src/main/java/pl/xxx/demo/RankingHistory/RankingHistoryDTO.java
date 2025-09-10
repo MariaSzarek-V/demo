@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.xxx.demo.User.UserDTO;
+import pl.xxx.demo.Ranking.RankingDTO;
+import pl.xxx.demo.User.UserResponseDTO;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,7 +14,7 @@ import pl.xxx.demo.User.UserDTO;
 public class RankingHistoryDTO {
 
     private Long gameId;
-    private UserDTO user;
+    private String username;
     private Integer totalPoints;
     private Integer position;
     private Integer positionChange;
