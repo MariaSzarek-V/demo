@@ -37,19 +37,18 @@ public class AdminGameController {
     }
 
     @PostMapping
-    public Game createGame(@RequestBody Game game) {
-        adminGameService.addGame(game);
-        return game;
+    public Game createGame(@RequestBody AdminGameDTO dto) {
+        return adminGameService.addGame(dto);
     }
 
     @PutMapping("/{id}")
-    public Game updateGame(@PathVariable Long id, @RequestBody Game game) {
+    public AdminGameDTO updateGame(@PathVariable Long id, @RequestBody AdminGameDTO gameDTO) {
         /**
          * update game ze sprawdzeniem czy mecz zakoncony,
          * jesli FINISHED to podliczenie punktow dla userow, ktorzy wytypowali mecz
          */
-        adminGameService.updateGame(id, game);
-        return game;
+        adminGameService.updateGame(id, gameDTO);
+        return gameDTO;
     }
 
     @DeleteMapping("/{id}")

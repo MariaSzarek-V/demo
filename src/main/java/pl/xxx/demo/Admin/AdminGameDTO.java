@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import pl.xxx.demo.Enum.GameStatus;
 
 import java.time.LocalDateTime;
 
@@ -23,11 +24,11 @@ import java.time.LocalDateTime;
 @Setter
 public class AdminGameDTO {
 
-    private Long gameId;
     private String homeTeam;
     private String awayTeam;
     private Integer homeScore;
     private Integer awayScore;
     private LocalDateTime gameDate;
+    private GameStatus gameStatus;
 
 }

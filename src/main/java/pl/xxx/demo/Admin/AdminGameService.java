@@ -11,7 +11,6 @@ import pl.xxx.demo.Ranking.RankingService;
 import pl.xxx.demo.UserPoints.UserPointsService;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -29,8 +28,9 @@ public class AdminGameService {
     public Game getGameById(Long id) {
         return gameRepository.findById(id).orElseThrow(() ->new RuntimeException("Game not found"));
     }
-    public void addGame(Game game) {
-        gameRepository.save(game);
+    public Game addGame(AdminGameDTO dto) {
+        Game game = AdminGameDTOMapper.toCreateEntity(dto);
+        return gameRepository.save(game);
     }
 
     /*
@@ -38,23 +38,18 @@ public class AdminGameService {
     po zmianie na FINISHED przez admina:
     zliczaja sie punkty userow i zapisuje sie ranking
      */
-    public Game updateGame(Long id, Game game) {
+    public void updateGame(Long id, AdminGameDTO dto) {
         //TODO : zmienic nazwe na finalize game ? a osobno zrobic na update game?
         Game existingGame = gameRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Game not found with id " + id));
+        existingGame = AdminGameDTOMapper.toUpdatedEntity(dto, existingGame);
 
-        existingGame.setHomeTeam(game.getHomeTeam());
-        existingGame.setAwayTeam(game.getAwayTeam());
-        existingGame.setHomeScore(game.getHomeScore());
-        existingGame.setAwayScore(game.getAwayScore());
-        existingGame.setGameDate(game.getGameDate());
-        existingGame.setGameStatus(game.getGameStatus());
+
         gameRepository.save(existingGame);
         if (existingGame.getGameStatus() == GameStatus.FINISHED) {
             userPointsService.calculatePredictionForGame(existingGame);
             rankingService.saveCurrentRankingToHistory(existingGame.getId());
         }
-        return existingGame;
     }
 
     public void deleteGame(Long id) {

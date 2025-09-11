@@ -1,5 +1,5 @@
 ADMIN
-- CRUD dla game
+- CRUD dla game skonczony
 - zmiana statusu meczu na finished wywołuje:
   - podliczenie punktów za typ
   - zapis rankignu do bazy danych 
