@@ -26,10 +26,10 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(GameNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleGameNotFoundException(GameNotFoundException e) {
-        return buildErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
-    }
+//    @ExceptionHandler(GameNotFoundException.class)
+//    public ResponseEntity<Map<String, Object>> handleGameNotFoundException(GameNotFoundException e) {
+//        return buildErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
+//    }
 
 
 

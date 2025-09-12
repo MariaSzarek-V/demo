@@ -1,9 +1,11 @@
 package pl.xxx.demo.User;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name="2. User")
 @RestController
 @RequestMapping("/api/user")
 public class UserController {

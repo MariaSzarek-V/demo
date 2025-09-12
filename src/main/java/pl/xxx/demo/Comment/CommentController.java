@@ -1,5 +1,6 @@
 package pl.xxx.demo.Comment;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +9,7 @@ import pl.xxx.demo.User.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+@Tag(name="7. Comment")
 @RestController
 @RequestMapping("/api/comments")
 @RequiredArgsConstructor

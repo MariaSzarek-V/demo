@@ -1,5 +1,6 @@
 package pl.xxx.demo.PredictionResult;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,7 @@ import pl.xxx.demo.Prediction.PredictionRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Tag(name="5. Prediction result")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/prediction-result")

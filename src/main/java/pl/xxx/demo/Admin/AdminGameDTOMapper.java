@@ -3,21 +3,29 @@ package pl.xxx.demo.Admin;
 import pl.xxx.demo.Game.Game;
 
 
-public class AdminGameDTOMapper{
+public class AdminGameDTOMapper {
 
-    public static Game toUpdatedEntity(AdminGameDTO dto, Game game){
-        return Game.builder()
-                .id(game.getId())
-                .homeTeam(dto.getHomeTeam())
-                .awayTeam(dto.getAwayTeam())
-                .homeScore(dto.getHomeScore())
-                .awayScore(dto.getAwayScore())
-                .gameDate(dto.getGameDate())
-                .gameStatus(dto.getGameStatus())
+
+    public static void updateGameFromDto(AdminGameDTO dto, Game game) {
+        game.setHomeTeam(dto.getHomeTeam());
+        game.setAwayTeam(dto.getAwayTeam());
+        game.setHomeScore(dto.getHomeScore());
+        game.setAwayScore(dto.getAwayScore());
+        game.setGameDate(dto.getGameDate());
+        game.setGameStatus(dto.getGameStatus());
+    }
+    public static AdminGameDTO convertToAdminGameDTO(Game game) {
+        return AdminGameDTO.builder()
+                .homeTeam(game.getHomeTeam())
+                .awayTeam(game.getAwayTeam())
+                .homeScore(game.getHomeScore())
+                .awayScore(game.getAwayScore())
+                .gameDate(game.getGameDate())
+                .gameStatus(game.getGameStatus())
                 .build();
     }
 
-    public static Game toCreateEntity(AdminGameDTO dto){
+    public static Game convertToAdminGame(AdminGameDTO dto) {
         return Game.builder()
                 .homeTeam(dto.getHomeTeam())
                 .awayTeam(dto.getAwayTeam())

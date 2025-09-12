@@ -4,10 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.xxx.demo.Enum.GameStatus;
 import pl.xxx.demo.Error.GameAlreadyFinishedException;
-import pl.xxx.demo.Error.GameNotFoundException;
+import pl.xxx.demo.Error.ResourceNotFoundException;
 import pl.xxx.demo.Game.Game;
 import pl.xxx.demo.Game.GameRepository;
-import pl.xxx.demo.Ranking.RankingService;
 import pl.xxx.demo.RankingHistory.RankingHistoryService;
 import pl.xxx.demo.UserPoints.UserPointsService;
 
@@ -27,10 +26,10 @@ public class AdminGameService {
         return gameRepository.findAll();
     }
     public Game getGameById(Long id) {
-        return gameRepository.findById(id).orElseThrow(() ->new RuntimeException("Game not found"));
+        return gameRepository.findById(id).orElseThrow(() ->new ResourceNotFoundException("Game not found"));
     }
     public Game addGame(AdminGameDTO dto) {
-        Game game = AdminGameDTOMapper.toCreateEntity(dto);
+        Game game = AdminGameDTOMapper.convertToAdminGame(dto);
         return gameRepository.save(game);
     }
 
@@ -39,32 +38,27 @@ public class AdminGameService {
     po zmianie na FINISHED przez admina:
     zliczaja sie punkty userow i zapisuje sie ranking
      */
-    public void updateGame(Long id, AdminGameDTO dto) {
+    public AdminGameDTO updateGame(Long id, AdminGameDTO dto) {
         //TODO : zmienic nazwe na finalize game ? a osobno zrobic na update game?
         Game existingGame = gameRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Game not found with id " + id));
-        existingGame = AdminGameDTOMapper.toUpdatedEntity(dto, existingGame);
+                .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
+        AdminGameDTOMapper.updateGameFromDto(dto, existingGame);
+        Game savedGame = gameRepository.save(existingGame);
 
-
-        gameRepository.save(existingGame);
         if (existingGame.getGameStatus() == GameStatus.FINISHED) {
             userPointsService.calculatePredictionForGame(existingGame);
             rankingHistoryService.saveCurrentRankingToHistory(existingGame.getId());
         }
+        return AdminGameDTOMapper.convertToAdminGameDTO(savedGame);
     }
 
     public void deleteGame(Long id) {
         Game game = gameRepository.findById(id)
-                .orElseThrow(() -> new GameNotFoundException(id));
+                .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
 
         if (GameStatus.FINISHED.equals(game.getGameStatus())) {
             throw new GameAlreadyFinishedException(id);
         }
-
         gameRepository.delete(game);
     }
-
-
-
-
 }
