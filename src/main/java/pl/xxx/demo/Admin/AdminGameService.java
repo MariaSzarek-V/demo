@@ -8,6 +8,7 @@ import pl.xxx.demo.Error.GameNotFoundException;
 import pl.xxx.demo.Game.Game;
 import pl.xxx.demo.Game.GameRepository;
 import pl.xxx.demo.Ranking.RankingService;
+import pl.xxx.demo.RankingHistory.RankingHistoryService;
 import pl.xxx.demo.UserPoints.UserPointsService;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class AdminGameService {
 
     private final GameRepository gameRepository;
     private final UserPointsService userPointsService;
-    private final RankingService rankingService;
+    private final RankingHistoryService rankingHistoryService;
 
     public List<Game> getAllGames() {
         return gameRepository.findAll();
@@ -48,7 +49,7 @@ public class AdminGameService {
         gameRepository.save(existingGame);
         if (existingGame.getGameStatus() == GameStatus.FINISHED) {
             userPointsService.calculatePredictionForGame(existingGame);
-            rankingService.saveCurrentRankingToHistory(existingGame.getId());
+            rankingHistoryService.saveCurrentRankingToHistory(existingGame.getId());
         }
     }
 

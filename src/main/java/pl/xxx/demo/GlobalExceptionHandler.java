@@ -5,10 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import pl.xxx.demo.Error.GameAlreadyFinishedException;
-import pl.xxx.demo.Error.GameNotFoundException;
-import pl.xxx.demo.Error.PredictionEditNotAllowedException;
-import pl.xxx.demo.Error.ResourceNotFoundException;
+import pl.xxx.demo.Error.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +38,13 @@ public class GlobalExceptionHandler {
         return  buildErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(NoRankingAvailableException.class)
+    public ResponseEntity<Map<String, Object>> handleNoRankingAvailableException(NoRankingAvailableException e) {
+        return  buildErrorResponse(e.getMessage(), HttpStatus.OK);
+    }
+
+
+
 
     private ResponseEntity<Map<String, Object>> buildErrorResponse(String message, HttpStatus status) {
         Map<String, Object> response = new HashMap<>();
@@ -48,4 +52,5 @@ public class GlobalExceptionHandler {
         response.put("status", status.value());
         return ResponseEntity.status(status).body(response);
     }
+
 }

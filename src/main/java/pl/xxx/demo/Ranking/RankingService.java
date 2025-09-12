@@ -2,6 +2,7 @@ package pl.xxx.demo.Ranking;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.xxx.demo.Error.ResourceNotFoundException;
 import pl.xxx.demo.RankingHistory.RankingHistory;
 import pl.xxx.demo.RankingHistory.RankingHistoryRepository;
 import pl.xxx.demo.User.User;
@@ -11,7 +12,7 @@ import pl.xxx.demo.UserPoints.UserPointsRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -30,50 +31,17 @@ public class RankingService {
             if (totalPoints == null) {
                 totalPoints = 0;
             }
-
-            ranking.add(new RankingDTO(user.getUsername(), totalPoints));
-
-
+            ranking.add(new RankingDTO(null, user.getUsername(), totalPoints));
         }
         ranking.sort((a, b) -> b.getTotalPoints() - a.getTotalPoints());
+
+        for (int i = 0; i < ranking.size(); i++) {
+            RankingDTO rankingDTO = ranking.get(i);
+            rankingDTO.setPosition(i + 1);
+        }
         return ranking;
     }
 
 
-    public void saveCurrentRankingToHistory(Long gameId){
-        List<RankingDTO> currentRanking = getCurrentRanking();
 
-        for (int i=0; i<currentRanking.size(); i++){
-            RankingDTO rankingDTO = currentRanking.get(i);
-            User user = userRepository.findByUsername(rankingDTO.getUsername())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
-
-            Integer positionChange = calculatePositionChange(gameId, user, i+1);
-
-            RankingHistory historyEntry = new RankingHistory();
-            historyEntry.setGameId(gameId);
-
-            historyEntry.setUser(user);
-            historyEntry.setTotalPoints(rankingDTO.getTotalPoints());
-            historyEntry.setPosition(i+1);
-            historyEntry.setPositionChange(positionChange);
-
-            rankingHistoryRepository.save(historyEntry);
-
-
-        }
-    }
-
-    private Integer calculatePositionChange(Long gameId, User user, Integer currentPosition) {
-        Optional<Long> previousGameId = rankingHistoryRepository.findPreviousGameId(gameId);
-        if (previousGameId.isEmpty()){
-            return 0;
-        }
-        Optional<RankingHistory> lastHistory = rankingHistoryRepository.findByGameIdAndUser(previousGameId.get(), user);
-        if (lastHistory.isPresent()) {
-            Integer lastPosition = lastHistory.get().getPosition();
-            return lastPosition - currentPosition;
-        }
-        return 0;
-    }
 }

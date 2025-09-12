@@ -18,14 +18,17 @@
         <th>Nr</th>
         <th>Użytkownik</th>
         <th>Punkty</th>
+        <th>Zmiana pozycji</th>
 
       </tr>
       </thead>
       <tbody>
       <tr th:each="row,iter : ${ranking}">
-        <td th:text="${iter.index + 1}">1</td>
-        <td th:text="${{row.user.username}}">jan.kowalski</td>
+        <td th:text="${{row.position}}">1</td>
+        <td th:text="${{row.username}}">jan.kowalski</td>
         <td th:text="${row.totalPoints}">0</td>
+        <td th:text="${row.positionChange}">0</td>
+
       </tr>
       <tr th:if="${#lists.isEmpty(ranking)}">
         <td colspan="4" class="text-center text-muted">Brak danych</td>

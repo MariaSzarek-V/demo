@@ -19,6 +19,14 @@ public interface RankingHistoryRepository extends JpaRepository<RankingHistory, 
     - find top by user id order by ctreade at desc
 
      */
+
+    // ostatni ranking
+    // najpierw Ostatni wpis w historii a pozniej drugie zapytanie
+    Optional<RankingHistory> findFirstByOrderByIdDesc();
+    // Wszystkie wpisy dla danego meczu
+    List<RankingHistory> findByGameId(Long gameId);
+
+
     // ostatni wpis rankingu dla danego usera i gry
     Optional<RankingHistory> findTopByGameIdAndUserOrderByIdDesc(Long gameId, User user);
 
