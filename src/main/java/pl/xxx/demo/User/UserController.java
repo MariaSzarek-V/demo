@@ -1,6 +1,7 @@
 package pl.xxx.demo.User;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,13 +28,13 @@ public class UserController {
     }
 
     @PostMapping
-    public UserRequestDTO createUser(@RequestBody UserRequestDTO user) {
+    public UserRequestDTO createUser(@Valid @RequestBody UserRequestDTO user) {
         userService.add(user);
         return user;
     }
 //
 //    @PutMapping("/{id}")
-//    public User updateUser(@PathVariable Long id, @RequestBody User user) {
+//    public User updateUser(@PathVariable Long id, @Valid @RequestBody UserRequestDTO user) {
 //        return userService.update(id, user);
 //    }
 //

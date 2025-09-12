@@ -21,8 +21,8 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(GameAlreadyFinishedException.class)
-    public ResponseEntity<Map<String, Object>> handleGameAlreadyFinishedException(GameAlreadyFinishedException e) {
+    @ExceptionHandler(GameTimeStatusException.class)
+    public ResponseEntity<Map<String, Object>> handleGameTimeStatusException(GameTimeStatusException e) {
         return buildErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
