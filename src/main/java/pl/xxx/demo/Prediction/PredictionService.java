@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.xxx.demo.Enum.GameStatus;
+import pl.xxx.demo.Error.PredictionEditNotAllowedException;
 import pl.xxx.demo.Error.ResourceNotFoundException;
 import pl.xxx.demo.Game.Game;
 import pl.xxx.demo.Game.GameRepository;
@@ -33,11 +34,11 @@ public class PredictionService {
 
     public PredictionResponseDTO add(PredictionRequestDTO dto) {
         Game game = gameRepository.findById(dto.getGameId())
-                .orElseThrow(() -> new RuntimeException("Game not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Prediction prediction = PredictionRequestDTOMapper.convertToPrediction(dto, game, user);
         predictionRepository.save(prediction);
@@ -63,7 +64,7 @@ zwraca predictions dla zalogowanego usera
         String username = auth.getName();
 
         User currentUser = userRepository.findByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         List<Prediction> myPredictions = predictionRepository.findByUserId(currentUser.getId());
         return PredictionResponseDTOMapper.convertToPredictionResponseDTO(myPredictions);
     }
@@ -74,23 +75,28 @@ zwraca predictions dla zalogowanego usera
         String username = auth.getName();
 
         User currentUser = userRepository.findByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         List<Prediction> myPredictions = predictionRepository.findByUserIdAndGameGameStatus(currentUser.getId(), status);
         return PredictionResponseDTOMapper.convertToPredictionResponseDTO(myPredictions);
     }
 
-    public void update(Long id, PredictionRequestDTO dto) {
+
+
+
+    public PredictionResponseDTO  update(Long id, PredictionRequestDTO dto) {
         Prediction existingPrediction = predictionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("No such prediction to update"));
+                .orElseThrow(() -> new ResourceNotFoundException("No such prediction to update"));
 
         Game game = existingPrediction.getGame();
 
         if (game.getGameDate().isBefore(LocalDateTime.now(ZoneOffset.UTC))) {
-            throw new IllegalStateException("Nie można edytować przewidywania po rozpoczęciu meczu");
+            throw new PredictionEditNotAllowedException();
         }
         existingPrediction.setPredictedHomeScore(dto.getPredictedHomeScore());
         existingPrediction.setPredictedAwayScore(dto.getPredictedAwayScore());
+
+        return PredictionResponseDTOMapper.convertToPredictionResponseDTO(existingPrediction);
     }
 
 
@@ -107,22 +113,22 @@ zwraca predictions dla zalogowanego usera
     /*
     metoda do view controllera, nie do rest api
      */
-    public void saveOrUpdate(Long predictionId, Long gameId, int homeScore, int awayScore) {
-        Prediction prediction;
-
-        if (predictionId != null) {
-            prediction = predictionRepository.findById(predictionId)
-                    .orElseThrow(() -> new RuntimeException("Prediction not found"));
-        } else {
-            prediction = new Prediction();
-            prediction.setGame(gameRepository.findById(gameId)
-                    .orElseThrow(() -> new RuntimeException("Game not found")));
-        }
-
-        prediction.setPredictedHomeScore(homeScore);
-        prediction.setPredictedAwayScore(awayScore);
-        predictionRepository.save(prediction);
-    }
+//    public void saveOrUpdate(Long predictionId, Long gameId, int homeScore, int awayScore) {
+//        Prediction prediction;
+//
+//        if (predictionId != null) {
+//            prediction = predictionRepository.findById(predictionId)
+//                    .orElseThrow(() -> new RuntimeException("Prediction not found"));
+//        } else {
+//            prediction = new Prediction();
+//            prediction.setGame(gameRepository.findById(gameId)
+//                    .orElseThrow(() -> new RuntimeException("Game not found")));
+//        }
+//
+//        prediction.setPredictedHomeScore(homeScore);
+//        prediction.setPredictedAwayScore(awayScore);
+//        predictionRepository.save(prediction);
+//    }
 
     public void delete(Long id) {
         predictionRepository.deleteById(id);

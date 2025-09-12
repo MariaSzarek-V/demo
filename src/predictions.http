@@ -7,4 +7,5 @@ GET https://examples.http-client.intellij.net/get
 
 GET http://localhost:8080/api/predictions/my
 
-
+###
+GET http://localhost:8080/api/predictions/123

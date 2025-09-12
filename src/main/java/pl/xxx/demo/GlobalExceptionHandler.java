@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.xxx.demo.Error.GameAlreadyFinishedException;
 import pl.xxx.demo.Error.GameNotFoundException;
+import pl.xxx.demo.Error.PredictionEditNotAllowedException;
 import pl.xxx.demo.Error.ResourceNotFoundException;
 
 import java.util.HashMap;
@@ -15,6 +16,8 @@ import java.util.Map;
 @Hidden
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleResourceNotFoundException(ResourceNotFoundException e) {
@@ -29,6 +32,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(GameNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleGameNotFoundException(GameNotFoundException e) {
         return buildErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+
+
+    @ExceptionHandler(PredictionEditNotAllowedException.class)
+    public ResponseEntity<Map<String, Object>> handlePredictionEditNotAllowed(PredictionEditNotAllowedException e) {
+        return  buildErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
 
