@@ -23,8 +23,9 @@ public class Prediction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
+    @Column(nullable = false)
     private Integer predictedHomeScore;
+    @Column(nullable = false)
     private Integer predictedAwayScore;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
