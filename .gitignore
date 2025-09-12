@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+# macOS Finder files
+.DS_Store
+*/.DS_Store
