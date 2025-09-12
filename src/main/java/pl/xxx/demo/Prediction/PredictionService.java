@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.xxx.demo.Enum.GameStatus;
+import pl.xxx.demo.Error.ResourceNotFoundException;
 import pl.xxx.demo.Game.Game;
 import pl.xxx.demo.Game.GameRepository;
 import pl.xxx.demo.User.User;
@@ -44,8 +45,13 @@ public class PredictionService {
     }
 
 
-    public Optional<Prediction> get(Long id) {
-        return predictionRepository.findById(id);
+
+    public PredictionResponseDTO get(Long id) {
+        Prediction prediction = predictionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Prediction with id " + id + " not found"));
+
+        return PredictionResponseDTOMapper.convertToPredictionResponseDTO(prediction);
+
     }
 
     /*

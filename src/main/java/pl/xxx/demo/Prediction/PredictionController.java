@@ -34,17 +34,22 @@ public class PredictionController {
         return predictionService.getMyPredictionsByGameStatus(status);
     }
 
-
     @GetMapping("/{id}")
-    public ResponseEntity<PredictionResponseDTO> getPredictionById(@PathVariable Long id) {
-        Optional<Prediction> predictionById = predictionService.get(id);
-
-        return predictionById
-                .map(prediction -> ResponseEntity.ok(
-                        PredictionResponseDTOMapper.convertToPredictionResponseDTO(prediction)
-                ))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public PredictionResponseDTO getPredictionById(@PathVariable Long id) {
+        return predictionService.get(id);
     }
+
+//
+//    @GetMapping("/{id}")
+//    public ResponseEntity<PredictionResponseDTO> getPredictionById(@PathVariable Long id) {
+//        Optional<Prediction> predictionById = predictionService.get(id);
+//
+//        return predictionById
+//                .map(prediction -> ResponseEntity.ok(
+//                        PredictionResponseDTOMapper.convertToPredictionResponseDTO(prediction)
+//                ))
+//                .orElseGet(() -> ResponseEntity.notFound().build());
+//    }
 
     @PostMapping
     public PredictionResponseDTO createPrediction(@RequestBody PredictionRequestDTO dto) {

@@ -8,4 +8,6 @@ public class GameAlreadyFinishedException extends RuntimeException {
     public GameAlreadyFinishedException(Long id) {
         super("Gra o id " + id + " jest zakończona i nie może zostać usunięta");
     }
+
+
 }

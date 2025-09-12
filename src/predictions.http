@@ -6,3 +6,5 @@ GET https://examples.http-client.intellij.net/get
 ### prediction zalogowanego usera w przegladarce dziala
 
 GET http://localhost:8080/api/predictions/my
+
+
