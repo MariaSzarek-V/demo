@@ -1,5 +1,8 @@
 package pl.xxx.demo.Admin;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -27,12 +30,15 @@ import java.time.LocalDateTime;
 public class AdminGameDTO {
 
 
-
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Long id;
     @NotBlank(message = "Nazwa drużyny nie może być pusta")
     private String homeTeam;
     @NotBlank(message = "Nazwa drużyny nie może być pusta")
     private String awayTeam;
+    @Min(value = 0, message = "Wynik nie może być ujemny")
     private Integer homeScore;
+    @Min(value = 0, message = "Wynik nie może być ujemny")
     private Integer awayScore;
     @NotNull(message = "Data nie może być pusta")
     private LocalDateTime gameDate;

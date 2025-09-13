@@ -1,72 +1,111 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Create / Edit Game</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
 
-<div class="container mt-5">
-    <h2 class="mb-4">Create / Edit Game</h2>
+<div th:replace="header"></div>
+<!-- Begin Page Content -->
+<div class="container-fluid">
 
-    <!-- Formularz -->
-    <form th:action="@{/admin/games/new}" th:object="${game}" method="post">
+  <!-- Page Heading -->
+  <h1 class="h3 mb-2 text-gray-800">Panel admina</h1>
+  <p class="mb-4"></p>
 
-        <!-- Home Team -->
-        <div class="mb-3">
-            <label for="homeTeam" class="form-label">Home Team</label>
-            <input type="text" th:field="*{homeTeam}" class="form-control" id="homeTeam" placeholder="Enter home team name">
-            <div class="text-danger" th:if="${#fields.hasErrors('homeTeam')}" th:errors="*{homeTeam}"></div>
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+
+    <!-- Nested Row within Card Body -->
+    <div class="row justify-content-center">
+      <div class="col-12 mx-auto">
+        <div class="p-5">
+          <div class="text-center">
+            <h1 th:text="${readOnly} ? 'Podgląd meczu' : (${formAction.contains('edit')} ? 'Edycja meczu' : 'Dodaj nowy mecz') " class="h4 text-gray-900 mb-4"></h1>
+          </div>
+          <form th:action="${game.id} != null ? @{/admin/games/edit/{id}(id=${game.id})} : @{/admin/games/new}"
+                th:object="${game}" method="post" class="user">
+            <div class="row justify-content-center text-center">
+              <div class="col-6 mx-auto">
+                <div class="form-group">
+                  <input type="text" th:field="*{homeTeam}"  class="form-control form-control-user"  placeholder="Zespół A">
+                  <div class="text-danger" th:if="${#fields.hasErrors('homeTeam')}" th:errors="*{homeTeam}"></div>
+                </div>
+              </div>
+              <div class="col-6 mx-auto">
+                <div class="form-group">
+                  <input type="text" th:field="*{awayTeam}" class="form-control form-control-user"  placeholder="Zespół B">
+                  <div class="text-danger" th:if="${#fields.hasErrors('awayTeam')}" th:errors="*{awayTeam}"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row justify-content-center text-center">
+              <div class="col-6 mx-auto">
+                <div class="form-group">
+                  <input type="text" th:field="*{homeScore}" class="form-control form-control-user"  placeholder="Bramki zespołu A">
+                  <div class="text-danger" th:if="${#fields.hasErrors('homeScore')}" th:errors="*{homeScore}"></div>
+                </div>
+              </div>
+              <div class="col-6 mx-auto">
+                <div class="form-group">
+                  <input type="text" th:field="*{awayScore}"  class="form-control form-control-user"  placeholder="Bramki zespołu B">
+                  <div class="text-danger" th:if="${#fields.hasErrors('awayScore')}" th:errors="*{awayScore}"></div>
+                </div>
+              </div>
+            </div>
+
+<!--data in schedule-->
+
+            <div class="mb-3">
+              <input type="datetime-local"
+                     name="gameDate"
+                     th:value="${#temporals.format(game.gameDate, 'yyyy-MM-dd''T''HH:mm')}"
+                     th:disabled="${readOnly}"
+                     class="form-control form-control-user"
+                     id="gameDate">
+              <div class="text-danger" th:if="${#fields.hasErrors('gameDate')}" th:errors="*{gameDate}"></div>
+            </div>
+
+
+
+
+            <div class="row justify-content-center text-center">
+              <div class="col-12 mx-auto">
+                <div class="form-group">
+                  <div th:each="status : ${T(pl.xxx.demo.Enum.GameStatus).values()}"
+                       class="form-check form-check-inline">
+
+                    <!-- Radio -->
+                    <input class="form-check-input"
+                           type="radio"
+                           th:field="*{gameStatus}"
+                           th:value="${status}"
+                           th:id="'status_' + ${status}">
+
+                    <!-- Klikalny tekst -->
+                    <label class="form-check-label"
+                           th:for="'status_' + ${status}"
+                           th:text="${status}"></label>
+                  </div>
+
+                  <div class="text-danger" th:if="${#fields.hasErrors('gameStatus')}" th:errors="*{gameStatus}"></div>
+                </div>
+              </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-user btn-block">Zapisz</button>
+            <a th:href="@{/admin/games}" class="btn btn-primary btn-user btn-block">Anuluj</a>
+          </form>
         </div>
+      </div>
 
-        <!-- Away Team -->
-        <div class="mb-3">
-            <label for="awayTeam" class="form-label">Away Team</label>
-            <input type="text" th:field="*{awayTeam}" class="form-control" id="awayTeam" placeholder="Enter away team name">
-            <div class="text-danger" th:if="${#fields.hasErrors('awayTeam')}" th:errors="*{awayTeam}"></div>
-        </div>
 
-        <!-- Home Score -->
-        <div class="mb-3">
-            <label for="homeScore" class="form-label">Home Score</label>
-            <input type="number" th:field="*{homeScore}" class="form-control" id="homeScore" placeholder="Enter home score">
-            <div class="text-danger" th:if="${#fields.hasErrors('homeScore')}" th:errors="*{homeScore}"></div>
-        </div>
+    <div class="card-body">
+      <div class="table-responsive">
 
-        <!-- Away Score -->
-        <div class="mb-3">
-            <label for="awayScore" class="form-label">Away Score</label>
-            <input type="number" th:field="*{awayScore}" class="form-control" id="awayScore" placeholder="Enter away score">
-            <div class="text-danger" th:if="${#fields.hasErrors('awayScore')}" th:errors="*{awayScore}"></div>
-        </div>
+      </div>
+    </div>
+  </div>
 
-        <!-- Game Date -->
-        <div class="mb-3">
-            <label for="gameDate" class="form-label">Game Date</label>
-            <input type="datetime-local" th:field="*{gameDate}" class="form-control" id="gameDate">
-            <div class="text-danger" th:if="${#fields.hasErrors('gameDate')}" th:errors="*{gameDate}"></div>
-        </div>
-
-        <!-- Game Status -->
-        <div class="mb-3">
-            <label for="gameStatus" class="form-label">Game Status</label>
-            <select th:field="*{gameStatus}" class="form-select" id="gameStatus">
-                <option value="" disabled selected>Select status</option>
-                <option th:each="status : ${T(pl.xxx.demo.Enum.GameStatus).values()}"
-                        th:value="${status}"
-                        th:text="${status}">
-                </option>
-            </select>
-            <div class="text-danger" th:if="${#fields.hasErrors('gameStatus')}" th:errors="*{gameStatus}"></div>
-        </div>
-
-        <!-- Buttons -->
-        <button type="submit" class="btn btn-primary">Save</button>
-        <a th:href="@{/admin/games}" class="btn btn-secondary">Cancel</a>
-    </form>
 </div>
+<!-- /.container-fluid -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+</div>
+<!-- End of Main Content -->
+<div th:replace="footer"></div>

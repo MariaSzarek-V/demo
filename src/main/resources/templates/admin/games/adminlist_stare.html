@@ -7,7 +7,7 @@
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Panel Admina</h1>
-        <a th:href="@{/admin/games/new}" class="d-none d-sm-inline-block btn btn-primary shadow-sm"></i> Dodaj mecz</a>
+        <a href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm"></i> Dodaj mecz</a>
     </div>
 
     <!-- DataTales Example -->
@@ -23,6 +23,8 @@
                         <th>Data</th>
                         <th>Status</th>
                         <th>Typuj</th>
+                    </tr>
+                    </thead>
                     <tbody>
                     <tr th:each="row,iter : ${games}">
                         <td th:text="${iter.index + 1}"></td>
@@ -36,8 +38,7 @@
                         <td th:text="${{row.gameStatus}}"></td>
                         <td>
                             <a th:if="${row.scheduled}"
-                               th:href="@{/admin/games/edit/{id}(id=${row.id})}"
-                               class="btn btn-primary">
+                                href="#" class="btn btn-primary">
                                 <span class="icon text-white-50">
                                 </span>
                                 <span class="text">Edytuj</span>
