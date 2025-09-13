@@ -40,8 +40,6 @@ public class PredictionController {
         return predictionService.get(id);
     }
 
-
-
     @PostMapping
     public PredictionResponseDTO createPrediction(@RequestBody PredictionRequestDTO dto) {
         return predictionService.add(dto);

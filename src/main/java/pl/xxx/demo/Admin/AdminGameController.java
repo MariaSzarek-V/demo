@@ -26,17 +26,17 @@ public class AdminGameController {
     private final UserPointsService userPointsService;
 
     @GetMapping
-    public List<Game> getGames() {
+    public List<AdminGameDTO> getGames() {
         return adminGameService.getAllGames();
     }
 
     @GetMapping("/{id}")
-    public Game getGame(@PathVariable Long id) {
+    public AdminGameDTO getGame(@PathVariable Long id) {
         return adminGameService.getGameById(id);
     }
 
     @PostMapping
-    public Game createGame(@Valid @RequestBody AdminGameDTO dto) {
+    public AdminGameDTO createGame(@Valid @RequestBody AdminGameDTO dto) {
         return adminGameService.addGame(dto);
     }
 

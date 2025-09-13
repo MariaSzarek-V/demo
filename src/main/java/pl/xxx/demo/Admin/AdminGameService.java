@@ -8,6 +8,8 @@ import pl.xxx.demo.Error.GameTimeStatusException;
 import pl.xxx.demo.Error.ResourceNotFoundException;
 import pl.xxx.demo.Game.Game;
 import pl.xxx.demo.Game.GameRepository;
+import pl.xxx.demo.Game.GameResponseDTO;
+import pl.xxx.demo.Game.GameResponseDTOMapper;
 import pl.xxx.demo.RankingHistory.RankingHistoryService;
 import pl.xxx.demo.UserPoints.UserPointsService;
 
@@ -24,17 +26,22 @@ public class AdminGameService {
     private final UserPointsService userPointsService;
     private final RankingHistoryService rankingHistoryService;
 
-    //TODO poprawic AdminGameDTO
-    public List<Game> getAllGames() {
-        return gameRepository.findAll();
+    public List<AdminGameDTO> getAllGames() {
+        List<Game> games = gameRepository.findAll();
+        return AdminGameDTOMapper.convertToAdminGameDTOList(games);
     }
-    public Game getGameById(Long id) {
-        return gameRepository.findById(id).orElseThrow(() ->new ResourceNotFoundException("Game not found"));
+
+    public AdminGameDTO getGameById(Long id) {
+        Game game = gameRepository.findById(id).orElseThrow(() ->new ResourceNotFoundException("Game not found"));
+        return AdminGameDTOMapper.convertToAdminGameDTO(game);
     }
-    public Game addGame(AdminGameDTO dto) {
+
+
+    public AdminGameDTO addGame(AdminGameDTO dto) {
         checkIfGameDateIsCorrect(dto);
         Game game = AdminGameDTOMapper.convertToAdminGame(dto);
-        return gameRepository.save(game);
+        gameRepository.save(game);
+        return AdminGameDTOMapper.convertToAdminGameDTO(game);
     }
 
     /*

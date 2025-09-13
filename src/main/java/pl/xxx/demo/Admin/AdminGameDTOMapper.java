@@ -1,6 +1,9 @@
 package pl.xxx.demo.Admin;
 
 import pl.xxx.demo.Game.Game;
+import pl.xxx.demo.Game.GameResponseDTO;
+
+import java.util.List;
 
 
 public class AdminGameDTOMapper {
@@ -34,5 +37,11 @@ public class AdminGameDTOMapper {
                 .gameDate(dto.getGameDate())
                 .gameStatus(dto.getGameStatus())
                 .build();
+    }
+
+    public static List<AdminGameDTO> convertToAdminGameDTOList(List<Game> games) {
+        return games.stream()
+                .map(game -> convertToAdminGameDTO(game))
+                .toList();
     }
 }

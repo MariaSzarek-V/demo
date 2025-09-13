@@ -19,9 +19,11 @@ import java.time.LocalDateTime;
  a adminGameDTO moze rozbuduje sie o created at modified at
  **/
 
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class AdminGameDTO {
 
     @NotBlank(message = "Nazwa drużyny nie może być pusta")
@@ -34,5 +36,9 @@ public class AdminGameDTO {
     private LocalDateTime gameDate;
     @NotNull(message = "Status nie może być pusty")
     private GameStatus gameStatus;
+
+    public boolean isScheduled() {
+        return GameStatus.SCHEDULED.equals(this.gameStatus);
+    }
 
 }
