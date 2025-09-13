@@ -21,4 +21,9 @@ public class GameResponseDTO {
     private LocalDateTime gameDate;
     private GameStatus gameStatus;
 
+
+    public boolean isScheduled() {
+        return GameStatus.SCHEDULED.equals(this.gameStatus);
+    }
+
 }

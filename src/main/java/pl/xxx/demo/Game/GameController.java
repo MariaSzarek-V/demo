@@ -32,7 +32,7 @@ public class GameController {
     }
 
     @GetMapping("/finished")
-    public List<Game> getFinishedGames(){
+    public List<GameResponseDTO> getFinishedGames(){
         return gameService.getFinishedGames();
     }
 

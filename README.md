@@ -11,3 +11,6 @@ RANKING
 RANKING HISTORY
 - historia rankignu, zmian pozycji userow, spadkow i awansow
 - 
+
+MECZ
+- musi miec status na etapi kazdym
