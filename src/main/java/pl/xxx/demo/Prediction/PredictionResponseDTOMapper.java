@@ -10,6 +10,7 @@ public class PredictionResponseDTOMapper {
     public static PredictionResponseDTO convertToPredictionResponseDTO(Prediction prediction) {
         return PredictionResponseDTO
                 .builder()
+                .gameId(prediction.getGame().getId())
                 .predictedAwayScore(prediction.getPredictedAwayScore())
                 .predictedHomeScore(prediction.getPredictedHomeScore())
                 .homeTeam(prediction.getGame().getHomeTeam())

@@ -19,6 +19,7 @@ public class RankingHistoryViewController {
     public String rankingHistory(Model model) {
         List<RankingHistoryDTO> ranking = rankingHistoryService.getLastRankingHistory();
         model.addAttribute("ranking", ranking);
-        return "ranking";
+//        return "ranking";
+        return "tables";
     }
 }

@@ -11,15 +11,16 @@ public class HomeController {
         return "home"; // publiczny
     }
 
-    @GetMapping("/admin")
+    @GetMapping("/chat")
     public String admin() {
-        return "admin"; // tylko ADMIN
+        return "chat"; // tylko ADMIN
     }
 
     @GetMapping("/index")
     public String user() {
         return "index"; // USER lub ADMIN
     }
+
 
     @GetMapping("/login")
     public String login() {

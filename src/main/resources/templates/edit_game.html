@@ -1,0 +1,52 @@
+<div th:replace="header"></div>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+<h2>ELO ELOE ELO</h2>
+    <ul>
+        <li th:text="${game.gameId}">1</li>
+        <li th:text="${game.homeTeam}"></li>
+        <li th:text="${game.awayTeam}"></li>
+        <li th:text="${game.predictedHomeScore}"></li>
+    </ul>
+
+
+
+
+
+
+<!--    <form th:action="@{/games/save}" method="post">-->
+<!--        &lt;!&ndash; Ukryte pole z ID meczu &ndash;&gt;-->
+<!--        <input type="hidden" name="gameId" th:value="${game.gameId}">-->
+
+<!--        <div class="table-responsive">-->
+<!--            <table class="table table-bordered" width="100%">-->
+<!--                <thead>-->
+<!--                <tr>-->
+<!--                    <th>Mecz</th>-->
+<!--                    <th>Twój typ</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                <tr>-->
+<!--                    &lt;!&ndash; Nazwa meczu &ndash;&gt;-->
+<!--                    <td th:text="${game.homeTeam} + ' vs ' + ${game.awayTeam}">Drużyna 1 vs Drużyna 2</td>-->
+
+<!--                    &lt;!&ndash; Pola do wpisania wyniku &ndash;&gt;-->
+<!--                    <td class="text-center">-->
+<!--                        <input type="number" name="predictedHomeScore" min="0"-->
+<!--                               class="form-control d-inline-block w-auto text-center"-->
+<!--                               th:value="${game.predictedHomeScore}" required>-->
+<!--                        <span class="mx-2">:</span>-->
+<!--                        <input type="number" name="predictedAwayScore" min="0"-->
+<!--                               class="form-control d-inline-block w-auto text-center"-->
+<!--                               th:value="${game.predictedAwayScore}" required>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--                </tbody>-->
+<!--            </table>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</div>-->
+</div>
+    <!-- End of Main Content -->
+    <div th:replace="footer"></div>

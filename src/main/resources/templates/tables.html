@@ -1,0 +1,60 @@
+
+<div th:replace="header"></div>
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+          <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                  <tr>
+                    <th>Nr</th>
+                    <th>Mecz</th>
+                    <th>Typowany wynik</th>
+                    <th>Typowanie</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each="g : ${games}">
+                    <td th:text="${g.gameId}">1</td>
+                    <td >
+                      <span th:text="${g.homeTeam}"></span> : <span th:text="${g.awayTeam}"></span>
+                    </td>
+                    <td>
+                      <span th:text="${g.predictedHomeScore}"></span> : <span th:text="${g.predictedAwayScore}"></span>
+                    </td>
+                    <td class="text-end">
+                      <a th:if="${editId != g.gameId}" class="btn btn-sm btn-outline-primary"
+                         th:href="@{|/games/edit/${g.gameId}|}">Typuj mecz</a>
+                    </td>
+                  </tr>
+                  <tr th:if="${#lists.isEmpty(ranking)}">
+                    <td colspan="4" class="text-center text-muted">Brak danych</td>
+                  </tr>
+                  </tbody>
+                  </table>
+<!-- Jeśli chcesz brak danych -->
+                  <tr th:if="${games == null or #lists.isEmpty(games)}">
+                    <td colspan="4" class="text-center text-muted">Brak danych</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+      <div th:replace="footer"></div>

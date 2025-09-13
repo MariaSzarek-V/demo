@@ -10,6 +10,7 @@ import lombok.*;
 @Setter
 @Builder
 public class PredictionResponseDTO  {
+    private Long gameId;
     private Integer predictedHomeScore;
     private Integer predictedAwayScore;
     private String homeTeam;

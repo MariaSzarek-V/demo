@@ -1,43 +1,57 @@
+
 <div th:replace="header"></div>
-
-
+<!-- Begin Page Content -->
 <div class="container-fluid">
-  <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
-    <span th:text="${message}">Operacja zakończona sukcesem.</span>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Zamknij"></button>
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+  <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p>
+
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+          <tr>
+            <th>Nr</th>
+            <th>Użytkownik</th>
+            <th>Punkty</th>
+            <th>Zmiana pozycji</th>
+            <th>Przycisk</th>
+
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="row,iter : ${ranking}">
+            <td th:text="${{row.position}}">1</td>
+            <td th:text="${{row.username}}">jan.kowalski</td>
+            <td th:text="${row.totalPoints}">0</td>
+            <td th:text="${row.positionChange}">0</td>
+            <td>
+              <a
+                      class="btn btn-primary btn-sm">
+                Typuj mecz
+              </a>
+            </td>
+
+
+          </tr>
+          <tr th:if="${#lists.isEmpty(ranking)}">
+            <td colspan="4" class="text-center text-muted">Brak danych</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="h3 m-0">Ranking typiarzy</h1>
-  </div>
-
-  <div class="table-responsive">
-    <table class="table table-striped table-hover align-middle">
-      <thead>
-      <tr>
-        <th>Nr</th>
-        <th>Użytkownik</th>
-        <th>Punkty</th>
-        <th>Zmiana pozycji</th>
-
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="row,iter : ${ranking}">
-        <td th:text="${{row.position}}">1</td>
-        <td th:text="${{row.username}}">jan.kowalski</td>
-        <td th:text="${row.totalPoints}">0</td>
-        <td th:text="${row.positionChange}">0</td>
-
-      </tr>
-      <tr th:if="${#lists.isEmpty(ranking)}">
-        <td colspan="4" class="text-center text-muted">Brak danych</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
 </div>
+<!-- /.container-fluid -->
 
-
-
+</div>
+<!-- End of Main Content -->
 <div th:replace="footer"></div>
