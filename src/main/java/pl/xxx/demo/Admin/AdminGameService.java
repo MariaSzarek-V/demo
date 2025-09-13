@@ -4,6 +4,7 @@ import jakarta.xml.bind.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.xxx.demo.Enum.GameStatus;
+import pl.xxx.demo.Error.GameDeleteNotAllowedException;
 import pl.xxx.demo.Error.GameTimeStatusException;
 import pl.xxx.demo.Error.ResourceNotFoundException;
 import pl.xxx.demo.Game.Game;
@@ -64,14 +65,16 @@ public class AdminGameService {
     }
 
 
+
     public void deleteGame(Long id) {
         Game game = gameRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
 
-        if (GameStatus.FINISHED.equals(game.getGameStatus())) {
-            throw new GameTimeStatusException();
+        if (GameStatus.ADMIN_VIEW.equals(game.getGameStatus())) {
+            gameRepository.delete(game);
+        } else {
+            throw new GameDeleteNotAllowedException();
         }
-        gameRepository.delete(game);
     }
 
     /*

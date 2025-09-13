@@ -48,5 +48,11 @@ public class AdminGameDTO {
     public boolean isScheduled() {
         return GameStatus.SCHEDULED.equals(this.gameStatus);
     }
+    public boolean isAdminview() {
+        return GameStatus.ADMIN_VIEW.equals(this.gameStatus);
+    }
+    public boolean isFinished() {
+        return GameStatus.FINISHED.equals(this.gameStatus);
+    }
 
 }

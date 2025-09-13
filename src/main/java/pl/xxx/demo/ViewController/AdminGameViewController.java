@@ -109,6 +109,13 @@ public class AdminGameViewController {
         return "redirect:/admin/games";
     }
 
+    @PostMapping("/delete/{id}")
+    public String deleteAdminGame(@PathVariable Long id, RedirectAttributes ra) {
+        adminGameService.deleteGame(id);
+        ra.addFlashAttribute("message", "Game deleted");
+        return "redirect:/admin/games";
+    }
+
 
 
 

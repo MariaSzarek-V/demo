@@ -26,12 +26,6 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-//    @ExceptionHandler(GameNotFoundException.class)
-//    public ResponseEntity<Map<String, Object>> handleGameNotFoundException(GameNotFoundException e) {
-//        return buildErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
-//    }
-
-
 
     @ExceptionHandler(PredictionEditNotAllowedException.class)
     public ResponseEntity<Map<String, Object>> handlePredictionEditNotAllowed(PredictionEditNotAllowedException e) {
@@ -43,7 +37,10 @@ public class GlobalExceptionHandler {
         return  buildErrorResponse(e.getMessage(), HttpStatus.OK);
     }
 
-
+    @ExceptionHandler(GameDeleteNotAllowedException.class)
+    public ResponseEntity<Map<String, Object>> handleNoRankingAvailableException(GameDeleteNotAllowedException e) {
+        return  buildErrorResponse(e.getMessage(), HttpStatus.OK);
+    }
 
 
     private ResponseEntity<Map<String, Object>> buildErrorResponse(String message, HttpStatus status) {
