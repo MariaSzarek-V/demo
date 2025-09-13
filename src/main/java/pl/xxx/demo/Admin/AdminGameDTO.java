@@ -26,6 +26,8 @@ import java.time.LocalDateTime;
 @Builder
 public class AdminGameDTO {
 
+
+
     @NotBlank(message = "Nazwa drużyny nie może być pusta")
     private String homeTeam;
     @NotBlank(message = "Nazwa drużyny nie może być pusta")
