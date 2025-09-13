@@ -17,18 +17,17 @@ public class GameController {
     private final GameService gameService;
 
     @GetMapping("")
-    public List<Game> getAllGames() {
+    public List<GameResponseDTO> getAllGames() {
         return gameService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Game getGameById(@PathVariable Long id) {
-        return gameService.get(id)
-                .orElseThrow(() -> new IllegalArgumentException("Game with id " + id + " not found"));
+    public GameResponseDTO getGameById(@PathVariable Long id) {
+        return gameService.get(id);
     }
 
     @GetMapping("/upcoming")
-    public List<Game> getUpcomingGames(){
+    public List<GameResponseDTO> getUpcomingGames(){
         return gameService.getUpcomingGames();
     }
 

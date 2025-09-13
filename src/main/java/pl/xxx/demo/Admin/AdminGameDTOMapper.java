@@ -5,7 +5,7 @@ import pl.xxx.demo.Game.Game;
 
 public class AdminGameDTOMapper {
 
-
+//aktualizacja encji an postawie DTO
     public static void updateGameFromDto(AdminGameDTO dto, Game game) {
         game.setHomeTeam(dto.getHomeTeam());
         game.setAwayTeam(dto.getAwayTeam());

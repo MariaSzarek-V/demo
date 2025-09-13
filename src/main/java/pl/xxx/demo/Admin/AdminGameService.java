@@ -24,6 +24,7 @@ public class AdminGameService {
     private final UserPointsService userPointsService;
     private final RankingHistoryService rankingHistoryService;
 
+    //TODO poprawic AdminGameDTO
     public List<Game> getAllGames() {
         return gameRepository.findAll();
     }

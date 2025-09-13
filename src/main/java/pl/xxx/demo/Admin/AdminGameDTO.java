@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
  mozna zerobic rozne widoki dla userow i dla admina
  niezaleznosc od bazy danych
  moze bedzie mi potrzebe tez UserGameDTO
+ a adminGameDTO moze rozbuduje sie o created at modified at
  **/
 
 @Builder

@@ -3,9 +3,8 @@ package pl.xxx.demo.Game;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.xxx.demo.Enum.GameStatus;
-import pl.xxx.demo.Prediction.Prediction;
-import pl.xxx.demo.Prediction.PredictionRepository;
-import pl.xxx.demo.Prediction.PredictionService;
+import pl.xxx.demo.Error.ResourceNotFoundException;
+import pl.xxx.demo.Prediction.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,19 +18,25 @@ public class GameService {
     private final PredictionRepository predictionRepository;
 
 
-    public List<Game> getAll(){
-        return gameRepository.findAll();
+    public List<GameResponseDTO> getAll() {
+        List<Game> games = gameRepository.findAll();
+        return GameResponseDTOMapper.convertToGameResponseDTOList(games);
     }
 
-    public Optional<Game> get(Long id){
-        return gameRepository.findById(id);
+    public GameResponseDTO get(Long id) {
+        Game game = gameRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Game with id " + id + " not found"));
+        return GameResponseDTOMapper.convertToGameResponseDTO(game);
     }
 
-    public List<Game> getUpcomingGames(){
-        return gameRepository.findByGameStatus(GameStatus.SCHEDULED);
+    public List<GameResponseDTO> getUpcomingGames() {
+        List<Game> games = gameRepository.findByGameStatus(GameStatus.SCHEDULED);
+        return GameResponseDTOMapper.convertToGameResponseDTOList(games);
     }
-    public List<Game> getFinishedGames(){
-        return gameRepository.findByGameStatus(GameStatus.FINISHED);
+
+    public List<GameResponseDTO> getFinishedGames() {
+        List<Game> games = gameRepository.findByGameStatus(GameStatus.FINISHED);
+        return GameResponseDTOMapper.convertToGameResponseDTOList(games);
     }
 
     public List<GamePredictionDTO> getGamesWithPredictions() {
