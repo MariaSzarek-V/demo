@@ -1,22 +1,4 @@
 
-<div th:replace="header"></div>
-<!-- Begin Page Content -->
-<div class="container-fluid">
-
-    <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Panel admina</h1>
-    <p class="mb-4"></p>
-
-    <!-- DataTales Example -->
-    <div class="card shadow mb-4">
-
-        <!-- Nested Row within Card Body -->
-        <div class="row justify-content-center">
-            <div class="col-12 mx-auto">
-                <div class="p-5">
-                    <div class="text-center">
-                        <h1 class="h4 text-gray-900 mb-4">Typuj wynik meczu</h1>
-                    </div>
                     <form th:action="@{/predictions/new/{gameId}(gameId=${prediction.gameId})}"
                           th:object="${prediction}" method="post">
 
@@ -44,20 +26,3 @@
 
                         <button type="submit">Dodaj predykcję</button>
                     </form>
-                </div>
-            </div>
-
-
-            <div class="card-body">
-                <div class="table-responsive">
-
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <!-- /.container-fluid -->
-
-</div>
-<!-- End of Main Content -->
-<div th:replace="footer"></div>

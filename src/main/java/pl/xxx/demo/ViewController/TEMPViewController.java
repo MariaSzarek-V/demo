@@ -50,11 +50,18 @@ public class TEMPViewController {
     // --- EDYCJA PREDYKCJI ---
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
-        PredictionResponseDTO prediction = predictionService.get(id);
+        PredictionResponseDTO response = predictionService.get(id);
+
+        // mapowanie ResponseDTO -> RequestDTO
+        PredictionRequestDTO prediction = new PredictionRequestDTO();
+        prediction.setId(id);
+        prediction.setGameId(response.getGameId());
+        prediction.setPredictedHomeScore(response.getPredictedHomeScore());
+        prediction.setPredictedAwayScore(response.getPredictedAwayScore());
 
         model.addAttribute("prediction", prediction);
-        model.addAttribute("game", gameService.get(prediction.getGameId()));
-        return "predictions/edit";  // osobny widok
+        model.addAttribute("game", gameService.get(response.getGameId()));
+        return "predictions/edit";
     }
 
     @PostMapping("/edit/{id}")
@@ -63,8 +70,8 @@ public class TEMPViewController {
                          BindingResult result,
                          Model model,
                          RedirectAttributes ra) {
+        System.out.println("tu jestes ");
         if (result.hasErrors()) {
-            model.addAttribute("game", gameService.get(dto.getGameId()));
             return "predictions/edit";
         }
         predictionService.update(id, dto);
