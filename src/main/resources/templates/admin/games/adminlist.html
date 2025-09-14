@@ -42,13 +42,7 @@
                                 </span>
                                 <span class="text">Edytuj</span>
                             </a>
-<!--                            <a th:if="${row.adminview}"-->
-<!--                               th:href="@{/admin/games/delete/{id}(id=${row.id})}"-->
-<!--                               class="btn btn-danger"-->
-<!--                               onclick="return confirm('Czy na pewno chcesz usunąć ten mecz?');">-->
-<!--                                <span class="icon text-white-50"></span>-->
-<!--                                <span class="text">Usuń</span>-->
-<!--                            </a>-->
+
                             <form th:if="${row.adminview}"
                                   th:action="@{/admin/games/delete/{id}(id=${row.id})}"
                                   method="post"
