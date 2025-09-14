@@ -4,6 +4,8 @@ ADMIN
 - zmiana statusu meczu na finished wywołuje:
   - podliczenie punktów za typ
   - zapis rankignu do bazy danych 
+- admin veiw meczu - dostepne tylko dla admina dla innch tylko schedule 
+- 
 
 RANKING
 - bezstanowy, aktualizuje sie przy każdym get
@@ -14,3 +16,7 @@ RANKING HISTORY
 
 MECZ
 - musi miec status na etapi kazdym
+
+SPRAWDZIC 
+- CZY MZNA DODAC WYNIK BEZ ZAKONCZENIA MECZU?
+- 

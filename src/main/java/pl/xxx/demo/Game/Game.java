@@ -32,6 +32,6 @@ public class Game {
     private LocalDateTime gameDate;
 
     @Enumerated(EnumType.STRING)
-    private GameStatus gameStatus = GameStatus.SCHEDULED;
+    private GameStatus gameStatus = GameStatus.ADMIN_VIEW;
 
 }

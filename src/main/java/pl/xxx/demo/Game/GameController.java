@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.xxx.demo.PredictionResult.GamePredictionResultDTO;
+import pl.xxx.demo.PredictionResult.PredictionResultService;
 
 import java.util.List;
 @Tag(name="3. Game")
@@ -15,6 +17,7 @@ import java.util.List;
 public class GameController {
 
     private final GameService gameService;
+    private final PredictionResultService predictionResultService;
 
     @GetMapping("")
     public List<GameResponseDTO> getAllGames() {
@@ -34,6 +37,13 @@ public class GameController {
     @GetMapping("/finished")
     public List<GameResponseDTO> getFinishedGames(){
         return gameService.getFinishedGames();
+    }
+
+    /// SOPIANW
+    @GetMapping("/prediction_result")
+    public List<GamePredictionResultDTO> getByGamespredictionsResult() {
+        return gameService.getAllGamesWithUserPredictionsAndPoints();
+
     }
 
 }

@@ -19,20 +19,20 @@ public class PredictionResultController {
 
     private final PredictionResultService predictionResultService;
     private final PredictionRepository predictionRepository;
-    private final PredictionResultMapper predictionResultMapper;
 
-    @GetMapping
-    public List<PredictionResultDTO> getAll() {
-        return predictionResultService.getPredictionResults();
-    }
+//    @GetMapping
+//    public List<PredictionResultDTO> getAll() {
+//        return predictionResultService.getPredictionResults();
+//    }
+//
+//    @GetMapping("/{id}")
+//    public List <PredictionResultDTO> getById(@PathVariable Long id) {
+//        return predictionRepository.findByUserId(id)
+//                .stream()
+//                .map(predictionResultMapper::convertToPredictionResultDTO)
+//                .collect(Collectors.toList());
+//
+//    }
 
-    @GetMapping("/{id}")
-    public List <PredictionResultDTO> getById(@PathVariable Long id) {
-        return predictionRepository.findByUserId(id)
-                .stream()
-                .map(predictionResultMapper::convertToPredictionResultDTO)
-                .collect(Collectors.toList());
-
-    }
 
 }

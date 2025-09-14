@@ -1,13 +1,18 @@
 package pl.xxx.demo.Game;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.xxx.demo.Enum.GameStatus;
 import pl.xxx.demo.Error.ResourceNotFoundException;
 import pl.xxx.demo.Prediction.*;
+import pl.xxx.demo.PredictionResult.GamePredictionResultRepository;
+import pl.xxx.demo.PredictionResult.GamePredictionResultDTO;
+import pl.xxx.demo.User.User;
+import pl.xxx.demo.User.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -16,6 +21,8 @@ public class GameService {
 
     private final GameRepository gameRepository;
     private final PredictionRepository predictionRepository;
+    private final UserRepository userRepository;
+    private final GamePredictionResultRepository gamePredictionResultRepository;
 
 
     public List<GameResponseDTO> getAll() {
@@ -60,6 +67,17 @@ public class GameService {
                     );
                 })
                 .collect(Collectors.toList());
+    }
+
+    /// dopisane
+    public List<GamePredictionResultDTO> getAllGamesWithUserPredictionsAndPoints() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        return gamePredictionResultRepository.findAllGamesWithUserPedictionAndPoints(currentUser.getId());
     }
 
 

@@ -6,8 +6,8 @@
     <!-- Page Heading -->
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Panel Admina</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm"></i> Dodaj mecz</a>
+        <h1 class="h3 mb-0 text-gray-800">Moje mecze</h1>
+        <a th:href="@{/admin/games/new}" class="d-none d-sm-inline-block btn btn-primary shadow-sm"></i> Dodaj mecz</a>
     </div>
 
     <!-- DataTales Example -->
@@ -22,9 +22,9 @@
                         <th>Wynik</th>
                         <th>Data</th>
                         <th>Status</th>
-                        <th>Typuj</th>
-                    </tr>
-                    </thead>
+                        <th>Typowany wynik</th>
+                        <th>Uzyskane punkty</th>
+                        <th></th>
                     <tbody>
                     <tr th:each="row,iter : ${games}">
                         <td th:text="${iter.index + 1}"></td>
@@ -37,13 +37,40 @@
                         <td th:text="${{row.gameDate}}"></td>
                         <td th:text="${{row.gameStatus}}"></td>
                         <td>
-                            <a th:if="${row.scheduled}"
-                                href="#" class="btn btn-primary">
+                            <a th:if="${row.predictionId == null}"
+                               th:href="@{/admin/games/edit/{id}(id=${row.gameId})}"
+                               class="btn btn-primary">
                                 <span class="icon text-white-50">
                                 </span>
                                 <span class="text">Edytuj</span>
                             </a>
+                            <span th:if="${row.predictionId != null}">
+                                <span th:text="${row.predictedHomeScore}"></span> :
+                                <span th:text="${row.predictedAwayScore}"></span>
+                            </span>
+
+<!--                            <form th:if="${row.adminview}"-->
+<!--                                  th:action="@{/admin/games/delete/{id}(id=${row.id})}"-->
+<!--                                  method="post"-->
+<!--                                  onsubmit="return confirm('Czy na pewno chcesz usunąć ten mecz?');"-->
+<!--                                  style="display:inline;">-->
+<!--                                <button type="submit" class="btn btn-danger">-->
+<!--                                    <span class="icon text-white-50"></span>-->
+<!--                                    <span class="text">Usuń</span>-->
+<!--                                </button>-->
+<!--                            </form>-->
                         </td>
+                        <td>
+                            <span th:if="${row.pointsId != null}">
+                                <span th:text="${row.points}"></span>
+                            </span>
+                            <span th:if="${row.pointsId == null}">
+                                <span>-</span>
+                            </span>
+
+                        </td>
+
+
                     </tr>
                     <tr th:if="${#lists.isEmpty(games)}">
                         <td colspan="4" class="text-center h3 mb-2 text-gray-80">Brak meczy do wyświetlenia</td>
