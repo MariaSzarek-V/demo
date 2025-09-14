@@ -1,4 +1,4 @@
-package pl.xxx.demo.PredictionResult;
+package pl.xxx.demo.ViewController;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.xxx.demo.Prediction.PredictionRepository;
 import pl.xxx.demo.Prediction.PredictionService;
+import pl.xxx.demo.PredictionResult.PredictionResultDTO;
+import pl.xxx.demo.PredictionResult.PredictionResultMapper;
+import pl.xxx.demo.PredictionResult.PredictionResultService;
 
 import java.security.Principal;
 import java.util.List;
