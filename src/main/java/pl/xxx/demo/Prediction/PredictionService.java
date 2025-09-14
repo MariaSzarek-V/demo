@@ -35,24 +35,24 @@ public class PredictionService {
     public PredictionResponseDTO add(PredictionRequestDTO dto) {
         Game game = gameRepository.findById(dto.getGameId())
                 .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
+        if (!game.getGameStatus().equals(GameStatus.SCHEDULED)) {
+            throw new PredictionEditNotAllowedException();
+        } else {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            User user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        Prediction prediction = PredictionRequestDTOMapper.convertToPrediction(dto, game, user);
-        predictionRepository.save(prediction);
-        return PredictionResponseDTOMapper.convertToPredictionResponseDTO(prediction);
+            Prediction prediction = PredictionRequestDTOMapper.convertToPrediction(dto, game, user);
+            predictionRepository.save(prediction);
+            return PredictionResponseDTOMapper.convertToPredictionResponseDTO(prediction);
+        }
     }
-
 
 
     public PredictionResponseDTO get(Long id) {
         Prediction prediction = predictionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Prediction with id " + id + " not found"));
-
         return PredictionResponseDTOMapper.convertToPredictionResponseDTO(prediction);
-
     }
 
     /*

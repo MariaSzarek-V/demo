@@ -1,5 +1,6 @@
 package pl.xxx.demo.Prediction;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -10,6 +11,8 @@ import lombok.*;
 @Setter
 @Builder
 public class PredictionResponseDTO  {
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Long id;
     private Long gameId;
     private Integer predictedHomeScore;
     private Integer predictedAwayScore;

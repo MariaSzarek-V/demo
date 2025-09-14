@@ -23,21 +23,21 @@ public class GameViewController {
     private final PredictionService predictionService;
 
 
-// tutaj mecze tylko i wylcznie
-    @GetMapping
-    public String allGames(Model model) {
-        List<GameResponseDTO> games = gameService.getAll();
-        model.addAttribute("games", games);
-        return "games";
+//// tutaj mecze tylko i wylcznie
+//    @GetMapping("/jakikolwiek")
+//    public String allGames(Model model) {
+//        List<GameResponseDTO> games = gameService.getAll();
+//        model.addAttribute("games", games);
+//        return "games-old";
+//    }
 
-    }
 //TODO TERAZ TOOOOOOOOO
 
-    @GetMapping("/results")
+    @GetMapping("")
     public String getGamesWithPredictionsAndResults(Model model) {
         List<GamePredictionResultDTO> games = gameService.getAllGamesWithUserPredictionsAndPoints();
         model.addAttribute("games", games);
-        return "prediction-result";
+        return "games";
     }
 
 

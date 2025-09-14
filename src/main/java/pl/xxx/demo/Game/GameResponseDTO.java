@@ -1,6 +1,7 @@
 package pl.xxx.demo.Game;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +13,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class GameResponseDTO {
-    @JsonIgnore
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long gameId;
     private String homeTeam;
     private String awayTeam;

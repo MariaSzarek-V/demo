@@ -1,0 +1,94 @@
+
+<div th:replace="header"></div>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Mecze</h1>
+    <p class="mb-4"></p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Nr</th>
+                        <th>Mecz</th>
+                        <th>Wynik</th>
+                        <th>Data</th>
+                        <th>Status</th>
+                        <th>Typuj</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="row,iter : ${games}">
+                        <td th:text="${iter.index + 1}"></td>
+                        <td>
+                            <span th:text="${{row.homeTeam}}"></span> : <span th:text="${{row.awayTeam}}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${{row.homeScore}}"></span> : <span th:text="${{row.awayScore}}"></span>
+                        </td>
+                        <td th:text="${{row.gameDate}}"></td>
+                        <td th:text="${{row.gameStatus}}"></td>
+                        <td>
+                            <a th:if="${row.scheduled}"
+                                href="#" class="btn btn-primary">
+                                <span class="icon text-white-50">
+                                </span>
+                                <span class="text">Typuj wynik</span>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(ranking)}">
+                        <td colspan="4" class="text-center h3 mb-2 text-gray-80">Ranking pojawi się po pierwszym meczu.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="predictionModal" tabindex="-1" aria-labelledby="predictionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="predictionModalLabel">Typuj wynik</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+            </div>
+            <div class="modal-body">
+                <form id="predictionForm">
+                    <input type="hidden" id="gameId" name="gameId">
+
+                    <div class="mb-3">
+                        <label class="form-label" id="modalMatchName"></label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Gospodarze</label>
+                        <input type="number" class="form-control" id="homeScore" name="homeScore" min="0">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Goście</label>
+                        <input type="number" class="form-control" id="awayScore" name="awayScore" min="0">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                <button type="button" class="btn btn-primary" id="savePredictionBtn">Zapisz</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Main Content -->
+<div th:replace="footer"></div>
