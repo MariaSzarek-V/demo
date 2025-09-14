@@ -21,8 +21,9 @@
                 class="h4 text-gray-900 mb-4"></h1>
             <h1>Prediction ID: <span th:text="${prediction.id}">brak</span></h1>
           </div>
-          <form th:action="${prediction.id} != null ? @{/predictions/edit/{id}(id=${prediction.id})} : @{/predictions/new/{gameId}(gameId=${game.gameId})}"
-                th:object="${prediction}" method="post" class="user">
+          <form th:action="@{${formAction}}" th:object="${prediction}" method="post" class="user">
+<!--          <form th:action="${prediction.id} != null ? @{/predictions/edit/{id}(id=${prediction.id})} : @{/predictions/new/{gameId}(gameId=${game.gameId})}"-->
+<!--                th:object="${prediction}" method="post" class="user">-->
 
             <div class="row justify-content-center text-center">
               <div class="col-6 mx-auto">
