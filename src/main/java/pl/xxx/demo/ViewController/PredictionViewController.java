@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.xxx.demo.Admin.AdminGameDTO;
 import pl.xxx.demo.Error.GameTimeStatusException;
+import pl.xxx.demo.Error.PredictionEditNotAllowedException;
 import pl.xxx.demo.Game.Game;
 import pl.xxx.demo.Game.GameResponseDTO;
 import pl.xxx.demo.Game.GameService;
@@ -56,21 +57,26 @@ public class PredictionViewController {
     public String createPrediction(@PathVariable Long gameId, @Valid @ModelAttribute("prediction") PredictionRequestDTO predictionDTO,
                                    BindingResult result, Model model, RedirectAttributes ra) {
         if (result.hasErrors()) {
+            GameResponseDTO game = gameService.get(gameId);
             model.addAttribute("prediction", predictionDTO);
-            model.addAttribute("game", gameService.get(gameId));
+            model.addAttribute("game", game);
             model.addAttribute("readOnly", false);
             return "predictions/predictionform";
         }
-        predictionDTO.setGameId(gameId);
-        predictionService.add(predictionDTO);
-        ra.addFlashAttribute("message", "Prediction created");
+        try {
+            predictionDTO.setGameId(gameId);
+            predictionService.add(predictionDTO);
+            ra.addFlashAttribute("message", "Prediction created");
+            return "redirect:/games";
+        } catch (PredictionEditNotAllowedException e) {
+            ra.addFlashAttribute("message", e.getMessage());
+        }
         return "redirect:/games";
-
     }
 
     //zapisz edycje
     @PostMapping("/edit/{id}")
-    public String updatePrediction(@PathVariable Long id, @Valid @ModelAttribute("prediction") PredictionRequestDTO predictionDTO, Model model, BindingResult result, RedirectAttributes ra) {
+    public String updatePrediction(@PathVariable Long id, @Valid @ModelAttribute("prediction") PredictionRequestDTO predictionDTO, BindingResult result, Model model, RedirectAttributes ra) {
 
         Long gameId = predictionService.get(id).getGameId();
         if (result.hasErrors()) {
