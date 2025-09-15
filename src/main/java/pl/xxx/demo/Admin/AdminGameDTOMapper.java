@@ -11,12 +11,24 @@ public class AdminGameDTOMapper {
 //aktualizacja encji an postawie DTO
     public static void updateGameFromDto(AdminGameDTO dto, Game game) {
 //        game.setId(dto.getId());
-        game.setHomeTeam(dto.getHomeTeam());
-        game.setAwayTeam(dto.getAwayTeam());
-        game.setHomeScore(dto.getHomeScore());
-        game.setAwayScore(dto.getAwayScore());
-        game.setGameDate(dto.getGameDate());
-        game.setGameStatus(dto.getGameStatus());
+        if (dto.getHomeTeam() != null) {
+            game.setHomeTeam(dto.getHomeTeam());
+        }
+        if (dto.getAwayTeam() != null) {
+            game.setAwayTeam(dto.getAwayTeam());
+        }
+        if (dto.getHomeScore() != null) {
+            game.setHomeScore(dto.getHomeScore());
+        }
+        if (dto.getAwayScore() != null) {
+            game.setAwayScore(dto.getAwayScore());
+        }
+        if (dto.getGameDate() != null) {
+            game.setGameDate(dto.getGameDate());
+        }
+        if (dto.getGameStatus() != null) {
+            game.setGameStatus(dto.getGameStatus());
+        }
     }
     public static AdminGameDTO convertToAdminGameDTO(Game game) {
         return AdminGameDTO.builder()
@@ -41,6 +53,7 @@ public class AdminGameDTOMapper {
                 .gameStatus(dto.getGameStatus())
                 .build();
     }
+
 
     public static List<AdminGameDTO> convertToAdminGameDTOList(List<Game> games) {
         return games.stream()
