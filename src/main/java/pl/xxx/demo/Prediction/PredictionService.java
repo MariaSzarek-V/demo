@@ -139,6 +139,8 @@ zwraca predictions dla zalogowanego usera
 //    }
 
     public void delete(Long id) {
+        Prediction prediction = predictionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Prediction with id " + id + " not found"));
         predictionRepository.deleteById(id);
     }
 }
