@@ -44,6 +44,7 @@ public class PredictionService {
 
             Prediction prediction = PredictionRequestDTOMapper.convertToPrediction(dto, game, user);
             predictionRepository.save(prediction);
+            System.out.println(">>>>>>>" +prediction.getId());
             return PredictionResponseDTOMapper.convertToPredictionResponseDTO(prediction);
         }
     }

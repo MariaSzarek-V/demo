@@ -63,7 +63,6 @@ public class AdminGameService {
             userPointsService.calculatePredictionForGame(savedGame);
             rankingHistoryService.saveCurrentRankingToHistory(savedGame.getId());
         }
-        System.out.println(">>>>>>>>>>" + savedGame.getId());
         return AdminGameDTOMapper.convertToAdminGameDTO(savedGame);
     }
 

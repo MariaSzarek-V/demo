@@ -44,9 +44,8 @@ public class PredictionController {
     }
 
     @PutMapping("/{id}")
-    public String updatePrediction(@PathVariable Long id, @RequestBody PredictionRequestDTO dto) {
-        predictionService.update(id, dto);
-        return "Prediction updated";
+    public PredictionResponseDTO updatePrediction(@PathVariable Long id, @RequestBody PredictionRequestDTO dto) {
+        return predictionService.update(id, dto);
     }
 
     @GetMapping("/game/{gameId}")
