@@ -2,9 +2,12 @@ package pl.xxx.demo.User;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Tag(name="2. User")
 @RestController
@@ -32,15 +35,20 @@ public class UserController {
         userService.add(user);
         return user;
     }
-//
-//    @PutMapping("/{id}")
-//    public User updateUser(@PathVariable Long id, @Valid @RequestBody UserRequestDTO user) {
-//        return userService.update(id, user);
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public void deleteUser(@PathVariable Long id) {
-//        userService.delete(id);
-//    }
-//
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> updateUser(@PathVariable Long id, @Valid @RequestBody UserPasswordUpdateDTO user) {
+        userService.updatePassword(id, user);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Password updated successfully");
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        userService.delete(id);
+        return "User deleted successfully";
+    }
+
 }

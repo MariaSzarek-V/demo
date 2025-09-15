@@ -23,7 +23,7 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    @Size(min = 6, max = 50)
+    @Size(min = 6)
     private String password;
 
     @Builder.Default

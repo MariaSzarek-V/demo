@@ -23,7 +23,8 @@ public class GlobalExceptionHandler {
             NoRankingAvailableException.class,
             GameDeleteNotAllowedException.class,
             PredictionAlreadyExistForGameException.class,
-            ResourceNotFoundException.class
+            ResourceNotFoundException.class,
+            UsernameEmailAlreadyUsed.class
     })
     public ResponseEntity<Map<String, Object>> handleBusinessExceptions(BusinessException e) {
         return buildErrorResponse(e.getMessage(), e.getStatus());
