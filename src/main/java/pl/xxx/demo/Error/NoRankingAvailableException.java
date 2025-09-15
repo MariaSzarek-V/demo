@@ -4,10 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class NoRankingAvailableException  extends RuntimeException {
+public class NoRankingAvailableException  extends BusinessException {
     public NoRankingAvailableException () {
-        super("Ranking pojawi się po pierwszym meczu");
+        super("Ranking pojawi się po pierwszym meczu", HttpStatus.NOT_FOUND);
     }
-
 }

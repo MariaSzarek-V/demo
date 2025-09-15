@@ -3,10 +3,9 @@ package pl.xxx.demo.Error;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.BAD_REQUEST)
-public class GameTimeStatusException extends RuntimeException {
+public class GameTimeStatusException extends BusinessException {
     public GameTimeStatusException() {
-        super("Data meczu niezgodna z jego statusem");
+        super("Data meczu niezgodna z jego statusem", HttpStatus.BAD_REQUEST);
     }
 
 }

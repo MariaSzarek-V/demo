@@ -4,10 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 
-@ResponseStatus(HttpStatus.CONFLICT)
-public class PredictionEditNotAllowedException extends RuntimeException {
+public class PredictionEditNotAllowedException extends BusinessException {
     public PredictionEditNotAllowedException() {
-        super("Typowanie możliwe tylko dla meczów, które jeszcze się nie rozpoczęły");
+        super("Typowanie możliwe tylko dla meczów, które jeszcze się nie rozpoczęły", HttpStatus.CONFLICT);
     }
-
 }

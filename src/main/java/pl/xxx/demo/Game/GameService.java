@@ -76,16 +76,17 @@ public class GameService {
 
         User currentUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
         return gamePredictionResultRepository.findAllGamesWithUserPedictionAndPoints(currentUser.getId());
     }
 
 
     /// dopisane 2
     public List<GamePredictionResultDTO> getGameWithPredictionsAndPoints(Long gameId) {
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-
+        Game game = gameRepository.findById(gameId)
+                .orElseThrow(() -> new ResourceNotFoundException("Game with id " + gameId + " not found"));
         return gamePredictionResultRepository.findGameWithAllUserPredictionsAndPoints(gameId);
     }
 

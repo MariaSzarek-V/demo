@@ -15,35 +15,18 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleResourceNotFoundException(ResourceNotFoundException e) {
-        return buildErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(GameTimeStatusException.class)
-    public ResponseEntity<Map<String, Object>> handleGameTimeStatusException(GameTimeStatusException e) {
-        return buildErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
 
 
-    @ExceptionHandler(PredictionEditNotAllowedException.class)
-    public ResponseEntity<Map<String, Object>> handlePredictionEditNotAllowed(PredictionEditNotAllowedException e) {
-        return  buildErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(NoRankingAvailableException.class)
-    public ResponseEntity<Map<String, Object>> handleNoRankingAvailableException(NoRankingAvailableException e) {
-        return  buildErrorResponse(e.getMessage(), HttpStatus.OK);
-    }
-
-    @ExceptionHandler(GameDeleteNotAllowedException.class)
-    public ResponseEntity<Map<String, Object>> handleNoRankingAvailableException(GameDeleteNotAllowedException e) {
-        return  buildErrorResponse(e.getMessage(), HttpStatus.OK);
-    }
-
-    @ExceptionHandler(PredictionAlreadyExistForGameException.class)
-    public ResponseEntity<Map<String, Object>> handlePredictionAlreadyExistForGame(PredictionAlreadyExistForGameException e) {
-        return  buildErrorResponse(e.getMessage(), HttpStatus.CONFLICT);
+    @ExceptionHandler({
+            GameTimeStatusException.class,
+            PredictionEditNotAllowedException.class,
+            NoRankingAvailableException.class,
+            GameDeleteNotAllowedException.class,
+            PredictionAlreadyExistForGameException.class,
+            ResourceNotFoundException.class
+    })
+    public ResponseEntity<Map<String, Object>> handleBusinessExceptions(BusinessException e) {
+        return buildErrorResponse(e.getMessage(), e.getStatus());
     }
 
 
