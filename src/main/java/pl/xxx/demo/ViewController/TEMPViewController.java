@@ -70,8 +70,8 @@ public class TEMPViewController {
                          BindingResult result,
                          Model model,
                          RedirectAttributes ra) {
-        System.out.println("tu jestes ");
         if (result.hasErrors()) {
+            model.addAttribute("game", gameService.get(dto.getGameId()));
             return "predictions/edit";
         }
         predictionService.update(id, dto);

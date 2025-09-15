@@ -34,6 +34,7 @@ public class Prediction {
     @ManyToOne
     @JoinColumn(name = "game_id", nullable = false)
     private Game game;
+    @Builder.Default
     @Column(nullable = false)
     private Boolean calculated = false;
 

@@ -6,7 +6,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.xxx.demo.Game.Game;
 import pl.xxx.demo.Game.GameResponseDTO;
 import pl.xxx.demo.Game.GameService;
 import pl.xxx.demo.PredictionResult.GamePredictionResultDTO;
