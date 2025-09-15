@@ -17,6 +17,7 @@ public class CommentController {
 
     private final CommentService commentService;
     private final PredictionService predictionService;
+    private final CommentRepository commentRepository;
 
     @GetMapping
     public List<CommentResponseDTO> getAllComments() {
@@ -33,4 +34,6 @@ public class CommentController {
 //        CommentResponseDTO savedComment = commentService.addComment(request); // serwis sam ustali username
 //        return ResponseEntity.status(HttpStatus.CREATED).body(savedComment);
 //    }
+
+
 }

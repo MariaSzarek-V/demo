@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import pl.xxx.demo.Comment.CommentRepository;
 import pl.xxx.demo.Comment.CommentRequestDTO;
 import pl.xxx.demo.Comment.CommentResponseDTO;
 import pl.xxx.demo.Comment.CommentService;
@@ -20,6 +21,7 @@ import java.util.List;
 public class CommentViewController {
 
     private final CommentService commentService;
+    private final CommentRepository commentRepository;
 
     /**
      * Wyświetlenie listy komentarzy i formularza dodawania nowego komentarza
@@ -56,4 +58,7 @@ public class CommentViewController {
         // Przekierowanie, żeby odświeżyć listę komentarzy
         return "redirect:/comments";
     }
+
+
+
 }
