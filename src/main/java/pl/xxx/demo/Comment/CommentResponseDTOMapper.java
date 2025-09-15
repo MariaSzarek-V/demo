@@ -1,9 +1,5 @@
 package pl.xxx.demo.Comment;
-
 import org.springframework.stereotype.Component;
-import pl.xxx.demo.Game.Game;
-import pl.xxx.demo.Game.GameResponseDTO;
-
 import java.util.List;
 
 

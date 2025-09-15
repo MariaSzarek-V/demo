@@ -2,19 +2,34 @@ package pl.xxx.demo.ViewController;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.xxx.demo.Game.GameService;
 import pl.xxx.demo.Prediction.PredictionRepository;
 import pl.xxx.demo.Prediction.PredictionService;
+import pl.xxx.demo.PredictionResult.GamePredictionResultDTO;
 import pl.xxx.demo.PredictionResult.PredictionResultService;
 
+import java.util.List;
+
 @Controller
-@RequestMapping("/prediction-result")
+@RequestMapping("/results")
 @RequiredArgsConstructor
 public class PredictionResultViewController {
 
     private final PredictionResultService predictionResultService;
     private final PredictionRepository predictionRepository;
     private final PredictionService predictionService;
+    private final GameService gameService;
+
+    @GetMapping("/{gameId}")
+    public String getGamesWithPredictionsAndResults(@PathVariable Long gameId, Model model) {
+        List<GamePredictionResultDTO> predictionResult = gameService.getGameWithPredictionsAndPoints(gameId);
+        model.addAttribute("result", predictionResult);
+        return "resultpergame";
+    }
 
 //    @GetMapping
 //    public String predictionResultView(Model model) {

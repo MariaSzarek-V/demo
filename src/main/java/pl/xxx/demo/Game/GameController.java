@@ -39,11 +39,18 @@ public class GameController {
         return gameService.getFinishedGames();
     }
 
-    /// SOPIANW
+
     @GetMapping("/prediction_result")
     public List<GamePredictionResultDTO> getByGamespredictionsResult() {
         return gameService.getAllGamesWithUserPredictionsAndPoints();
 
     }
+
+    @GetMapping("/{id}/allusers")
+    public List<GamePredictionResultDTO> getUsersPredictionResultsByGameId(@PathVariable Long id) {
+        return gameService.getGameWithPredictionsAndPoints(id);
+    }
+
+
 
 }

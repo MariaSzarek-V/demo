@@ -1,0 +1,55 @@
+
+<div th:replace="header"></div>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800"
+            th:text="'Typy i wyniki dla meczu ' + ${result[0].homeTeam} + ' : ' + ${result[0].awayTeam}">
+            Typy i wyniki dla meczu
+        </h1>
+    </div>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Nr</th>
+                        <th>Gracz</th>
+                        <th>Wynik meczu</th>
+                        <th>Typowany Wynik</th>
+                        <th>Punkty</th>
+
+                    <tbody>
+                    <tr th:each="row,iter : ${result}">
+                        <td th:text="${iter.index + 1}"></td>
+                        <td th:text="${row.username}"></td>
+                        <td>
+                            <span th:text="${{row.homeScore}}"></span> : <span th:text="${{row.awayScore}}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${{row.predictedHomeScore}}"></span> : <span th:text="${{row.predictedAwayScore}}"></span>
+                        </td>
+                        <td th:text="${{row.points}}"></td>
+
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(result)}">
+                        <td colspan="4" class="text-center h3 mb-2 text-gray-80">Brak rezultatów do wyświetlenia</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->
+
+</div>
+<!-- End of Main Content -->
+<div th:replace="footer"></div>

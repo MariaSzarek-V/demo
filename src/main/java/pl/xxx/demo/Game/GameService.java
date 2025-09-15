@@ -81,4 +81,13 @@ public class GameService {
     }
 
 
+    /// dopisane 2
+    public List<GamePredictionResultDTO> getGameWithPredictionsAndPoints(Long gameId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        return gamePredictionResultRepository.findGameWithAllUserPredictionsAndPoints(gameId);
+    }
+
+
 }

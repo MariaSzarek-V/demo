@@ -34,7 +34,6 @@ public class Prediction {
     @ManyToOne
     @JoinColumn(name = "game_id", nullable = false)
     private Game game;
-    @JsonIgnore
     @Column(nullable = false)
     private Boolean calculated = false;
 

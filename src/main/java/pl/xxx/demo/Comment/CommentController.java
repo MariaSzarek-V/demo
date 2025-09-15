@@ -1,33 +1,36 @@
-//package pl.xxx.demo.Comment;
-//
-//import io.swagger.v3.oas.annotations.tags.Tag;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.*;
-//import pl.xxx.demo.User.UserRepository;
-//
-//import java.time.LocalDateTime;
-//import java.util.List;
-//@Tag(name="7. Comment")
-//@RestController
-//@RequestMapping("/api/comments")
-//@RequiredArgsConstructor
-//public class CommentController {
-//
-//    private final CommentService commentService;
-//
-//    @GetMapping
-//    public List<CommentResponseDTO> getAllComments() {
-//        return commentService.getAllComments();
-//    }
-//
+package pl.xxx.demo.Comment;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import pl.xxx.demo.Prediction.PredictionService;
+
+import java.util.List;
+@Tag(name="7. Comment")
+@RestController
+@RequestMapping("/api/comments")
+@RequiredArgsConstructor
+public class CommentController {
+
+    private final CommentService commentService;
+    private final PredictionService predictionService;
+
+    @GetMapping
+    public List<CommentResponseDTO> getAllComments() {
+        return commentService.getAllComments();
+    }
+
+    @PostMapping
+    public CommentResponseDTO createComment(@Valid @RequestBody CommentRequestDTO dto) {
+        return commentService.add(dto);
+    }
+
 //    @PostMapping
-//    public ResponseEntity<CommentResponseDTO> addComment(@RequestBody CommentRequestDTO request) {
-//
-//        CommentResponseDTO savedComment = commentService.addComment(request);
-//        return ResponseEntity
-//                .status(HttpStatus.CREATED) // 201 Created
-//                .body(savedComment);        // zwracamy zapisany obiekt
+//    public ResponseEntity<CommentResponseDTO> addComment(@RequestBody @Valid CommentRequestDTO request) {
+//        CommentResponseDTO savedComment = commentService.addComment(request); // serwis sam ustali username
+//        return ResponseEntity.status(HttpStatus.CREATED).body(savedComment);
 //    }
-//}
+}

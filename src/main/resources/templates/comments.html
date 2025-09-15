@@ -1,0 +1,63 @@
+<div th:replace="header"></div>
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Komentarze użytkowników</h1>
+  </div>
+
+  <!-- Komentarze -->
+  <div class="card shadow mb-4">
+    <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+      <!-- Pojedynczy komentarz -->
+      <div th:each="comment : ${comments}" class="mb-3 border-bottom pb-2">
+        <div class="d-flex justify-content-between">
+          <strong th:text="${comment.username}">Nazwa użytkownika</strong>
+          <small class="text-muted" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">2025-01-01 12:00</small>
+        </div>
+        <p class="mb-1" th:text="${comment.text}">Treść komentarza...</p>
+      </div>
+
+      <!-- Brak komentarzy -->
+      <div th:if="${#lists.isEmpty(comments)}" class="text-center text-muted">
+        Brak komentarzy. Bądź pierwszy!
+      </div>
+    </div>
+  </div>
+
+  <!-- Formularz dodawania komentarza -->
+  <div class="card shadow">
+    <div class="card-body">
+<!--      <form th:action="@{/comments/add}" method="post">-->
+<!--        <div class="form-group">-->
+<!--          <label for="commentContent">Dodaj komentarz:</label>-->
+<!--          <textarea id="commentContent" name="content" class="form-control" rows="3" required></textarea>-->
+<!--        </div>-->
+<!--        <div class="text-end mt-3">-->
+<!--          <button type="submit" class="btn btn-primary">Wyślij</button>-->
+<!--        </div>-->
+<!--      </form>-->
+      <form th:action="@{/comments/add}" th:object="${newComment}" method="post">
+        <div class="form-group">
+          <label for="text">Dodaj komentarz:</label>
+          <textarea id="text" th:field="*{text}" class="form-control" rows="3" required></textarea>
+          <div th:if="${#fields.hasErrors('text')}" class="text-danger" th:errors="*{text}"></div>
+        </div>
+        <div class="text-end mt-3">
+          <button type="submit" class="btn btn-primary">Wyślij</button>
+        </div>
+      </form>
+
+
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+
+</div>
+<!-- End of Main Content -->
+
+<div th:replace="footer"></div>

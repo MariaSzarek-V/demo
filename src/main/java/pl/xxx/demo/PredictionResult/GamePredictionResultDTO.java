@@ -12,11 +12,10 @@ import java.time.LocalDateTime;
 public class GamePredictionResultDTO {
 
     private Long userId;
+    private String username;
     private Long gameId;
     private Long predictionId;
     private Long pointsId;
-
-    private String username;
 
     private String homeTeam;
     private String awayTeam;
@@ -33,6 +32,7 @@ public class GamePredictionResultDTO {
     // Konstruktor dla mojego SELECT w JPQL
     public GamePredictionResultDTO(
             Long userId,
+            String username,
             Long gameId,
             String homeTeam,
             String awayTeam,
@@ -47,6 +47,7 @@ public class GamePredictionResultDTO {
             Long pointsId
     ) {
         this.userId = userId;
+        this.username = username;
         this.gameId = gameId;
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
@@ -59,5 +60,8 @@ public class GamePredictionResultDTO {
         this.predictionId = predictionId;
         this.points = points;
         this.pointsId = pointsId;
+    }
+    public boolean isFinished() {
+        return GameStatus.FINISHED.equals(this.gameStatus);
     }
 }

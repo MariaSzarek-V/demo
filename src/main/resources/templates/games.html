@@ -7,7 +7,6 @@
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Moje mecze</h1>
-        <a th:href="@{/admin/games/new}" class="d-none d-sm-inline-block btn btn-primary shadow-sm"></i> Dodaj mecz</a>
     </div>
 
     <!-- DataTales Example -->
@@ -24,7 +23,8 @@
                         <th>Status</th>
                         <th>Typowany wynik</th>
                         <th>Uzyskane punkty</th>
-                        <th></th>
+                        <th>Rezultat innych graczy</th>
+
                     <tbody>
                     <tr th:each="row,iter : ${games}">
                         <td th:text="${iter.index + 1}"></td>
@@ -37,28 +37,36 @@
                         <td th:text="${{row.gameDate}}"></td>
                         <td th:text="${{row.gameStatus}}"></td>
                         <td>
-                            <a th:if="${row.predictionId == null}"
-                               th:href="@{/predictions/new/{id}(id=${row.gameId})}"
-                               class="btn btn-primary">
+                            <a th:if="${row.predictionId == null and !row.isFinished}"
+                               th:href="@{/predictions/new/{id}(id=${row.gameId})}" class="btn btn-primary">
                                 <span class="icon text-white-50">
                                 </span>
-                                <span class="text">Edytuj</span>
+                                <span class="text">Typuj wynik</span>
                             </a>
                             <span th:if="${row.predictionId != null}">
                                 <span th:text="${row.predictedHomeScore}"></span> :
                                 <span th:text="${row.predictedAwayScore}"></span>
                             </span>
-
-<!--                            <form th:if="${row.adminview}"-->
-<!--                                  th:action="@{/admin/games/delete/{id}(id=${row.id})}"-->
-<!--                                  method="post"-->
-<!--                                  onsubmit="return confirm('Czy na pewno chcesz usunąć ten mecz?');"-->
-<!--                                  style="display:inline;">-->
-<!--                                <button type="submit" class="btn btn-danger">-->
-<!--                                    <span class="icon text-white-50"></span>-->
-<!--                                    <span class="text">Usuń</span>-->
-<!--                                </button>-->
-<!--                            </form>-->
+                            <br>
+                            <div>
+                                <a th:if="${row.predictionId != null and !row.isFinished}"
+                                   th:href="@{/predictions/edit/{id}(id=${row.predictionId})}"
+                                   class="btn btn-outline-primary">
+                                    <span class="icon text-white-50">
+                                    </span>
+                                    <span class="text">Modyfikuj</span>
+                                </a>
+                                <form th:if="${row.predictionId != null and !row.isFinished}"
+                                      th:action="@{/predictions/delete/{id}(id=${row.predictionId})}"
+                                      method="post"
+                                      onsubmit="return confirm('Czy na pewno chcesz usunąć ten typowany wynik?');"
+                                      style="display:inline;">
+                                    <button type="submit" class="btn btn-outline-danger">
+                                        <span class="icon text-white-50"></span>
+                                        <span class="text">Usuń</span>
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                         <td>
                             <span th:if="${row.pointsId != null}">
@@ -67,7 +75,18 @@
                             <span th:if="${row.pointsId == null}">
                                 <span>-</span>
                             </span>
-
+                        </td>
+                        <td>
+                            <a th:if="${row.isFinished}"
+                               th:href="@{/results/{id}(id=${row.gameId})}"
+                               class="btn btn-outline-primary btn-sm"
+                               data-bs-toggle="tooltip"
+                               data-bs-placement="top"
+                               title="Zobacz typy i wyniki innych graczy po zakończeniu meczu">
+                                <span class="icon text-white-50"></span>
+                                <i class="fas fa-search"></i>
+                                <span class="text"></span>
+                            </a>
                         </td>
 
 
