@@ -54,6 +54,8 @@ public class AdminGameService {
         checkIfGameDateIsCorrect(dto);
         Game existingGame = gameRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
+
+        dto.setId(id);
         AdminGameDTOMapper.updateGameFromDto(dto, existingGame);
         Game savedGame = gameRepository.save(existingGame);
 
