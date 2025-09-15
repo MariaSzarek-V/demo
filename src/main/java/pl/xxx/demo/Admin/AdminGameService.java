@@ -57,10 +57,11 @@ public class AdminGameService {
         AdminGameDTOMapper.updateGameFromDto(dto, existingGame);
         Game savedGame = gameRepository.save(existingGame);
 
-        if (existingGame.getGameStatus() == GameStatus.FINISHED) {
-            userPointsService.calculatePredictionForGame(existingGame);
-            rankingHistoryService.saveCurrentRankingToHistory(existingGame.getId());
+        if (savedGame.getGameStatus() == GameStatus.FINISHED) {
+            userPointsService.calculatePredictionForGame(savedGame);
+            rankingHistoryService.saveCurrentRankingToHistory(savedGame.getId());
         }
+        System.out.println(">>>>>>>>>>" + savedGame.getId());
         return AdminGameDTOMapper.convertToAdminGameDTO(savedGame);
     }
 

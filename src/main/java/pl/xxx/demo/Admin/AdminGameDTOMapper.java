@@ -10,7 +10,7 @@ public class AdminGameDTOMapper {
 
 //aktualizacja encji an postawie DTO
     public static void updateGameFromDto(AdminGameDTO dto, Game game) {
-        game.setId(dto.getId());
+//        game.setId(dto.getId());
         game.setHomeTeam(dto.getHomeTeam());
         game.setAwayTeam(dto.getAwayTeam());
         game.setHomeScore(dto.getHomeScore());

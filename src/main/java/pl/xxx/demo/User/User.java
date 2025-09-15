@@ -14,15 +14,20 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Size(min = 5, max = 50)
     @Column(unique = true, nullable = false)
     private String username;
+
     @Column(unique = true, nullable = false)
     private String email;
-    @Column(unique = true, nullable = false)
+
+    @Column(nullable = false)
     @Size(min = 6, max = 50)
     private String password;
+
     @Builder.Default
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole userRole = UserRole.USER;
 

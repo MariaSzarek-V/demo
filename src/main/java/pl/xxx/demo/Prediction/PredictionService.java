@@ -83,7 +83,6 @@ zwraca predictions dla zalogowanego usera
 
 
 
-
     public PredictionResponseDTO  update(Long id, PredictionRequestDTO dto) {
         Prediction existingPrediction = predictionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No such prediction to update"));

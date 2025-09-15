@@ -24,13 +24,4 @@ public class UserResponseDTOMapper {
     }
 
 
-
-//    private static EmployeeLocationDTO convertToEmployeeDTO(Employee employee) {
-//        EmployeeLocationDTO employeeLocationDTO = new EmployeeLocationDTO();
-//        employeeLocationDTO.setEmployeeId(employee.getId());
-//        employeeLocationDTO.setEmail(employee.getEmail());
-//        employeeLocationDTO.setCity(Optional.ofNullable(employee.getLocation())
-//                .map(Department::getCity).orElse("empty location"));
-//        return employeeLocationDTO;
-//    }
 }
