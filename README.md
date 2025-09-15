@@ -1,116 +1,135 @@
-ADMIN
-- CRUD dla game skonczony
-- walidacja daty meczu dziala scheduled/finished
-- zmiana statusu meczu na finished wywołuje:
-  - podliczenie punktów za typ
-  - zapis rankignu do bazy danych 
-- admin veiw meczu - dostepne tylko dla admina dla innch tylko schedule 
-- 
-
-RANKING
-- bezstanowy, aktualizuje sie przy każdym get
-
-RANKING HISTORY
-- historia rankignu, zmian pozycji userow, spadkow i awansow
-- 
-
-MECZ
-- musi miec status na etapi kazdym
-
-SPRAWDZIC 
-- CZY MZNA DODAC WYNIK BEZ ZAKONCZENIA MECZU?
-
-
-POST 
--przyjmuje niepelne requesty i nie nadpisuje nulli
-
-
-// START GENAI
 # 🏆 PredictionCup
 
-PredictionCup to aplikacja webowa do **typowania wyników meczów**, z systemem punktacji i rankingiem graczy.  
-Pozwala użytkownikom przewidywać wyniki, zdobywać punkty i rywalizować w rankingu.  
-Administrator ma możliwość zarządzania meczami i rozliczania wyników.
+PredictionCup is a web application for predicting match results, featuring a scoring system and player rankings.
+Users can predict match outcomes, earn points, and compete in the ranking system.
+Administrators have the ability to add, menage games.
 
 ---
 
-## 📌 Funkcjonalności
+## Features
 
-### 🔹 Użytkownik
-- Rejestracja za pomocą **adresu e‑mail** i **hasła** (Spring Security, walidacja).
-- Logowanie i uwierzytelnianie.
-- Możliwość **zmiany hasła** (aktualizacja tylko pola `password`).
-- Przeglądanie listy dostępnych meczów.
-- Typowanie wyniku danego meczu (przed jego rozpoczęciem).
-- Zdobywanie punktów po zakończeniu meczu:
-  - **3 punkty** – trafiony wynik dokładny.
-  - **1 punkt** – trafiony zwycięzca/remis, ale zły wynik.
-  - **0 punktów** – błędne typowanie.
-- Podgląd **rankingu** z informacją o:
-  - aktualnej pozycji,
-  - zmianie miejsca względem poprzedniej kolejki.
+### User Features
 
----
+- Registration via email and password,
+- Login with username,
+- Password change functionality,
+- Browse available games (SCHEDULED and FINISHED status),
+- Predict game results (before the match starts),
+- Earn points after game completion:
+  - **3 points** - exact score prediction,
+  - **1 point** - correct winner/draw prediction with wrong score,
+  - **0 points** - incorrect prediction,
 
-### 🔹 Administrator
-- Dodawanie nowych meczów.
-- Edytowanie istniejących meczów.
-- Usuwanie meczów (jeśli nie rozpoczęte lub przy spełnieniu warunków).
-- Oznaczanie meczu jako **zakończony** — uruchamia naliczanie punktów dla wszystkich użytkowników.
+- View ranking with information about current position and position changes compared to previous game,
+- View other compatitors prediction and score for each finished game;
 
 ---
 
-## 🛠️ Technologie
+### Admin Features
+
+- Add, update, delete game,
+- Admin-only game view (regular users + ADMIN_VIEW game status),
+
+---
+
+## Technology Stack
 
 - **Backend**:
-  - [Spring Boot](https://spring.io/projects/spring-boot) `3.5.5`
+  - Spring Boot
   - Spring Data JPA
-  - Spring Security (logowanie, role: USER / ADMIN)
+  - Spring Security
   - Spring Validation
   - Lombok
-  - MySQL (baza danych)
-  - Springdoc OpenAPI (Swagger UI)
+  - MySQL
+  - OpenAPI (Swagger UI)
 
 - **Frontend**:
-  - [Thymeleaf](https://www.thymeleaf.org/)
+  - Thymeleaf
   - Bootstrap 5
-  - thymeleaf-extras-springsecurity6 (wyświetlanie treści zależnie od roli użytkownika)
+  - thymeleaf-extras-springsecurity
 
 ---
 
-## 📂 Struktura aplikacji
+## Application Structure
 
 - `/` – Strona główna (lista meczów, możliwość typowania)
 - `/login` – Logowanie
 - `/register` – Rejestracja
 - `/ranking` – Ranking użytkowników
 - `/admin/matches` – Panel zarządzania meczami (ADMIN)
-- `/users/{id}/password` – Zmiana hasła użytkownika
+- `/users/{id}/password` – Zmiana hasła użytkownika 
+- `/games` - Home page (match list, prediction functionality)
+- `login` - Login page
+
+/register - Registration page
+
+- `/ranking` - User rankings
+
+- `/admin/games` - Match management panel (ADMIN only)
+
+/users/{id}/password - Password change functionality
 
 ---
 
-## ⚙️ Wymagania
+## Requirements
 
 - Java 17+
 - Maven 3+
 - MySQL 8+
-- Przeglądarka internetowa
+- Web browser
 
 ---
 
-## 🚀 Uruchomienie projektu
+## Getting Started
 
-1. **Sklonuj repozytorium**
+1. **Clone the repository**
    ```bash
    git clone https://github.com/twoje-repo/PredictionCup.git
    cd PredictionCup
 
-// END GENAI
+2. **Configure database**
 
-http://localhost:8080/swagger-ui.html
+- Create MySQL database
+- Update application.properties with your database credentials
 
-📅 Roadmap / Planowane funkcje
-Historia typów użytkownika
-Powiadomienia e‑mail o wynikach
-Integracja z zewnętrznym API do pobierania wyników meczów
-Tryb turniejowy
+3. **Build and run the application**
+
+
+```bash
+mvn clean install
+mvn spring-boot:run
+```
+
+4.**Access the application**
+
+- Main application: http://localhost:8080
+
+- Swagger API documentation: http://localhost:8080/swagger-ui.html
+
+
+## Key Functionality
+
+### Match Management
+- CRUD operations for matches completed,
+- Date validation ensures matches are properly scheduled/finished
+- Match status changes trigger automatic point calculation
+- Admin view - exclusive access for administrators, regular users see only scheduled matches
+
+### Ranking System
+
+- Stateless ranking - updates automatically with each GET request
+- Ranking history - tracks user position changes, promotions and demotions
+- Real-time ranking updates when matches are finished
+
+### Match Status
+- Each match must have a status at every stage
+
+- Validation prevents adding results without finishing the match
+
+### API Features
+- POST endpoints accept partial requests without overwriting fields with null values
+
+
+## Roadmap
+- Enhenced dashboard with statistics
+
