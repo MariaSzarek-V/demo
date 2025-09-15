@@ -19,4 +19,7 @@ MECZ
 
 SPRAWDZIC 
 - CZY MZNA DODAC WYNIK BEZ ZAKONCZENIA MECZU?
-- 
+
+
+POST 
+-przyjmuje niepelne requesty i nie nadpisuje nulli

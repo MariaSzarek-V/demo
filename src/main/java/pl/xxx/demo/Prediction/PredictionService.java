@@ -29,7 +29,7 @@ public class PredictionService {
     private final PredictionRepository predictionRepository;
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
-
+    private final PredictionRequestDTOMapper predictionRequestDTOMapper;
 
 
     public PredictionResponseDTO add(PredictionRequestDTO dto) {
@@ -93,9 +93,8 @@ zwraca predictions dla zalogowanego usera
         if (game.getGameDate().isBefore(LocalDateTime.now(ZoneOffset.UTC))) {
             throw new PredictionEditNotAllowedException();
         }
-        existingPrediction.setPredictedHomeScore(dto.getPredictedHomeScore());
-        existingPrediction.setPredictedAwayScore(dto.getPredictedAwayScore());
 
+        predictionRequestDTOMapper.updatePredictionIfNotNull(existingPrediction, dto);
         return PredictionResponseDTOMapper.convertToPredictionResponseDTO(existingPrediction);
     }
 
