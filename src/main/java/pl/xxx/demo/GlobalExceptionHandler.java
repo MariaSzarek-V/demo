@@ -14,8 +14,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-
-
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleResourceNotFoundException(ResourceNotFoundException e) {
         return buildErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -40,6 +38,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(GameDeleteNotAllowedException.class)
     public ResponseEntity<Map<String, Object>> handleNoRankingAvailableException(GameDeleteNotAllowedException e) {
         return  buildErrorResponse(e.getMessage(), HttpStatus.OK);
+    }
+
+    @ExceptionHandler(PredictionAlreadyExistForGameException.class)
+    public ResponseEntity<Map<String, Object>> handlePredictionAlreadyExistForGame(PredictionAlreadyExistForGameException e) {
+        return  buildErrorResponse(e.getMessage(), HttpStatus.CONFLICT);
     }
 
 

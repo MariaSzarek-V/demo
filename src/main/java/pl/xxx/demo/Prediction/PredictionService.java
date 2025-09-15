@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.xxx.demo.Enum.GameStatus;
+import pl.xxx.demo.Error.PredictionAlreadyExistForGameException;
 import pl.xxx.demo.Error.PredictionEditNotAllowedException;
 import pl.xxx.demo.Error.ResourceNotFoundException;
 import pl.xxx.demo.Game.Game;
@@ -33,20 +34,28 @@ public class PredictionService {
 
 
     public PredictionResponseDTO add(PredictionRequestDTO dto) {
-        Game game = gameRepository.findById(dto.getGameId())
-                .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
-        if (!game.getGameStatus().equals(GameStatus.SCHEDULED)) {
-            throw new PredictionEditNotAllowedException();
-        } else {
-            String username = SecurityContextHolder.getContext().getAuthentication().getName();
-            User user = userRepository.findByUsername(username)
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-            Prediction prediction = PredictionRequestDTOMapper.convertToPrediction(dto, game, user);
-            predictionRepository.save(prediction);
-            System.out.println(">>>>>>>" +prediction.getId());
-            return PredictionResponseDTOMapper.convertToPredictionResponseDTO(prediction);
+        Prediction predictionCheck = predictionRepository.findByUserIdAndGameId(user.getId(), dto.getGameId());
+        if (predictionCheck != null) {
+            throw new PredictionAlreadyExistForGameException();
         }
+        else{
+            Game game = gameRepository.findById(dto.getGameId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
+            if (!game.getGameStatus().equals(GameStatus.SCHEDULED)) {
+                throw new PredictionEditNotAllowedException();
+            } else {
+
+
+                Prediction prediction = PredictionRequestDTOMapper.convertToPrediction(dto, game, user);
+                predictionRepository.save(prediction);
+                return PredictionResponseDTOMapper.convertToPredictionResponseDTO(prediction);
+            }
+        }
+
     }
 
 
