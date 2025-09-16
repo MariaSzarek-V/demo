@@ -19,8 +19,7 @@ Administrators have the ability to menage games.
 - View other players’ predictions and points after game completion,
 - Comment section for public discussions.
 
-
-![img.png](img.png)
+![img_10.png](img_10.png)
 
 ---
 
@@ -31,8 +30,8 @@ Administrators have the ability to menage games.
 - Change game status: When status changes to FINISHED, points are automatically calculated,
 - Restrict deletion of games to those with ADMIN_VIEW status.
 
+![img_11.png](img_11.png)
 
-![img_1.png](img_1.png)
 ---
 
 ## Technology Stack
@@ -118,11 +117,10 @@ mvn spring-boot:run
 - Deletion is only allowed for games with the ADMIN_VIEW status,
 - Validation ensures correct date and status when creating or updating a game,
 - Changing a game’s status to FINISHED automatically triggers the calculation of prediction points.
+
 ![img_7.png](img_7.png)
-![img_9.png](img_9.png)
 
-
-
+  
 ### Game Score Prediction
 - Users can view a list of games with SCHEDULED and FINISHED statuses.
 - For SCHEDULED games, users can submit score predictions.
@@ -132,9 +130,9 @@ mvn spring-boot:run
   - **1 point** - correct winner/draw prediction with wrong score,
   - **0 points** - incorrect prediction,
   
-![img_8.png](img_8.png)
-  
-![img_6.png](img_6.png)
+![img_12.png](img_12.png)
+
+![img_13.png](img_13.png)
   
 ### Ranking System
 - Rankings are updated after each finished game based on points earned from predictions.
