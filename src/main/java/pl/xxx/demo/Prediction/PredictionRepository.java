@@ -10,12 +10,9 @@ import java.util.List;
 @Repository
 public interface PredictionRepository extends JpaRepository<Prediction, Long> {
 
-    List<Prediction> findByCalculatedFalse();
     List<Prediction> findByUserId(Long userId);
-    List<Prediction> findByUserUsername(String username);
     List<Prediction> findByGameId(Long gameId);
     List<Prediction> findByGameGameStatus(GameStatus status);
-    List<Prediction> findByUserIdAndGameGameStatus(Long userId, GameStatus status);
     Prediction findByUserIdAndGameId(Long userId, Long gameId);
 }
 

@@ -65,9 +65,6 @@ public class PredictionService {
         return PredictionResponseDTOMapper.convertToPredictionResponseDTO(prediction);
     }
 
-    /*
-zwraca predictions dla zalogowanego usera
- */
 
     public List<PredictionResponseDTO> getMyPredictions() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -78,19 +75,6 @@ zwraca predictions dla zalogowanego usera
         List<Prediction> myPredictions = predictionRepository.findByUserId(currentUser.getId());
         return PredictionResponseDTOMapper.convertToPredictionResponseDTO(myPredictions);
     }
-
-
-    public List<PredictionResponseDTO> getMyPredictionsByGameStatus(GameStatus status) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-
-        User currentUser = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        List<Prediction> myPredictions = predictionRepository.findByUserIdAndGameGameStatus(currentUser.getId(), status);
-        return PredictionResponseDTOMapper.convertToPredictionResponseDTO(myPredictions);
-    }
-
 
 
     public PredictionResponseDTO  update(Long id, PredictionRequestDTO dto) {
@@ -107,11 +91,6 @@ zwraca predictions dla zalogowanego usera
         return PredictionResponseDTOMapper.convertToPredictionResponseDTO(existingPrediction);
     }
 
-
-    public List<PredictionResponseDTO> getPredictionsByGameId(Long gameId) {
-        List<Prediction> predictions = predictionRepository.findByGameId(gameId);
-        return PredictionResponseDTOMapper.convertToPredictionResponseDTO(predictions);
-    }
 
     public List<Prediction> getPredictionsForScheduledGames() {
         List<Prediction> predictions = predictionRepository.findByGameGameStatus(GameStatus.SCHEDULED);
