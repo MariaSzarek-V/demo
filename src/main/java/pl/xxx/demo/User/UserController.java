@@ -31,15 +31,14 @@ public class UserController {
     }
 
     @PostMapping
-    public UserRequestDTO createUser(@Valid @RequestBody UserRequestDTO user) {
-        userService.add(user);
-        return user;
+    public UserResponseDTO createUser(@Valid @RequestBody UserRequestDTO user) {
+        return userService.add(user);
     }
 
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> updateUser(@PathVariable Long id, @Valid @RequestBody UserPasswordUpdateDTO user) {
-        userService.updatePassword(id, user);
+    @PutMapping()
+    public ResponseEntity<Map<String, Object>> updateUser(@Valid @RequestBody UserPasswordUpdateDTO user) {
+        userService.updatePassword(user);
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Password updated successfully");
         return ResponseEntity.ok(response);

@@ -15,8 +15,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-
-
     @ExceptionHandler({
             GameTimeStatusException.class,
             PredictionEditNotAllowedException.class,
@@ -24,7 +22,8 @@ public class GlobalExceptionHandler {
             GameDeleteNotAllowedException.class,
             PredictionAlreadyExistForGameException.class,
             ResourceNotFoundException.class,
-            UsernameEmailAlreadyUsed.class
+            UsernameEmailAlreadyUsed.class,
+            InvalidPasswordException.class
     })
     public ResponseEntity<Map<String, Object>> handleBusinessExceptions(BusinessException e) {
         return buildErrorResponse(e.getMessage(), e.getStatus());

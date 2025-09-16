@@ -1,6 +1,7 @@
 package pl.xxx.demo.User;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.xxx.demo.Error.InvalidPasswordException;
@@ -57,13 +58,11 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public void updatePassword(Long id, UserPasswordUpdateDTO dto) {
-        User existingUser = userRepository.findById(id)
+    public void updatePassword(UserPasswordUpdateDTO dto) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User existingUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        if (!dto.getCurrentPassword().equals(existingUser.getPassword())) {
-            throw new InvalidPasswordException();
-        }
         if (!passwordEncoder.matches(dto.getCurrentPassword(), existingUser.getPassword())) {
             throw new InvalidPasswordException();
         }
