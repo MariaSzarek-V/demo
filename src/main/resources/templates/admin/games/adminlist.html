@@ -23,6 +23,8 @@
                         <th>Data</th>
                         <th>Status</th>
                         <th></th>
+                    </tr>
+                    </thead>
                     <tbody>
                     <tr th:each="row,iter : ${games}">
                         <td th:text="${iter.index + 1}"></td>
@@ -35,15 +37,14 @@
                         <td th:text="${{row.gameDate}}"></td>
                         <td th:text="${{row.gameStatus}}"></td>
                         <td>
-                            <a th:if="${!row.finished}"
+                            <a th:if="${row.gameStatus != null and row.gameStatus != T(pl.xxx.demo.Enum.GameStatus).FINISHED}"
                                th:href="@{/admin/games/edit/{id}(id=${row.id})}"
                                class="btn btn-primary">
                                 <span class="icon text-white-50">
                                 </span>
                                 <span class="text">Edytuj</span>
                             </a>
-
-                            <form th:if="${row.adminview}"
+                            <form th:if="${row.gameStatus != null and row.gameStatus == T(pl.xxx.demo.Enum.GameStatus).ADMIN_VIEW}"
                                   th:action="@{/admin/games/delete/{id}(id=${row.id})}"
                                   method="post"
                                   onsubmit="return confirm('Czy na pewno chcesz usunąć ten mecz?');"

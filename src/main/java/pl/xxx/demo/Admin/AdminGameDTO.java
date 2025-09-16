@@ -45,14 +45,14 @@ public class AdminGameDTO {
     @NotNull(message = "Status nie może być pusty")
     private GameStatus gameStatus;
 
-    public boolean isScheduled() {
-        return GameStatus.SCHEDULED.equals(this.gameStatus);
-    }
-    public boolean isAdminview() {
-        return GameStatus.ADMIN_VIEW.equals(this.gameStatus);
-    }
-    public boolean isFinished() {
-        return GameStatus.FINISHED.equals(this.gameStatus);
-    }
+//    public boolean isScheduled() {
+//        return GameStatus.SCHEDULED.equals(this.gameStatus);
+//    }
+//    public boolean isAdminview() {
+//        return GameStatus.ADMIN_VIEW.equals(this.gameStatus);
+//    }
+//    public boolean isFinished() {
+//        return GameStatus.FINISHED.equals(this.gameStatus);
+//    }
 
 }

@@ -62,7 +62,7 @@ public class GamePredictionResultDTO {
         this.points = points;
         this.pointsId = pointsId;
     }
-    public boolean isFinished() {
-        return GameStatus.FINISHED.equals(this.gameStatus);
-    }
+//    public boolean isFinished() {
+//        return GameStatus.FINISHED.equals(this.gameStatus);
+//    }
 }

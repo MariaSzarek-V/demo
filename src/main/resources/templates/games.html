@@ -37,7 +37,7 @@
                         <td th:text="${{row.gameDate}}"></td>
                         <td th:text="${{row.gameStatus}}"></td>
                         <td>
-                            <a th:if="${row.predictionId == null and !row.isFinished}"
+                            <a th:if="${row.predictionId == null and row.gameStatus != T(pl.xxx.demo.Enum.GameStatus).FINISHED}"
                                th:href="@{/predictions/new/{id}(id=${row.gameId})}" class="btn btn-primary">
                                 <span class="icon text-white-50">
                                 </span>
@@ -49,14 +49,14 @@
                             </span>
                             <br>
                             <div>
-                                <a th:if="${row.predictionId != null and !row.isFinished}"
+                                <a th:if="${row.predictionId != null and row.gameStatus != T(pl.xxx.demo.Enum.GameStatus).FINISHED}"
                                    th:href="@{/predictions/edit/{id}(id=${row.predictionId})}"
                                    class="btn btn-outline-primary">
                                     <span class="icon text-white-50">
                                     </span>
                                     <span class="text">Modyfikuj</span>
                                 </a>
-                                <form th:if="${row.predictionId != null and !row.isFinished}"
+                                <form th:if="${row.predictionId != null and row.gameStatus != T(pl.xxx.demo.Enum.GameStatus).FINISHED}"
                                       th:action="@{/predictions/delete/{id}(id=${row.predictionId})}"
                                       method="post"
                                       onsubmit="return confirm('Czy na pewno chcesz usunąć ten typowany wynik?');"
@@ -77,7 +77,7 @@
                             </span>
                         </td>
                         <td>
-                            <a th:if="${row.isFinished}"
+                            <a th:if="${row.gameStatus == T(pl.xxx.demo.Enum.GameStatus).FINISHED}"
                                th:href="@{/results/{id}(id=${row.gameId})}"
                                class="btn btn-outline-primary btn-sm"
                                data-bs-toggle="tooltip"
@@ -88,7 +88,6 @@
                                 <span class="text"></span>
                             </a>
                         </td>
-
 
                     </tr>
                     <tr th:if="${#lists.isEmpty(games)}">

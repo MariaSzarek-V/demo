@@ -24,8 +24,8 @@ public class GameResponseDTO {
     private GameStatus gameStatus;
 
 
-    public boolean isScheduled() {
-        return GameStatus.SCHEDULED.equals(this.gameStatus);
-    }
+//    public boolean isScheduled() {
+//        return GameStatus.SCHEDULED.equals(this.gameStatus);
+//    }
 
 }
