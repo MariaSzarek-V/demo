@@ -10,10 +10,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.xxx.demo.Admin.AdminGameDTO;
 import pl.xxx.demo.Admin.AdminGameService;
 import pl.xxx.demo.Error.GameTimeStatusException;
-import pl.xxx.demo.Game.Game;
-import pl.xxx.demo.Game.GameResponseDTO;
-import pl.xxx.demo.Game.GameService;
-
 import java.util.List;
 
 @Controller
@@ -22,7 +18,6 @@ import java.util.List;
 public class AdminGameViewController {
 
     private final AdminGameService adminGameService;
-
 
     @GetMapping
     public String listAdminGames(Model model) {
@@ -68,7 +63,6 @@ public class AdminGameViewController {
         adminGameService.addGame(adminGameDTO);
         ra.addFlashAttribute("message", "Game created");
         return "redirect:/admin/games";
-
     }
 
 
@@ -115,8 +109,4 @@ public class AdminGameViewController {
         ra.addFlashAttribute("message", "Game deleted");
         return "redirect:/admin/games";
     }
-
-
-
-
 }

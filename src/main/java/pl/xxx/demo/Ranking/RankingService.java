@@ -20,8 +20,6 @@ public class RankingService {
 
     private final UserRepository userRepository;
     private final UserPointsRepository userPointsRepository;
-    private final RankingHistoryRepository rankingHistoryRepository;
-
 
     public List<RankingDTO> getCurrentRanking() {
         List<User> users = userRepository.findAll();
@@ -41,7 +39,4 @@ public class RankingService {
         }
         return ranking;
     }
-
-
-
 }

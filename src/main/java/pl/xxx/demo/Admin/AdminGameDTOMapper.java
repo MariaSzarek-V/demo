@@ -1,7 +1,6 @@
 package pl.xxx.demo.Admin;
 
 import pl.xxx.demo.Game.Game;
-import pl.xxx.demo.Game.GameResponseDTO;
 
 import java.util.List;
 
@@ -10,7 +9,6 @@ public class AdminGameDTOMapper {
 
 //aktualizacja encji an postawie DTO
     public static void updateGameFromDto(AdminGameDTO dto, Game game) {
-//        game.setId(dto.getId());
         if (dto.getHomeTeam() != null) {
             game.setHomeTeam(dto.getHomeTeam());
         }

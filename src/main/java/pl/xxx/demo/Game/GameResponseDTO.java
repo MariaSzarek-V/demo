@@ -1,7 +1,5 @@
 package pl.xxx.demo.Game;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +12,6 @@ import java.time.LocalDateTime;
 @Setter
 public class GameResponseDTO {
 
-//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long gameId;
     private String homeTeam;
     private String awayTeam;
@@ -22,10 +19,5 @@ public class GameResponseDTO {
     private Integer awayScore;
     private LocalDateTime gameDate;
     private GameStatus gameStatus;
-
-
-//    public boolean isScheduled() {
-//        return GameStatus.SCHEDULED.equals(this.gameStatus);
-//    }
 
 }

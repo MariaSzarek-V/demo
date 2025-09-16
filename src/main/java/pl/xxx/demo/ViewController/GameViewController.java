@@ -22,9 +22,6 @@ public class GameViewController {
     private final GameService gameService;
     private final GamePredictionResultService gamePredictionResultService;
 
-
-
-
     @GetMapping("")
     public String getGamesWithPredictionsAndResults(Model model) {
         List<GamePredictionResultDTO> games = gamePredictionResultService.getAllGamesWithUserPredictionsAndPoints();
@@ -32,38 +29,13 @@ public class GameViewController {
         return "games";
     }
 
-
     @GetMapping("/edit/{gameId}")
     public String editGame(@PathVariable Long gameId, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         GameResponseDTO game = gameService.get(gameId);
         model.addAttribute("game", game);
-        return "edit_game"; // widok z formularzem
+        return "edit_game";
     }
-
-//    @GetMapping("/edit/{gameId}")
-//    public String editGame(@PathVariable Long gameId, Model model) {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        String username = auth.getName();
-//
-//        Game game = gameService.get(gameId)
-//                .orElseThrow(() -> new RuntimeException("Game not found"));
-//
-//        model.addAttribute("game", game);
-//        model.addAttribute("myPredictions", predictionService.getMyPredictions());
-//        model.addAttribute("editId", gameId);
-//
-//        return "edit_game";
-//    }
-
-//    // Zapis wyniku
-//    @PostMapping("/update")
-//    public String updateGame(@RequestParam(required = false) Long predictionId,
-//                             @RequestParam Long gameId,
-//                             @RequestParam int predictedHomeScore,
-//                             @RequestParam int predictedAwayScore) {
-//        predictionService.saveOrUpdate(predictionId, gameId, predictedHomeScore, predictedAwayScore);
-//        return "redirect:/games";
-    }
+}
 

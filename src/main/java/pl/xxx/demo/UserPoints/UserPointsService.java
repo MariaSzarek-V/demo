@@ -1,29 +1,21 @@
 package pl.xxx.demo.UserPoints;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.xxx.demo.Enum.GameResult;
 import pl.xxx.demo.Game.Game;
-import pl.xxx.demo.Game.GameRepository;
 import pl.xxx.demo.Prediction.Prediction;
 import pl.xxx.demo.Prediction.PredictionRepository;
 import pl.xxx.demo.User.User;
 
 import java.util.List;
 
-
-
+@AllArgsConstructor
 @Service
 public class UserPointsService {
 
     private final UserPointsRepository userPointsRepository;
     private final PredictionRepository predictionRepository;
-    private final GameRepository gameRepository;
-
-    public UserPointsService(UserPointsRepository userPointsRepository, PredictionRepository predictionRepository, GameRepository gameRepository) {
-        this.userPointsRepository = userPointsRepository;
-        this.predictionRepository = predictionRepository;
-        this.gameRepository = gameRepository;
-    }
 
     public void calculatePredictionForGame(Game game) {
         /**
@@ -47,15 +39,6 @@ public class UserPointsService {
     }
 
 
-
-//    public UserPoints update(Long id, UserPoints userPoints) {
-//        UserPoints existingUserPoints = userPointsRepository.findById(id)
-//                .orElseThrow(() -> new RuntimeException("No such user points to update"));
-//        existingUserPoints.setPoints(userPoints.getPoints());
-//        return userPointsRepository.save(userPoints);
-//    }
-
-
     public int calculatePointsForGame(Prediction prediction) {
         int pointsForGame = 0;
         int predictedHomeScore = prediction.getPredictedHomeScore();
@@ -76,7 +59,6 @@ public class UserPointsService {
         }
 
         return pointsForGame;
-
 
     }
 }

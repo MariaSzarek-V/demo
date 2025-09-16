@@ -1,9 +1,7 @@
 package pl.xxx.demo.Comment;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.*;
-import pl.xxx.demo.Enum.UserRole;
 import pl.xxx.demo.User.User;
 
 import java.time.LocalDateTime;

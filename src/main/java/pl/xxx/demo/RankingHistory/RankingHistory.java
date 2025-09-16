@@ -5,14 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.xxx.demo.User.User;
 
-import java.time.LocalDateTime;
+
 
 @Entity
 @Getter
 @Setter
-@Table(
-        //gwarancja, że jeden user ma jeden wpis rankingu na jeden mecz
-        uniqueConstraints = @UniqueConstraint(columnNames = {"game_id", "user_id"})
+//gwarancja, że jeden user ma jeden wpis rankingu na jeden mecz
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"game_id", "user_id"})
 )
 public class RankingHistory {
 
@@ -20,11 +19,9 @@ public class RankingHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // nie Game game, bo mi wystarczy tylko id meczu
     @Column(nullable = false)
     private Long gameId;
 
-    //tutaj caly user i dlatego tez rankignHistoryDTO/
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private User user;
@@ -37,9 +34,4 @@ public class RankingHistory {
 
     @Column(nullable = false)
     private Integer positionChange;
-
-
-
-
-
 }

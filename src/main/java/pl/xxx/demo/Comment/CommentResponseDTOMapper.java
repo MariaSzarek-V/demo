@@ -14,7 +14,6 @@ public class CommentResponseDTOMapper  {
                 .build();
     }
 
-
     public static List<CommentResponseDTO > convertToCommentResponseDTO(List<Comment> comments) {
         return comments.stream()
                 .map(comment -> convertToCommentResponseDTO(comment))

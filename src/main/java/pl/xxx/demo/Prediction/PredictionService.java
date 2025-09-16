@@ -1,9 +1,6 @@
 package pl.xxx.demo.Prediction;
 
-
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -16,11 +13,10 @@ import pl.xxx.demo.Game.Game;
 import pl.xxx.demo.Game.GameRepository;
 import pl.xxx.demo.User.User;
 import pl.xxx.demo.User.UserRepository;
-
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
-import java.util.Optional;
+
 
 
 @RequiredArgsConstructor
@@ -48,14 +44,11 @@ public class PredictionService {
             if (!game.getGameStatus().equals(GameStatus.SCHEDULED)) {
                 throw new PredictionEditNotAllowedException();
             } else {
-
-
                 Prediction prediction = PredictionRequestDTOMapper.convertToPrediction(dto, game, user);
                 predictionRepository.save(prediction);
                 return PredictionResponseDTOMapper.convertToPredictionResponseDTO(prediction);
             }
         }
-
     }
 
 
@@ -93,33 +86,12 @@ public class PredictionService {
 
 
     public List<Prediction> getPredictionsForScheduledGames() {
-        List<Prediction> predictions = predictionRepository.findByGameGameStatus(GameStatus.SCHEDULED);
-        return predictions;
+        return predictionRepository.findByGameGameStatus(GameStatus.SCHEDULED);
     }
 
-    /*
-    metoda do view controllera, nie do rest api
-     */
-//    public void saveOrUpdate(Long predictionId, Long gameId, int homeScore, int awayScore) {
-//        Prediction prediction;
-//
-//        if (predictionId != null) {
-//            prediction = predictionRepository.findById(predictionId)
-//                    .orElseThrow(() -> new RuntimeException("Prediction not found"));
-//        } else {
-//            prediction = new Prediction();
-//            prediction.setGame(gameRepository.findById(gameId)
-//                    .orElseThrow(() -> new RuntimeException("Game not found")));
-//        }
-//
-//        prediction.setPredictedHomeScore(homeScore);
-//        prediction.setPredictedAwayScore(awayScore);
-//        predictionRepository.save(prediction);
-//    }
 
     public void delete(Long id) {
-        Prediction prediction = predictionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Prediction with id " + id + " not found"));
+        predictionRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Prediction with id " + id + " not found"));
         predictionRepository.deleteById(id);
     }
 }

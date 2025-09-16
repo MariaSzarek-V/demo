@@ -4,18 +4,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import pl.xxx.demo.Game.Game;
 import pl.xxx.demo.UserPoints.UserPointsService;
 
 import java.util.List;
 
 
-/*
-widok dla admina
-moze miec osobny get dla meczy, pod warunkiem ze mecze
-dla niezalogowanych sa widoczne ze statusem scheduled
-czyli jest roznica w metodzie
- */
 @Tag(name="1. Admin game")
 @RestController
 @RequiredArgsConstructor

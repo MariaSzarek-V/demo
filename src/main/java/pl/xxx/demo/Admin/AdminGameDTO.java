@@ -1,6 +1,5 @@
 package pl.xxx.demo.Admin;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -44,15 +43,5 @@ public class AdminGameDTO {
     private LocalDateTime gameDate;
     @NotNull(message = "Status nie może być pusty")
     private GameStatus gameStatus;
-
-//    public boolean isScheduled() {
-//        return GameStatus.SCHEDULED.equals(this.gameStatus);
-//    }
-//    public boolean isAdminview() {
-//        return GameStatus.ADMIN_VIEW.equals(this.gameStatus);
-//    }
-//    public boolean isFinished() {
-//        return GameStatus.FINISHED.equals(this.gameStatus);
-//    }
 
 }

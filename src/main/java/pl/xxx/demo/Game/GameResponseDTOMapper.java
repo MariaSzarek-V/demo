@@ -1,9 +1,6 @@
 package pl.xxx.demo.Game;
 
 import org.springframework.stereotype.Component;
-import pl.xxx.demo.Admin.AdminGameDTO;
-import pl.xxx.demo.Prediction.Prediction;
-import pl.xxx.demo.Prediction.PredictionResponseDTO;
 
 import java.util.List;
 

@@ -20,9 +20,8 @@ public class GamePredictionResultController {
 
 
     @GetMapping("/my-prediction-result")
-    public List<GamePredictionResultResponseDTO> getByGamespredictionsResult() {
+    public List<GamePredictionResultResponseDTO> getByGamesPredictionsResult() {
         return gamePredictionResultService.getAllPredictionsByUserWithResult();
-
     }
 
     @GetMapping("/allusers-prediction-result/{gameId}")

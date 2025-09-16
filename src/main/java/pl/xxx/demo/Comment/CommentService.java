@@ -4,13 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.xxx.demo.Error.ResourceNotFoundException;
-import pl.xxx.demo.User.User;
 import pl.xxx.demo.User.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @RequiredArgsConstructor
 @Service

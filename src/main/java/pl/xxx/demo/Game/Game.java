@@ -1,8 +1,6 @@
 package pl.xxx.demo.Game;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import pl.xxx.demo.Enum.GameStatus;
 

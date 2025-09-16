@@ -29,7 +29,6 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // lub STATELESS z JWT
                 );
         return http.build();
-
     }
 
     @Bean
@@ -57,7 +56,5 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-//        return org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance();
-
     }
 }

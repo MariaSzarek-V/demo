@@ -4,11 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import pl.xxx.demo.Prediction.Prediction;
-import pl.xxx.demo.User.User;
 
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface UserPointsRepository extends JpaRepository<UserPoints, Long> {
@@ -16,9 +12,6 @@ public interface UserPointsRepository extends JpaRepository<UserPoints, Long> {
 
     @Query("SELECT SUM(up.points) FROM UserPoints up WHERE up.user.id = :userId")
     Integer sumPointsByUserId(@Param("userId") Long userId);
-
-
-
 
 }
 

@@ -20,8 +20,6 @@ public class UserResponseDTOMapper {
         return users
                 .stream()
                 .map(user -> convertToUserDTO(user))
-                .collect(Collectors.toList());
+                .toList();
     }
-
-
 }

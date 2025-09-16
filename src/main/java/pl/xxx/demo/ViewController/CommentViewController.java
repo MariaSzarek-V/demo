@@ -37,7 +37,6 @@ public class CommentViewController {
             model.addAttribute("comments", commentService.getAllComments());
             return "comments";
         }
-
         commentService.add(dto);
         return "redirect:/comments";
     }

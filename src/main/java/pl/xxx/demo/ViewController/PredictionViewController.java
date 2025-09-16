@@ -20,7 +20,7 @@ public class PredictionViewController {
     private final PredictionService predictionService;
     private final GameService gameService;
 
-    // --- NOWA PREDYKCJA ---
+
     @GetMapping("/new/{gameId}")
     public String showCreateForm(@PathVariable Long gameId, Model model) {
         PredictionRequestDTO prediction = new PredictionRequestDTO();
@@ -46,7 +46,7 @@ public class PredictionViewController {
         return "redirect:/games";
     }
 
-    // --- EDYCJA PREDYKCJI ---
+
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         PredictionResponseDTO response = predictionService.get(id);
@@ -78,7 +78,7 @@ public class PredictionViewController {
         return "redirect:/games";
     }
 
-    // --- USUWANIE ---
+
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id, RedirectAttributes ra) {
         predictionService.delete(id);

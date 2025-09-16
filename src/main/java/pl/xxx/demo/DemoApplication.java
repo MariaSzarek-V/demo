@@ -12,5 +12,4 @@ public class DemoApplication {
         TimeZone.setDefault(TimeZone.getTimeZone("Europe/Warsaw"));
         SpringApplication.run(DemoApplication.class, args);
     }
-
 }

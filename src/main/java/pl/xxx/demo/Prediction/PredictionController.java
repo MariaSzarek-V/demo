@@ -2,7 +2,6 @@ package pl.xxx.demo.Prediction;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import pl.xxx.demo.UserPoints.UserPointsRepository;
 import java.util.List;
 
 
@@ -13,9 +12,6 @@ import java.util.List;
 public class PredictionController {
 
     private final PredictionService predictionService;
-    private final PredictionRepository predictionRepository;
-    private final UserPointsRepository userPointsRepository;
-
 
     @GetMapping("/my")
     public List<PredictionResponseDTO> getMyPredictions() {

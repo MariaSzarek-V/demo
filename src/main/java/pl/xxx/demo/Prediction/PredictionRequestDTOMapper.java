@@ -6,7 +6,6 @@ import pl.xxx.demo.Error.ResourceNotFoundException;
 import pl.xxx.demo.Game.Game;
 import pl.xxx.demo.Game.GameRepository;
 import pl.xxx.demo.User.User;
-import pl.xxx.demo.User.UserRepository;
 
 @AllArgsConstructor
 @Component
@@ -24,7 +23,6 @@ public class PredictionRequestDTOMapper {
                 .user(user)
                 .build();
     }
-
 
 
     public void updatePredictionIfNotNull(Prediction prediction, PredictionRequestDTO dto) {

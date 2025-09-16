@@ -1,6 +1,5 @@
 package pl.xxx.demo.PredictionResult;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import pl.xxx.demo.Enum.GameStatus;
 
@@ -30,7 +29,9 @@ public class GamePredictionResultDTO {
 
     private Integer points;
 
-    // Konstruktor dla mojego SELECT w JPQL
+    /**Konstruktor dla mojego SELECT w JPQL
+     */
+
     public GamePredictionResultDTO(
             Long userId,
             String username,
@@ -62,7 +63,5 @@ public class GamePredictionResultDTO {
         this.points = points;
         this.pointsId = pointsId;
     }
-//    public boolean isFinished() {
-//        return GameStatus.FINISHED.equals(this.gameStatus);
-//    }
+
 }

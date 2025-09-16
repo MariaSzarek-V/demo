@@ -1,17 +1,11 @@
 package pl.xxx.demo.Admin;
 
-import jakarta.xml.bind.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.xxx.demo.Enum.GameStatus;
-import pl.xxx.demo.Error.GameDeleteNotAllowedException;
-import pl.xxx.demo.Error.GameScoreEmptyException;
-import pl.xxx.demo.Error.GameTimeStatusException;
-import pl.xxx.demo.Error.ResourceNotFoundException;
+import pl.xxx.demo.Error.*;
 import pl.xxx.demo.Game.Game;
 import pl.xxx.demo.Game.GameRepository;
-import pl.xxx.demo.Game.GameResponseDTO;
-import pl.xxx.demo.Game.GameResponseDTOMapper;
 import pl.xxx.demo.RankingHistory.RankingHistoryService;
 import pl.xxx.demo.UserPoints.UserPointsService;
 
@@ -34,7 +28,7 @@ public class AdminGameService {
     }
 
     public AdminGameDTO getGameById(Long id) {
-        Game game = gameRepository.findById(id).orElseThrow(() ->new ResourceNotFoundException("Game not found"));
+        Game game = gameRepository.findById(id).orElseThrow(() ->new ResourceNotFoundException(ErrorMessages.GAME_NOT_FOUND));
         return AdminGameDTOMapper.convertToAdminGameDTO(game);
     }
 
@@ -54,13 +48,11 @@ public class AdminGameService {
     public AdminGameDTO updateGame(Long id, AdminGameDTO dto) {
         checkIfGameDateIsCorrect(dto);
         Game existingGame = gameRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.GAME_NOT_FOUND));
 
-        if (dto.getGameStatus() == GameStatus.FINISHED) {
-            if (dto.getHomeScore() == null || dto.getAwayScore() == null) {
+        if (dto.getGameStatus() == GameStatus.FINISHED && dto.getHomeScore() == null || dto.getAwayScore() == null) {
                 throw new GameScoreEmptyException();
             }
-        }
         dto.setId(id);
         AdminGameDTOMapper.updateGameFromDto(dto, existingGame);
         Game savedGame = gameRepository.save(existingGame);
@@ -76,7 +68,7 @@ public class AdminGameService {
 
     public void deleteGame(Long id) {
         Game game = gameRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.GAME_NOT_FOUND));
 
         if (GameStatus.ADMIN_VIEW.equals(game.getGameStatus())) {
             gameRepository.delete(game);
@@ -85,7 +77,7 @@ public class AdminGameService {
         }
     }
 
-    /*
+    /**
     metoda pomocnicza do sprawdzania daty meczu,
     czy przy scheduled jest przed obecna;
     czy finished - data po now
@@ -103,8 +95,6 @@ public class AdminGameService {
         if (status == GameStatus.FINISHED && gameDate.isAfter(now)) {
             throw new GameTimeStatusException();
         }
-
         return true;
-
     }
 }

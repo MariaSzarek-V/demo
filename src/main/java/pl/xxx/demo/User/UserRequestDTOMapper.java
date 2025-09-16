@@ -16,7 +16,6 @@ public class UserRequestDTOMapper {
                 .username(dto.getUsername())
                 .email(dto.getEmail())
                 .password(passwordEncoder.encode(dto.getPassword()))
-//                .password(dto.getPassword())
                 .build();
     }
 

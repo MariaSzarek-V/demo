@@ -6,9 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.xxx.demo.Game.GameService;
-import pl.xxx.demo.Prediction.PredictionRepository;
-import pl.xxx.demo.Prediction.PredictionService;
 import pl.xxx.demo.PredictionResult.GamePredictionResultDTO;
 import pl.xxx.demo.PredictionResult.GamePredictionResultService;
 
@@ -19,12 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PredictionResultViewController {
 
-
-    private final PredictionRepository predictionRepository;
-    private final PredictionService predictionService;
-    private final GameService gameService;
     private final GamePredictionResultService gamePredictionResultService;
-
 
     @GetMapping("/{gameId}")
     public String getGameWithPredictionsAndResults(@PathVariable Long gameId, Model model) {

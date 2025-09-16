@@ -20,6 +20,11 @@ public class UserViewController {
     private final UserService userService;
     private final UserRepository userRepository;
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("user", new UserRequestDTO());

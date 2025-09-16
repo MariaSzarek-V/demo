@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.xxx.demo.Error.ErrorMessages;
 import pl.xxx.demo.Error.InvalidPasswordException;
 import pl.xxx.demo.Error.ResourceNotFoundException;
 import pl.xxx.demo.Error.UsernameEmailAlreadyUsed;
@@ -14,20 +15,19 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final UserResponseDTOMapper userMapper;
     private final UserRequestDTOMapper userCreateDTOMapper;
     private final PasswordEncoder passwordEncoder;
 
 
     public List<UserResponseDTO> getAll() {
         List <User> users = userRepository.findAll();
-        return userMapper.convertToUserDTOList(users);
+        return UserResponseDTOMapper.convertToUserDTOList(users);
     }
 
     public UserResponseDTO get(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        return userMapper.convertToUserDTO(user);
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
+        return UserResponseDTOMapper.convertToUserDTO(user);
     }
 
     public UserResponseDTO add(UserRequestDTO userRequestDTO) {
@@ -36,24 +36,12 @@ public class UserService {
         }
         User user = userCreateDTOMapper.convertToUser(userRequestDTO);
         User saved = userRepository.save(user);
-        return userMapper.convertToUserDTO(saved);
+        return UserResponseDTOMapper.convertToUserDTO(saved);
     }
-//
-//    public User update(Long id, UserRequestDTO userRequestDTO) {
-//        User existingUser = userRepository.findById(id)
-//                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-//        if (checkIfUserUnique(userRequestDTO)){
-//            throw new UsernameEmailAlreadyUsed();
-//        }
-//        existingUser.setUsername(userRequestDTO.getUsername());
-//        existingUser.setPassword(userRequestDTO.getPassword());
-//        User user = userCreateDTOMapper.convertToUser(userRequestDTO);
-//        return userRepository.save(user);
-//    }
 
     public void delete(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new ResourceNotFoundException("User not found");
+            throw new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND);
         }
         userRepository.deleteById(id);
     }
@@ -61,7 +49,7 @@ public class UserService {
     public void updatePassword(UserPasswordUpdateDTO dto) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User existingUser = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
 
         if (!passwordEncoder.matches(dto.getCurrentPassword(), existingUser.getPassword())) {
             throw new InvalidPasswordException();
@@ -72,9 +60,6 @@ public class UserService {
     }
 
     public boolean checkIfUserUnique(UserRequestDTO dto) {
-        if(userRepository.existsUsersByEmail(dto.getEmail())) return false;
-        if (userRepository.existsUsersByUsername(dto.getUsername()))return false;
-        return true;
+        return !userRepository.existsUsersByEmail(dto.getEmail()) && !userRepository.existsUsersByUsername(dto.getUsername());
     }
-
 }

@@ -1,7 +1,6 @@
 package pl.xxx.demo.Comment;
 
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 
@@ -11,7 +10,6 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 public class CommentResponseDTO {
-//    private Long id;
     private String text;
     private String username;
     private LocalDateTime createdAt;
