@@ -17,7 +17,7 @@ public interface UserPointsRepository extends JpaRepository<UserPoints, Long> {
     @Query("SELECT SUM(up.points) FROM UserPoints up WHERE up.user.id = :userId")
     Integer sumPointsByUserId(@Param("userId") Long userId);
 
-    Optional <UserPoints> findByPrediction(Prediction prediction);
+
 
 
 }

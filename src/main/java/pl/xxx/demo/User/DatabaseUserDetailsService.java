@@ -20,11 +20,10 @@ public class DatabaseUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User userEntity = userRepository.findByUsername(username)
-                        .orElseThrow(() -> new UsernameNotFoundException("Użytkownik nie znaleziony"));
+                        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
 
         return org.springframework.security.core.userdetails.User.builder()

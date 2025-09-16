@@ -10,6 +10,7 @@ import pl.xxx.demo.Game.GameResponseDTO;
 import pl.xxx.demo.Game.GameService;
 import pl.xxx.demo.PredictionResult.GamePredictionResultDTO;
 import pl.xxx.demo.Prediction.PredictionService;
+import pl.xxx.demo.PredictionResult.GamePredictionResultService;
 
 import java.util.List;
 
@@ -19,22 +20,14 @@ import java.util.List;
 public class GameViewController {
 
     private final GameService gameService;
-    private final PredictionService predictionService;
+    private final GamePredictionResultService gamePredictionResultService;
 
 
-//// tutaj mecze tylko i wylcznie
-//    @GetMapping("/jakikolwiek")
-//    public String allGames(Model model) {
-//        List<GameResponseDTO> games = gameService.getAll();
-//        model.addAttribute("games", games);
-//        return "games-old";
-//    }
 
-//TODO TERAZ TOOOOOOOOO
 
     @GetMapping("")
     public String getGamesWithPredictionsAndResults(Model model) {
-        List<GamePredictionResultDTO> games = gameService.getAllGamesWithUserPredictionsAndPoints();
+        List<GamePredictionResultDTO> games = gamePredictionResultService.getAllGamesWithUserPredictionsAndPoints();
         model.addAttribute("games", games);
         return "games";
     }

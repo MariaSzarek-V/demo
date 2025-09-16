@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.xxx.demo.PredictionResult.GamePredictionResultDTO;
-import pl.xxx.demo.PredictionResult.PredictionResultService;
+import pl.xxx.demo.PredictionResult.GamePredictionResultResponseDTO;
+
 
 import java.util.List;
+
 @Tag(name="3. Game")
 @RestController
 @RequiredArgsConstructor
@@ -17,7 +19,7 @@ import java.util.List;
 public class GameController {
 
     private final GameService gameService;
-    private final PredictionResultService predictionResultService;
+
 
     @GetMapping("")
     public List<GameResponseDTO> getAllGames() {
@@ -40,16 +42,7 @@ public class GameController {
     }
 
 
-    @GetMapping("/prediction_result")
-    public List<GamePredictionResultDTO> getByGamespredictionsResult() {
-        return gameService.getAllGamesWithUserPredictionsAndPoints();
 
-    }
-
-    @GetMapping("/{id}/allusers")
-    public List<GamePredictionResultDTO> getUsersPredictionResultsByGameId(@PathVariable Long id) {
-        return gameService.getGameWithPredictionsAndPoints(id);
-    }
 
 
 

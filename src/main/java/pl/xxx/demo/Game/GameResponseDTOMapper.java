@@ -12,6 +12,7 @@ public class GameResponseDTOMapper {
 
     public static GameResponseDTO convertToGameResponseDTO(Game game) {
         return GameResponseDTO.builder()
+                .gameId(game.getId())
                 .homeTeam(game.getHomeTeam())
                 .awayTeam(game.getAwayTeam())
                 .homeScore(game.getHomeScore())

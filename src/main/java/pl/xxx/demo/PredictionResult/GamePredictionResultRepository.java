@@ -67,4 +67,31 @@ public interface GamePredictionResultRepository extends JpaRepository<Game, Long
     List<GamePredictionResultDTO> findGameWithAllUserPredictionsAndPoints(@Param("gameId") Long gameId);
 
 
+    @Query("""
+    SELECT new pl.xxx.demo.PredictionResult.GamePredictionResultDTO(
+        u.id,
+        u.username,
+        g.id,
+        g.homeTeam,
+        g.awayTeam,
+        g.homeScore,
+        g.awayScore,
+        g.gameDate,
+        g.gameStatus,
+        p.predictedHomeScore,
+        p.predictedAwayScore,
+        p.id,
+        up.points,
+        up.id
+    )
+    FROM Prediction p
+    JOIN p.user u
+    LEFT JOIN p.game g
+    LEFT JOIN UserPoints up ON up.prediction.id = p.id AND up.user.id = u.id
+    WHERE u.id = :userId
+    ORDER BY g.gameDate DESC
+""")
+    List<GamePredictionResultDTO> findAllPredictionsByUserWithResults(@Param("userId") Long userId);
+
+
 }

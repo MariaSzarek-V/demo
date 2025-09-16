@@ -52,22 +52,22 @@ Administrators have the ability to add, menage games.
 
 ## Application Structure
 
-- `/` – Strona główna (lista meczów, możliwość typowania)
-- `/login` – Logowanie
-- `/register` – Rejestracja
-- `/ranking` – Ranking użytkowników
-- `/admin/matches` – Panel zarządzania meczami (ADMIN)
-- `/users/{id}/password` – Zmiana hasła użytkownika 
-- `/games` - Home page (match list, prediction functionality)
-- `login` - Login page
+- `/register` – Register page,
+- `/login` – Login page,
+- 
+- ???PASSWORD??? change
+- 
+- `/games` – Home page, Game view with management access,
+- `/ranking` – User ranking
+- `/predictions/new/..` -
+- `/predictions/edit/..` - 
+- `/results/..` - Users predictions with points result for one game,
+- `/comments` - Comment section,
 
-/register - Registration page
-
-- `/ranking` - User rankings
-
-- `/admin/games` - Match management panel (ADMIN only)
-
-/users/{id}/password - Password change functionality
+Admin:
+- `/admin/games` - Game management panel (ADMIN only)
+- `/admin/games/new` - Add new game,
+- `/admin/games/edit/..` - Update game,
 
 ---
 
@@ -125,6 +125,12 @@ mvn spring-boot:run
 - Each match must have a status at every stage
 
 - Validation prevents adding results without finishing the match
+
+### Comment section
+
+
+
+
 
 ### API Features
 - POST endpoints accept partial requests without overwriting fields with null values

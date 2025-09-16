@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 public class GameResponseDTO {
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long gameId;
     private String homeTeam;
     private String awayTeam;

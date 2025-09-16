@@ -1,5 +1,6 @@
 package pl.xxx.demo.PredictionResult;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import pl.xxx.demo.Enum.GameStatus;
 

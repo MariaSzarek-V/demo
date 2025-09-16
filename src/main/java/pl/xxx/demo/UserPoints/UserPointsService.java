@@ -9,7 +9,7 @@ import pl.xxx.demo.Prediction.PredictionRepository;
 import pl.xxx.demo.User.User;
 
 import java.util.List;
-import java.util.Optional;
+
 
 
 @Service
@@ -48,12 +48,12 @@ public class UserPointsService {
 
 
 
-    public UserPoints update(Long id, UserPoints userPoints) {
-        UserPoints existingUserPoints = userPointsRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No such user points to update"));
-        existingUserPoints.setPoints(userPoints.getPoints());
-        return userPointsRepository.save(userPoints);
-    }
+//    public UserPoints update(Long id, UserPoints userPoints) {
+//        UserPoints existingUserPoints = userPointsRepository.findById(id)
+//                .orElseThrow(() -> new RuntimeException("No such user points to update"));
+//        existingUserPoints.setPoints(userPoints.getPoints());
+//        return userPointsRepository.save(userPoints);
+//    }
 
 
     public int calculatePointsForGame(Prediction prediction) {
@@ -75,8 +75,6 @@ public class UserPointsService {
             pointsForGame += 0;
         }
 
-        System.out.println("game result: " + gameResult.toString());
-        System.out.println("predicted home: " + predictedResult.toString());
         return pointsForGame;
 
 
