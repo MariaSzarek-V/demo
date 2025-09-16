@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .securityMatcher("/**")
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/home", "/index").permitAll()
+                        .requestMatchers("/register", "/login").permitAll()
                         .requestMatchers("/error").permitAll() // <-- DODANE
                         .requestMatchers("/css/**", "/js/**", "/vendor/**", "/img/**", "/scss/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")

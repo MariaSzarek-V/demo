@@ -21,9 +21,8 @@ public class RankingViewController {
     @GetMapping
     public String rankingHistory(Model model) {
         List<RankingHistoryDTO> ranking = rankingHistoryService.getLastRankingHistory();
-        List<RankingHistoryDTO> emptyRanking =  new ArrayList<>();
-//        model.addAttribute("ranking", emptyRanking);
         model.addAttribute("ranking", ranking);
+
         return "ranking";
     }
 }

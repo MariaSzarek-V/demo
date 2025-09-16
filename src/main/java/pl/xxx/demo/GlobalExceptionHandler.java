@@ -18,12 +18,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             GameTimeStatusException.class,
             PredictionEditNotAllowedException.class,
-            NoRankingAvailableException.class,
             GameDeleteNotAllowedException.class,
             PredictionAlreadyExistForGameException.class,
             ResourceNotFoundException.class,
             UsernameEmailAlreadyUsed.class,
-            InvalidPasswordException.class
+            InvalidPasswordException.class,
+            GameScoreEmptyException.class,
+            IllegalGameStatusException.class,
+            DuplicateRankingEntryException.class
     })
     public ResponseEntity<Map<String, Object>> handleBusinessExceptions(BusinessException e) {
         return buildErrorResponse(e.getMessage(), e.getStatus());

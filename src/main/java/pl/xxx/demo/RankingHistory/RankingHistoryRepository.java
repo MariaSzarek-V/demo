@@ -44,4 +44,6 @@ public interface RankingHistoryRepository extends JpaRepository<RankingHistory, 
 
     //znajdz wpis dla usera i konkretnego gameId
     Optional<RankingHistory> findByGameIdAndUser(Long gameId, User user);
+
+    boolean existsByGameId(Long gameId);
 }

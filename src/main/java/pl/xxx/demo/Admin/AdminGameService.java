@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.xxx.demo.Enum.GameStatus;
 import pl.xxx.demo.Error.GameDeleteNotAllowedException;
+import pl.xxx.demo.Error.GameScoreEmptyException;
 import pl.xxx.demo.Error.GameTimeStatusException;
 import pl.xxx.demo.Error.ResourceNotFoundException;
 import pl.xxx.demo.Game.Game;
@@ -55,6 +56,11 @@ public class AdminGameService {
         Game existingGame = gameRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
 
+        if (dto.getGameStatus() == GameStatus.FINISHED) {
+            if (dto.getHomeScore() == null || dto.getAwayScore() == null) {
+                throw new GameScoreEmptyException();
+            }
+        }
         dto.setId(id);
         AdminGameDTOMapper.updateGameFromDto(dto, existingGame);
         Game savedGame = gameRepository.save(existingGame);

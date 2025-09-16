@@ -1,16 +1,14 @@
 package pl.xxx.demo.RankingHistory;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.xxx.demo.Error.NoRankingAvailableException;
+import pl.xxx.demo.Error.DuplicateRankingEntryException;
 import pl.xxx.demo.Error.ResourceNotFoundException;
 import pl.xxx.demo.Ranking.RankingDTO;
 import pl.xxx.demo.Ranking.RankingService;
 import pl.xxx.demo.User.User;
 import pl.xxx.demo.User.UserRepository;
-import pl.xxx.demo.UserPoints.UserPointsRepository;
-
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,15 +34,15 @@ public class RankingHistoryService {
                             rh.getPosition(),
                             rh.getPositionChange()
                     )).toList();
-        } else {
-            throw new NoRankingAvailableException();
         }
-
+        return Collections.emptyList();
     }
 
     public void saveCurrentRankingToHistory(Long gameId){
         List<RankingDTO> currentRanking = rankingService.getCurrentRanking();
-
+        if (rankingHistoryRepository.existsByGameId(gameId)) {
+            throw new DuplicateRankingEntryException();
+        }
         for (int i=0; i<currentRanking.size(); i++){
             RankingDTO rankingDTO = currentRanking.get(i);
             User user = userRepository.findByUsername(rankingDTO.getUsername())
