@@ -161,7 +161,6 @@ mvn spring-boot:run
 | `PUT`    | `/api/admin/games/{id}`                            | Update game                                     |
 | `DELETE` | `/api/admin/games/{id}`                            | Delete game                                     |
 | `DELETE` | `/api/admin/games/{id}`                            | Delete game                                     |
-| Method   | Endpoint                                           | Description                                     |
 | -        | -                                                  | -                                               |
 | `GET`    | `/api/user`                                        | Get all users                                   |
 | `GET`    | `/api/user/{id}`                                   | Get user by ID                                  |
