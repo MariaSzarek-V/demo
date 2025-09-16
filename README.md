@@ -1,8 +1,8 @@
 # 🏆 PredictionCup
 
 PredictionCup is a web application for predicting match results, featuring a scoring system and player rankings.
-Users can predict match outcomes, earn points, and compete in the ranking system.
-Administrators have the ability to add, menage games.
+Users can predict games outcomes, earn points, and compete in the ranking system.
+Administrators have the ability to menage games.
 
 ---
 
@@ -10,26 +10,22 @@ Administrators have the ability to add, menage games.
 
 ### User Features
 
-- Registration via email and password,
-- Login with username,
-- Password change functionality,
-- Browse available games (SCHEDULED and FINISHED status),
-- Predict game results (before the match starts),
-- Earn points after game completion:
-  - **3 points** - exact score prediction,
-  - **1 point** - correct winner/draw prediction with wrong score,
-  - **0 points** - incorrect prediction,
-
-- View ranking with information about current position and position changes compared to previous game,
-- View other compatitors prediction and score for each finished game;
-
+- User registration and login (username-based authentication),
+- Change password functionality,
+- Browse available games (SCHEDULED and FINISHED),
+- Submit or update predictions before game start,
+- Earn points after game completion,
+- View ranking with current position and position changes compared to previous matches,
+- View other players’ predictions and points after game completion,
+- Comment section for public discussions.
 ---
 
 ### Admin Features
 
 - Add, update, delete game,
-- Admin-only game view (regular users + ADMIN_VIEW game status),
-
+- Admin-only game view with ADMIN_VIEW status,
+- Change game status: When status changes to FINISHED, points are automatically calculated,
+- Restrict deletion of games to those with ADMIN_VIEW status.
 ---
 
 ## Technology Stack
@@ -52,22 +48,23 @@ Administrators have the ability to add, menage games.
 
 ## Application Structure
 
-- `/register` – Register page,
-- `/login` – Login page,
-- 
-- ???PASSWORD??? change
-- 
-- `/games` – Home page, Game view with management access,
+- `/register` – User registration,
+- `/login` – User login,
+- `/games` – All games list,
 - `/ranking` – User ranking
-- `/predictions/new/..` -
-- `/predictions/edit/..` - 
-- `/results/..` - Users predictions with points result for one game,
+- `/predictions/new/..` - Predictions create,
+- `/predictions/edit/..` - Predictions update,
+- `/results/..` - All users predictions and points for a specific game,
 - `/comments` - Comment section,
 
+
 Admin:
-- `/admin/games` - Game management panel (ADMIN only)
-- `/admin/games/new` - Add new game,
+- `/admin/games` - Game management
+- `/admin/games/new` - Add game,
 - `/admin/games/edit/..` - Update game,
+
+REST:
+- `/swagger-ui/index.html` - REST API documentation
 
 ---
 
@@ -109,32 +106,31 @@ mvn spring-boot:run
 
 ## Key Functionality
 
-### Match Management
-- CRUD operations for matches completed,
-- Date validation ensures matches are properly scheduled/finished
-- Match status changes trigger automatic point calculation
-- Admin view - exclusive access for administrators, regular users see only scheduled matches
+### Game Management for Admin
+- Add, update, delete games,
+- Deletion is only allowed for games with the ADMIN_VIEW status,
+- Validation ensures correct date and status when creating or updating a game,
+- Changing a game’s status to FINISHED automatically triggers the calculation of prediction points.
+
+### Game Score Prediction
+- Users can view a list of games with SCHEDULED and FINISHED statuses.
+- For SCHEDULED games, users can submit score predictions.
+- Predictions can be updated multiple times before the game start time.
+- After the admin changes the game status to FINISHED, points are calculated
+  - **3 points** - exact score prediction,
+  - **1 point** - correct winner/draw prediction with wrong score,
+  - **0 points** - incorrect prediction,
 
 ### Ranking System
-
-- Stateless ranking - updates automatically with each GET request
-- Ranking history - tracks user position changes, promotions and demotions
-- Real-time ranking updates when matches are finished
+- Rankings are updated after each finished game based on points earned from predictions.
+- Displays each user’s current position and changes compared to the previous round (promotions/demotions).
 
 ### Match Status
-- Each match must have a status at every stage
-
-- Validation prevents adding results without finishing the match
+- Every match must have a defined status at all times.
+- Validation prevents adding results unless the match status is set to FINISHED.
 
 ### Comment section
-
-
-
-
-
-### API Features
-- POST endpoints accept partial requests without overwriting fields with null values
-
+- Users can post comments visible to all participants.
 
 ## Roadmap
 - Enhenced dashboard with statistics
