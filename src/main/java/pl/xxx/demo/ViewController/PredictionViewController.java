@@ -1,109 +1,88 @@
-//package pl.xxx.demo.ViewController;
-//
-//import jakarta.validation.Valid;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.validation.BindingResult;
-//import org.springframework.web.bind.annotation.*;
-//import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-//import pl.xxx.demo.Admin.AdminGameDTO;
-//import pl.xxx.demo.Error.GameTimeStatusException;
-//import pl.xxx.demo.Error.PredictionEditNotAllowedException;
-//import pl.xxx.demo.Game.Game;
-//import pl.xxx.demo.Game.GameResponseDTO;
-//import pl.xxx.demo.Game.GameService;
-//import pl.xxx.demo.Prediction.PredictionRequestDTO;
-//import pl.xxx.demo.Prediction.PredictionResponseDTO;
-//import pl.xxx.demo.Prediction.PredictionService;
-//
-//@Controller
-//@RequestMapping("/predictions")
-//@RequiredArgsConstructor
-//public class PredictionViewController {
-//    private final PredictionService predictionService;
-//    private final GameService gameService;
-//
-//    //user nie opotrzebuje ogladac swoejgo prediction
-//    //pod /prediction/{id}
-//
-//    //FORMULARZ NOWY
-//    @GetMapping("/new/{gameId}")
-//    public String showCreateFormPrediction(@PathVariable Long gameId, Model model) {
-//
-//        GameResponseDTO game = gameService.get(gameId);
-//        PredictionRequestDTO dto = new PredictionRequestDTO();
-//        dto.setGameId(gameId);
-//        model.addAttribute("prediction", dto);
-//        model.addAttribute("game", game);
-//        model.addAttribute("readOnly", false);
-//        return "predictions/predictionform";
-//    }
-//
-//
-//    //formularz edycji do istniejacej predykcji
-//    @GetMapping("/edit/{id}")
-//    public String showEditFormPrediction(@PathVariable Long id, Model model) {
-//        PredictionResponseDTO dto = predictionService.get(id);
-//        GameResponseDTO game = gameService.get(dto.getGameId());
-//        model.addAttribute("prediction", dto);
-//        model.addAttribute("game", game);
-////        model.addAttribute("formAction", "/predictions/new");
-//        model.addAttribute("readOnly", false);
-//        return "predictions/predictionform";
-//    }
-//
-//    //formularz zapisz nowy
-//    @PostMapping("/new/{gameId}")
-//    public String createPrediction(@PathVariable Long gameId, @Valid @ModelAttribute("prediction") PredictionRequestDTO predictionDTO,
-//                                   BindingResult result, Model model, RedirectAttributes ra) {
-//        System.out.println("=====DEBUG+++");
-//        System.out.println("gameId " + gameId);
-//        System.out.println("predictionDTO " + predictionDTO);
-//        System.out.println("has errors " + result.hasErrors());
-//
-//        if (result.hasErrors()) {
-//            GameResponseDTO game = gameService.get(gameId);
-//            model.addAttribute("prediction", predictionDTO);
-//            model.addAttribute("game", game);
-//            model.addAttribute("readOnly", false);
-//            return "predictions/predictionform";
-//        }
-//        try {
-//            predictionDTO.setGameId(gameId);
-//            predictionService.add(predictionDTO);
-//            ra.addFlashAttribute("message", "Prediction created");
-//            return "redirect:/games";
-//        } catch (PredictionEditNotAllowedException e) {
-//            ra.addFlashAttribute("message", e.getMessage());
-//        }
-//        return "redirect:/games";
-//    }
-//
-//    //zapisz edycje
-//    @PostMapping("/edit/{id}")
-//    public String updatePrediction(@PathVariable Long id, @Valid @ModelAttribute("prediction") PredictionRequestDTO predictionDTO, BindingResult result, Model model, RedirectAttributes ra) {
-//
-//        Long gameId = predictionService.get(id).getGameId();
-//        if (result.hasErrors()) {
-//            predictionDTO.setId(id);
-//            model.addAttribute("prediction", predictionDTO);
-//            model.addAttribute("game", gameService.get(gameId));
-////            model.addAttribute("formAction", "/predictions/new");
-//            model.addAttribute("readOnly", false);
-//            return "predictions/predictionform";
-//        }
-//        predictionService.update(id, predictionDTO);
-//        ra.addFlashAttribute("message", "Prediction updated");
-//        return "redirect:/games";
-//    }
-//
-//    @GetMapping("/delete/{id}")
-//    public String deletePrediction(@PathVariable Long id, RedirectAttributes ra) {
-//        predictionService.delete(id);
-//        ra.addFlashAttribute("message", "Prediction deleted");
-//        return "redirect:/games";
-//    }
-//
-//
-//}
+package pl.xxx.demo.ViewController;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.xxx.demo.Prediction.PredictionRequestDTO;
+import pl.xxx.demo.Prediction.PredictionResponseDTO;
+import pl.xxx.demo.Prediction.PredictionService;
+import pl.xxx.demo.Game.GameService;
+
+@Controller
+@RequiredArgsConstructor
+@RequestMapping("/predictions")
+public class PredictionViewController {
+
+    private final PredictionService predictionService;
+    private final GameService gameService;
+
+    // --- NOWA PREDYKCJA ---
+    @GetMapping("/new/{gameId}")
+    public String showCreateForm(@PathVariable Long gameId, Model model) {
+        PredictionRequestDTO prediction = new PredictionRequestDTO();
+        prediction.setGameId(gameId);
+
+        model.addAttribute("prediction", prediction);
+        model.addAttribute("game", gameService.get(gameId));
+        return "predictions/new";  // osobny widok
+    }
+
+    @PostMapping("/new/{gameId}")
+    public String create(@PathVariable Long gameId,
+                         @Valid @ModelAttribute("prediction") PredictionRequestDTO dto,
+                         BindingResult result,
+                         Model model,
+                         RedirectAttributes ra) {
+        if (result.hasErrors()) {
+            model.addAttribute("game", gameService.get(gameId));
+            return "predictions/new";
+        }
+        predictionService.add(dto);
+        ra.addFlashAttribute("message", "Predykcja dodana");
+        return "redirect:/games";
+    }
+
+    // --- EDYCJA PREDYKCJI ---
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        PredictionResponseDTO response = predictionService.get(id);
+
+        // mapowanie ResponseDTO -> RequestDTO
+        PredictionRequestDTO prediction = new PredictionRequestDTO();
+        prediction.setId(id);
+        prediction.setGameId(response.getGameId());
+        prediction.setPredictedHomeScore(response.getPredictedHomeScore());
+        prediction.setPredictedAwayScore(response.getPredictedAwayScore());
+
+        model.addAttribute("prediction", prediction);
+        model.addAttribute("game", gameService.get(response.getGameId()));
+        return "predictions/edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String update(@PathVariable Long id,
+                         @Valid @ModelAttribute("prediction") PredictionRequestDTO dto,
+                         BindingResult result,
+                         Model model,
+                         RedirectAttributes ra) {
+        if (result.hasErrors()) {
+            model.addAttribute("game", gameService.get(dto.getGameId()));
+            return "predictions/edit";
+        }
+        predictionService.update(id, dto);
+        ra.addFlashAttribute("message", "Predykcja zaktualizowana");
+        return "redirect:/games";
+    }
+
+    // --- USUWANIE ---
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Long id, RedirectAttributes ra) {
+        predictionService.delete(id);
+        ra.addFlashAttribute("message", "Predykcja usunięta");
+        return "redirect:/games";
+    }
+}

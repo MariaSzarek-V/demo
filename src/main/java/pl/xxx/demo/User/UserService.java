@@ -1,6 +1,7 @@
 package pl.xxx.demo.User;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.xxx.demo.Error.InvalidPasswordException;
 import pl.xxx.demo.Error.ResourceNotFoundException;
@@ -14,6 +15,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserResponseDTOMapper userMapper;
     private final UserRequestDTOMapper userCreateDTOMapper;
+    private final PasswordEncoder passwordEncoder;
 
 
     public List<UserResponseDTO> getAll() {
@@ -62,11 +64,11 @@ public class UserService {
         if (!dto.getCurrentPassword().equals(existingUser.getPassword())) {
             throw new InvalidPasswordException();
         }
-//        if (!passwordEncoder.matches(dto.getCurrentPassword(), existingUser.getPassword())) {
-//            throw new InvalidPasswordException();
-//        }
+        if (!passwordEncoder.matches(dto.getCurrentPassword(), existingUser.getPassword())) {
+            throw new InvalidPasswordException();
+        }
 
-//        existingUser.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+        existingUser.setPassword(passwordEncoder.encode(dto.getNewPassword()));
         userRepository.save(existingUser);
     }
 
