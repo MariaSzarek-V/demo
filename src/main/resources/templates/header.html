@@ -65,9 +65,11 @@
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
+      <br>
+      <hr class="sidebar-divider my-0">
       <li class="nav-item" sec:authorize="hasRole('ADMIN')">
         <span class="nav-link" >
-          <i class="fas fa-fw fa-chart-area"></i>
+
           <span>PANEL ADMINA</span></span>
       </li>
 
@@ -75,7 +77,7 @@
       <li class="nav-item" sec:authorize="hasRole('ADMIN')">
         <a th:href="@{/admin/games}" class="nav-link" >
           <i class="fas fa-fw fa-chart-area"></i>
-          <span>LISTA MECZY</span></a>
+          <span>Zarządzanie meczami</span></a>
       </li>
 
       <li class="nav-item" sec:authorize="hasRole('ADMIN')">
