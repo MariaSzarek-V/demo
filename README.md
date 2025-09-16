@@ -153,45 +153,40 @@ mvn spring-boot:run
 
 ### API endpoints
 
-| Method   | Endpoint                | Description                     |
-|----------|-------------------------|---------------------------------|
-| `GET`    | `/api/admin/games`      | Get all games visible for admin |
-| `GET`    | `/api/admin/games/{id}` | Get game by ID                  |
-| `POST`   | `/api/admin/games`      | Create new game                 |
-| `PUT`    | `/api/admin/games/{id}` | Update game                     |
-| `DELETE` | `/api/admin/games/{id}` | Delete game                     |
-| `DELETE` | `/api/admin/games/{id}` | Delete game                     |
-| Method   | Endpoint                | Description          |
-|----------|-------------------------|----------------------|
-| `GET`    | `/api/user`             | Get all users        |
-| `GET`    | `/api/user/{id}`        | Get user by ID       |
-| `POST`   | `/api/user`             | Create new user      |
-| `PUT`    | `/api/user`             | Update user password |
-| `DELETE` | `/api/user/{id}`        | Delete user          |
-| Method   | Endpoint              | Description                         |
-|----------|-----------------------|-------------------------------------|
-| `GET`    | `/api/games`          | Get all games                       |
-| `GET`    | `/api/games/{id}`     | Get game by ID                      |
-| `GET`    | `/api/games/upcoming` | Get all games with status SCHEDULED |
-| `GET`    | `/api/games/finished` | Get all games with status FINISHED  |
-| Method   | Endpoint                | Description                     |
-|----------|-------------------------|---------------------------------|
-| `GET`    | `/api/predictions/my`   | Get all predictions for logged user |
-| `GET`    | `/api/predictions/{id}` | Get prediction by ID            |
-| `POST`   | `/api/predictions`      | Create new prediction           |
-| `PUT`    | `/api/predictions/{id}` | Update prediction               |
-| `DELETE` | `/api/predictions/{id}` | Delete prediction by ID         |
-| Method   | Endpoint                                          | Description                                     |
-|----------|---------------------------------------------------|-------------------------------------------------|
-| `GET`    | `/api/results/my-prediction-result`               | Get all predictions with result for logged user |
+| Method   | Endpoint                                           | Description                                     |
+|----------|----------------------------------------------------|-------------------------------------------------|
+| `GET`    | `/api/admin/games`                                 | Get all games visible for admin                 |
+| `GET`    | `/api/admin/games/{id}`                            | Get game by ID                                  |
+| `POST`   | `/api/admin/games`                                 | Create new game                                 |
+| `PUT`    | `/api/admin/games/{id}`                            | Update game                                     |
+| `DELETE` | `/api/admin/games/{id}`                            | Delete game                                     |
+| `DELETE` | `/api/admin/games/{id}`                            | Delete game                                     |
+| Method   | Endpoint                                           | Description                                     |
+| -        | -                                                  | -                                               |
+| `GET`    | `/api/user`                                        | Get all users                                   |
+| `GET`    | `/api/user/{id}`                                   | Get user by ID                                  |
+| `POST`   | `/api/user`                                        | Create new user                                 |
+| `PUT`    | `/api/user`                                        | Update user password                            |
+| `DELETE` | `/api/user/{id}`                                   | Delete user                                     |
+| -        | -                                                  | -                                               |
+| `GET`    | `/api/games`                                       | Get all games                                   |
+| `GET`    | `/api/games/{id}`                                  | Get game by ID                                  |
+| `GET`    | `/api/games/upcoming`                              | Get all games with status SCHEDULED             |
+| `GET`    | `/api/games/finished`                              | Get all games with status FINISHED              |
+| -        | -                                                  | -                                               |
+| `GET`    | `/api/predictions/my`                              | Get all predictions for logged user             |
+| `GET`    | `/api/predictions/{id}`                            | Get prediction by ID                            |
+| `POST`   | `/api/predictions`                                 | Create new prediction                           |
+| `PUT`    | `/api/predictions/{id}`                            | Update prediction                               |
+| `DELETE` | `/api/predictions/{id}`                            | Delete prediction by ID                         |
+| -        | -                                                  | -                                               |
+| `GET`    | `/api/results/my-prediction-result`                | Get all predictions with result for logged user |
 | `GET`    | `/api/results/allusers-prediction-result/{gameId}` | Get all predictions with result for one game    |
-| Method   | Endpoint   | Description |
-|----------|------------|-------------|
-| `GET`    | `/api/ranking` | Get ranking |
-| Method | Endpoint        | Description        |
-|--------|-----------------|--------------------|
-| `GET`  | `/api/comments` | Get all comments   |
-| `POST` | `/api/comments` | Create new comment |
+| -        | -                                                  | -                                               |
+| `GET`    | `/api/ranking`                                     | Get ranking                                     |
+| -        | -                                                  | -                                               |
+| `GET`    | `/api/comments`                                    | Get all comments                                |
+| `POST`   | `/api/comments`                                    | Create new comment                              |
 
 
 ## Roadmap
