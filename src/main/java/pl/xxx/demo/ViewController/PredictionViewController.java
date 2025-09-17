@@ -35,14 +35,12 @@ public class PredictionViewController {
     public String create(@PathVariable Long gameId,
                          @Valid @ModelAttribute("prediction") PredictionRequestDTO dto,
                          BindingResult result,
-                         Model model,
-                         RedirectAttributes ra) {
+                         Model model) {
         if (result.hasErrors()) {
             model.addAttribute("game", gameService.get(gameId));
             return "predictions/new";
         }
         predictionService.add(dto);
-        ra.addFlashAttribute("message", "Predykcja dodana");
         return "redirect:/games";
     }
 
@@ -51,7 +49,6 @@ public class PredictionViewController {
     public String showEditForm(@PathVariable Long id, Model model) {
         PredictionResponseDTO response = predictionService.get(id);
 
-        // mapowanie ResponseDTO -> RequestDTO
         PredictionRequestDTO prediction = new PredictionRequestDTO();
         prediction.setId(id);
         prediction.setGameId(response.getGameId());
@@ -74,15 +71,13 @@ public class PredictionViewController {
             return "predictions/edit";
         }
         predictionService.update(id, dto);
-        ra.addFlashAttribute("message", "Predykcja zaktualizowana");
         return "redirect:/games";
     }
 
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, RedirectAttributes ra) {
+    public String delete(@PathVariable Long id) {
         predictionService.delete(id);
-        ra.addFlashAttribute("message", "Predykcja usunięta");
         return "redirect:/games";
     }
 }

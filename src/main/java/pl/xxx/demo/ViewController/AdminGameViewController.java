@@ -43,7 +43,7 @@ public class AdminGameViewController {
     }
 
     @PostMapping("/new")
-    public String createAdminGame(@Valid @ModelAttribute("game") AdminGameDTO adminGameDTO, BindingResult result, Model model, RedirectAttributes ra){
+    public String createAdminGame(@Valid @ModelAttribute("game") AdminGameDTO adminGameDTO, BindingResult result, Model model){
         if (result.hasErrors()) {
             model.addAttribute("readOnly", false);
             model.addAttribute("formAction", "/admin/games/new");
@@ -61,7 +61,6 @@ public class AdminGameViewController {
             return "admin/games/form";
         }
         adminGameService.addGame(adminGameDTO);
-        ra.addFlashAttribute("message", "Game created");
         return "redirect:/admin/games";
     }
 
@@ -104,9 +103,8 @@ public class AdminGameViewController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteAdminGame(@PathVariable Long id, RedirectAttributes ra) {
+    public String deleteAdminGame(@PathVariable Long id) {
         adminGameService.deleteGame(id);
-        ra.addFlashAttribute("message", "Game deleted");
         return "redirect:/admin/games";
     }
 }

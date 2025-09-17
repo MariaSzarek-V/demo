@@ -57,7 +57,6 @@ public class UserPointsService {
         } else {
             pointsForGame += 0;
         }
-
         return pointsForGame;
 
     }
