@@ -19,7 +19,7 @@ Administrators have the ability to menage games.
 - View other players’ predictions and points after game completion,
 - Comment section for public discussions.
 
-![img_10.png](img_10.png)
+![img_10.png](docs/img_10.png)
 
 ---
 
@@ -30,7 +30,7 @@ Administrators have the ability to menage games.
 - Change game status: When status changes to FINISHED, points are automatically calculated,
 - Restrict deletion of games to those with ADMIN_VIEW status.
 
-![img_11.png](img_11.png)
+![img_11.png](docs/img_11.png)
 
 ---
 
@@ -118,7 +118,7 @@ mvn spring-boot:run
 - Validation ensures correct date and status when creating or updating a game,
 - Changing a game’s status to FINISHED automatically triggers the calculation of prediction points.
 
-![img_7.png](img_7.png)
+![img_7.png](docs/img_7.png)
 
   
 ### Game Score Prediction
@@ -130,17 +130,17 @@ mvn spring-boot:run
   - **1 point** - correct winner/draw prediction with wrong score,
   - **0 points** - incorrect prediction,
   
-![img_12.png](img_12.png)
+![img_12.png](docs/img_12.png)
 
-![img_13.png](img_13.png)
+![img_13.png](docs/img_13.png)
   
 ### Ranking System
 - Rankings are updated after each finished game based on points earned from predictions.
 - Displays each user’s current position and changes compared to the previous round (promotions/demotions).
 
-![img_4.png](img_4.png)
+![img_4.png](docs/img_4.png)
 
-![img_5.png](img_5.png)
+![img_5.png](docs/img_5.png)
 
 ### Match Status
 - Every match must have a defined status at all times.
@@ -149,7 +149,7 @@ mvn spring-boot:run
 ### Comment section
 - Users can post comments visible to all participants.
 
-![img.png](img.png)
+![img.png](docs/img.png)
 
 ### API endpoints
 

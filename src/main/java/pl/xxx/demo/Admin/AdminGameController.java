@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import pl.xxx.demo.UserPoints.UserPointsService;
 
 import java.util.List;
 
@@ -16,7 +15,6 @@ import java.util.List;
 public class AdminGameController {
 
     private final AdminGameService adminGameService;
-    private final UserPointsService userPointsService;
 
     @GetMapping
     public List<AdminGameDTO> getGames() {
