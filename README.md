@@ -105,7 +105,7 @@ mvn spring-boot:run
 
 4.**Access the application**
 
-- Main application: http://localhost:8080
+- Main application: http://localhost:8080/games
 
 - Swagger API documentation: http://localhost:8080/swagger-ui.html
 
