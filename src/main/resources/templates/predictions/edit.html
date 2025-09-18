@@ -20,6 +20,11 @@
 
                     <form th:action="@{/predictions/edit/{id}(id=${prediction.id})}"
                           th:object="${prediction}" method="post" class="user">
+                        <div th:if="${#fields.hasGlobalErrors()}" class="text-danger">
+                            <ul>
+                                <li th:each="err : ${#fields.globalErrors()}" th:text="${err}"></li>
+                            </ul>
+                        </div>
 
                         <!-- CSRF -->
                         <input type="hidden" name="_csrf" th:value="${_csrf.token}" />

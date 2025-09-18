@@ -49,14 +49,14 @@
                             </span>
                             <br>
                             <div>
-                                <a th:if="${row.predictionId != null and row.gameStatus != T(pl.xxx.demo.Enum.GameStatus).FINISHED}"
+                                <a th:if="${row.predictionId != null and row.gameStatus != T(pl.xxx.demo.Enum.GameStatus).FINISHED and T(java.time.LocalDateTime).now().isBefore(row.gameDate)}"
                                    th:href="@{/predictions/edit/{id}(id=${row.predictionId})}"
                                    class="btn btn-outline-primary">
                                     <span class="icon text-white-50">
                                     </span>
                                     <span class="text">Modyfikuj</span>
                                 </a>
-                                <form th:if="${row.predictionId != null and row.gameStatus != T(pl.xxx.demo.Enum.GameStatus).FINISHED}"
+                                <form th:if="${row.predictionId != null and row.gameStatus != T(pl.xxx.demo.Enum.GameStatus).FINISHED and T(java.time.LocalDateTime).now().isBefore(row.gameDate)}"
                                       th:action="@{/predictions/delete/{id}(id=${row.predictionId})}"
                                       method="post"
                                       onsubmit="return confirm('Czy na pewno chcesz usunąć ten typowany wynik?');"

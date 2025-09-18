@@ -16,11 +16,15 @@ public class UserPoints {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private Integer points;
+
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
+
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Prediction prediction;
 }

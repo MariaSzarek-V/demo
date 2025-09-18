@@ -18,17 +18,23 @@ public class Prediction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private Integer predictedHomeScore;
+
     @Column(nullable = false)
     private Integer predictedAwayScore;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
+
     @ManyToOne
     @JoinColumn(name = "game_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Game game;
+
     @Builder.Default
     @Column(nullable = false)
     private Boolean calculated = false;

@@ -13,7 +13,6 @@ import java.util.List;
 public class GameService {
 
     private final GameRepository gameRepository;
-    private final PredictionRepository predictionRepository;
 
 
     public List<GameResponseDTO> getAll() {
@@ -36,7 +35,6 @@ public class GameService {
         List<Game> games = gameRepository.findByGameStatus(GameStatus.FINISHED);
         return GameResponseDTOMapper.convertToGameResponseDTOList(games);
     }
-
 }
 
 

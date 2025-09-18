@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.xxx.demo.Error.PredictionEditNotAllowedException;
 import pl.xxx.demo.Prediction.PredictionRequestDTO;
 import pl.xxx.demo.Prediction.PredictionResponseDTO;
 import pl.xxx.demo.Prediction.PredictionService;
@@ -64,13 +65,18 @@ public class PredictionViewController {
     public String update(@PathVariable Long id,
                          @Valid @ModelAttribute("prediction") PredictionRequestDTO dto,
                          BindingResult result,
-                         Model model,
-                         RedirectAttributes ra) {
+                         Model model) {
         if (result.hasErrors()) {
             model.addAttribute("game", gameService.get(dto.getGameId()));
             return "predictions/edit";
         }
-        predictionService.update(id, dto);
+        try {
+            predictionService.update(id, dto);
+        } catch (PredictionEditNotAllowedException e) {
+            result.reject("prediction.edit.not.allowed", "Typowanie możliwe tylko dla meczów, które jeszcze się nie rozpoczęły\"");
+            model.addAttribute("game", gameService.get(dto.getGameId()));
+            return "predictions/edit";
+        }
         return "redirect:/games";
     }
 

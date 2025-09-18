@@ -49,7 +49,8 @@
 
                       <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
                     </div>
-                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                      <div class="text-danger" th:if="${message}" th:text="*{message}"></div>
+                      <button type="submit" class="btn btn-primary btn-user btn-block">
                       Login
                     </button>
                     <hr>

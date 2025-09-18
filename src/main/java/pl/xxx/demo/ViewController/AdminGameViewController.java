@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.xxx.demo.Admin.AdminGameDTO;
 import pl.xxx.demo.Admin.AdminGameService;
+import pl.xxx.demo.Error.GameScoreEmptyException;
 import pl.xxx.demo.Error.GameTimeStatusException;
 import java.util.List;
 
@@ -78,8 +79,7 @@ public class AdminGameViewController {
     public String updateAdminGame(@PathVariable Long id,
                                   @Valid @ModelAttribute("game") AdminGameDTO adminGameDTO,
                                   BindingResult result,
-                                  Model model,
-                                  RedirectAttributes ra) {
+                                  Model model) {
         if (result.hasErrors()) {
             model.addAttribute("readOnly", false);
             model.addAttribute("formAction", "/admin/games/edit/" + id);
@@ -88,17 +88,21 @@ public class AdminGameViewController {
         }
 
         try {
-            adminGameService.checkIfGameDateIsCorrect(adminGameDTO);
+            adminGameService.updateGame(id, adminGameDTO);
         } catch (GameTimeStatusException e) {
             result.rejectValue("gameDate", "gameDate.invalid", e.getMessage());
             model.addAttribute("readOnly", false);
             model.addAttribute("formAction", "/admin/games/edit/" + id);
             model.addAttribute("game", adminGameDTO);
             return "admin/games/form";
+        } catch (GameScoreEmptyException e) {
+            result.rejectValue("homeScore", "homeScore.empty", e.getMessage());
+            result.rejectValue("awayScore", "awayScore.empty", e.getMessage());
+            model.addAttribute("readOnly", false);
+            model.addAttribute("formAction", "/admin/games/edit/" + id);
+            model.addAttribute("game", adminGameDTO);
+            return "admin/games/form";
         }
-
-        adminGameService.updateGame(id, adminGameDTO);
-        ra.addFlashAttribute("message", "Game updated");
         return "redirect:/admin/games";
     }
 

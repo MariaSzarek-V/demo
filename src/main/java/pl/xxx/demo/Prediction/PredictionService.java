@@ -76,17 +76,12 @@ public class PredictionService {
 
         Game game = existingPrediction.getGame();
 
-        if (game.getGameDate().isBefore(LocalDateTime.now(ZoneOffset.UTC))) {
+        if (game.getGameDate().isBefore(LocalDateTime.now())) {
             throw new PredictionEditNotAllowedException();
         }
 
         predictionRequestDTOMapper.updatePredictionIfNotNull(existingPrediction, dto);
         return PredictionResponseDTOMapper.convertToPredictionResponseDTO(existingPrediction);
-    }
-
-
-    public List<Prediction> getPredictionsForScheduledGames() {
-        return predictionRepository.findByGameGameStatus(GameStatus.SCHEDULED);
     }
 
 

@@ -12,7 +12,6 @@ public interface PredictionRepository extends JpaRepository<Prediction, Long> {
 
     List<Prediction> findByUserId(Long userId);
     List<Prediction> findByGameId(Long gameId);
-    List<Prediction> findByGameGameStatus(GameStatus status);
     Prediction findByUserIdAndGameId(Long userId, Long gameId);
 }
 

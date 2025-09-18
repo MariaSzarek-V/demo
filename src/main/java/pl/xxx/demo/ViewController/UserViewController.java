@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import pl.xxx.demo.Error.InvalidPasswordException;
 import pl.xxx.demo.User.*;
 
@@ -21,7 +22,11 @@ public class UserViewController {
     private final UserRepository userRepository;
 
     @GetMapping("/login")
-    public String login() {
+    public String login( @RequestParam(value="error", required = false) String error, Model model) {
+
+    if (error != null) {
+        model.addAttribute("message", "Nieprawidłowa nazwa użytkownika lub hasło");
+    }
         return "login";
     }
 
