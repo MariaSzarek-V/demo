@@ -24,7 +24,6 @@ public class GlobalExceptionHandler {
             UsernameEmailAlreadyUsed.class,
             InvalidPasswordException.class,
             GameScoreEmptyException.class,
-            IllegalGameStatusException.class,
             DuplicateRankingEntryException.class
     })
     public ResponseEntity<Map<String, Object>> handleBusinessExceptions(BusinessException e) {

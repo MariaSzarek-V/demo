@@ -37,7 +37,7 @@
                         <td th:text="${{row.gameDate}}"></td>
                         <td th:text="${{row.gameStatus}}"></td>
                         <td>
-                            <a th:if="${row.predictionId == null and row.gameStatus != T(pl.xxx.demo.Enum.GameStatus).FINISHED}"
+                            <a th:if="${row.predictionId == null and row.gameStatus != T(pl.xxx.demo.Enum.GameStatus).FINISHED and T(java.time.LocalDateTime).now().isBefore(row.gameDate)}"
                                th:href="@{/predictions/new/{id}(id=${row.gameId})}" class="btn btn-primary">
                                 <span class="icon text-white-50">
                                 </span>

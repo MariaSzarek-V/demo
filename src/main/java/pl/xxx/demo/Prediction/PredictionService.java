@@ -14,7 +14,6 @@ import pl.xxx.demo.Game.GameRepository;
 import pl.xxx.demo.User.User;
 import pl.xxx.demo.User.UserRepository;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 
 
@@ -78,6 +77,9 @@ public class PredictionService {
 
         if (game.getGameDate().isBefore(LocalDateTime.now())) {
             throw new PredictionEditNotAllowedException();
+        }
+        if (dto.getGameId() != null && !dto.getGameId().equals(game.getId())) {
+            throw new PredictionAlreadyExistForGameException();
         }
 
         predictionRequestDTOMapper.updatePredictionIfNotNull(existingPrediction, dto);

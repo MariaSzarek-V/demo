@@ -50,7 +50,7 @@ public class AdminGameService {
         Game existingGame = gameRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.GAME_NOT_FOUND));
 
-        if (dto.getGameStatus() == GameStatus.FINISHED && (dto.getHomeScore() == null || dto.getAwayScore() == null)) {
+        if (dto.getGameStatus() == GameStatus.FINISHED && (dto.getHomeScore() == null || dto.getAwayScore() == null)){
                 throw new GameScoreEmptyException();
             }
         dto.setId(id);
