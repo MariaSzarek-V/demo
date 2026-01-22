@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface GamePredictionResultRepository extends JpaRepository<Game, Long> {
 
-    //
+
     @Query("""
         SELECT new pl.xxx.demo.PredictionResult.GamePredictionResultDTO(
         :userId,

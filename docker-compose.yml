@@ -1,0 +1,91 @@
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: prediction-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: betsdb
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - prediction-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      timeout: 20s
+      retries: 10
+
+  # Spring Boot Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: prediction-app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      # Database configuration
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/betsdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Europe/Warsaw
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      
+      # JPA/Hibernate configuration
+      # Use 'none' because database schema is managed by SQL init scripts
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      SPRING_JPA_SHOW_SQL: false
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: true
+      SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_TIME_ZONE: Europe/Warsaw
+      
+      # Application configuration
+      SERVER_PORT: 8080
+      LOGGING_LEVEL_ROOT: INFO
+      LOGGING_LEVEL_PL_XXX_DEMO: DEBUG
+      
+      # Security configuration
+      SPRING_SECURITY_USER_NAME: admin
+      SPRING_SECURITY_USER_PASSWORD: admin123
+      
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - prediction-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # phpMyAdmin for database management (optional)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: prediction-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    depends_on:
+      - mysql
+    networks:
+      - prediction-network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  prediction-network:
+    driver: bridge
