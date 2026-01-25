@@ -20,4 +20,7 @@ public interface RankingHistoryRepository extends JpaRepository<RankingHistory, 
 
     Optional<RankingHistory> findByGameIdAndUser(Long gameId, User user);
     boolean existsByGameId(Long gameId);
+    
+    // Pobierz historię rankingu użytkownika posortowaną po gameId
+    List<RankingHistory> findByUserIdOrderByGameIdAsc(Long userId);
 }

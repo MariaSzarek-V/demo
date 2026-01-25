@@ -1,6 +1,10 @@
 -- Initialize database for Prediction Cup application
 -- This script will be executed when MySQL container starts for the first time
 
+-- Set UTF-8 encoding
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
+
 -- Create database if not exists
 CREATE DATABASE IF NOT EXISTS betsdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -33,26 +37,26 @@ VALUES
 -- 3 FINISHED GAMES (with results)
 -- Game 1: Brazil vs Argentina - Brazil won 2:1
 INSERT IGNORE INTO game (id, home_team, away_team, game_date, game_status, home_score, away_score) 
-VALUES (1, 'Brazylia', 'Argentyna', '2025-01-10 20:00:00', 'FINISHED', 2, 1);
+VALUES (1, 'Brazylia', 'Argentyna', '2026-01-10 20:00:00', 'FINISHED', 2, 1);
 
 -- Game 2: Germany vs France - Draw 1:1
 INSERT IGNORE INTO game (id, home_team, away_team, game_date, game_status, home_score, away_score) 
-VALUES (2, 'Niemcy', 'Francja', '2025-01-12 18:30:00', 'FINISHED', 1, 1);
+VALUES (2, 'Niemcy', 'Francja', '2026-01-12 18:30:00', 'FINISHED', 1, 1);
 
 -- Game 3: Spain vs Italy - Spain won 3:0
 INSERT IGNORE INTO game (id, home_team, away_team, game_date, game_status, home_score, away_score) 
-VALUES (3, 'Hiszpania', 'Włochy', '2025-01-14 21:00:00', 'FINISHED', 3, 0);
+VALUES (3, 'Hiszpania', 'Włochy', '2026-01-14 21:00:00', 'FINISHED', 3, 0);
 
 -- 7 FUTURE GAMES (scheduled, no results yet)
 INSERT IGNORE INTO game (id, home_team, away_team, game_date, game_status, home_score, away_score) 
 VALUES 
-(4, 'Polska', 'Portugalia', '2025-02-15 19:00:00', 'SCHEDULED', NULL, NULL),
-(5, 'Anglia', 'Holandia', '2025-02-16 20:30:00', 'SCHEDULED', NULL, NULL),
-(6, 'Belgia', 'Chorwacja', '2025-02-18 18:00:00', 'SCHEDULED', NULL, NULL),
-(7, 'Szwecja', 'Norwegia', '2025-02-20 17:00:00', 'SCHEDULED', NULL, NULL),
-(8, 'Dania', 'Szwajcaria', '2025-02-22 19:30:00', 'SCHEDULED', NULL, NULL),
-(9, 'Turcja', 'Grecja', '2025-02-25 20:00:00', 'SCHEDULED', NULL, NULL),
-(10, 'Czechy', 'Austria', '2025-02-28 18:30:00', 'SCHEDULED', NULL, NULL);
+(4, 'Polska', 'Portugalia', '2026-01-23 19:00:00', 'SCHEDULED', NULL, NULL),
+(5, 'Anglia', 'Holandia', '2026-01-25 20:30:00', 'SCHEDULED', NULL, NULL),
+(6, 'Belgia', 'Chorwacja', '2026-01-27 18:00:00', 'SCHEDULED', NULL, NULL),
+(7, 'Szwecja', 'Norwegia', '2026-01-29 17:00:00', 'SCHEDULED', NULL, NULL),
+(8, 'Dania', 'Szwajcaria', '2026-01-31 19:30:00', 'SCHEDULED', NULL, NULL),
+(9, 'Turcja', 'Grecja', '2026-02-03 20:00:00', 'SCHEDULED', NULL, NULL),
+(10, 'Czechy', 'Austria', '2026-02-06 18:30:00', 'SCHEDULED', NULL, NULL);
 
 -- ==============================================
 -- PREDICTIONS FOR FINISHED GAMES (all 5 users)
@@ -244,12 +248,12 @@ VALUES
 
 INSERT IGNORE INTO comment (id, text, username, created_at, user_id, game_id) 
 VALUES 
-(1, 'Świetny mecz! Brazylia zasłużenie wygrała!', 'ola', '2025-01-10 22:30:00', 2, 1),
-(2, 'Remis był sprawiedliwy, obie drużyny grały dobrze.', 'ania', '2025-01-12 20:45:00', 3, 2),
-(3, 'Hiszpania pokazała klasę! Dominacja na boisku.', 'janek', '2025-01-14 23:15:00', 4, 3),
-(4, 'Czekam na mecz Polski z Portugalią, będzie ciekawie!', 'kuba', '2025-01-16 14:20:00', 5, 4),
-(5, 'Anglia vs Holandia to będzie hit! Nie mogę się doczekać.', 'michal', '2025-01-17 18:00:00', 6, 5),
-(6, 'Witamy wszystkich w typowaniu! Powodzenia!', 'admin', '2025-01-09 12:00:00', 1, 1);
+(1, 'Świetny mecz! Brazylia zasłużenie wygrała!', 'ola', '2026-01-10 22:30:00', 2, 1),
+(2, 'Remis był sprawiedliwy, obie drużyny grały dobrze.', 'ania', '2026-01-12 20:45:00', 3, 2),
+(3, 'Hiszpania pokazała klasę! Dominacja na boisku.', 'janek', '2026-01-14 23:15:00', 4, 3),
+(4, 'Czekam na mecz Polski z Portugalią, będzie ciekawie!', 'kuba', '2026-01-16 14:20:00', 5, 4),
+(5, 'Anglia vs Holandia to będzie hit! Nie mogę się doczekać.', 'michal', '2026-01-17 18:00:00', 6, 5),
+(6, 'Witamy wszystkich w typowaniu! Powodzenia!', 'admin', '2026-01-09 12:00:00', 1, 1);
 
 -- Flush privileges
 FLUSH PRIVILEGES;

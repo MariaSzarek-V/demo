@@ -62,4 +62,9 @@ public class UserService {
     public boolean checkIfUserUnique(UserRequestDTO dto) {
         return !userRepository.existsUsersByEmail(dto.getEmail()) && !userRepository.existsUsersByUsername(dto.getUsername());
     }
+    
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
+    }
 }

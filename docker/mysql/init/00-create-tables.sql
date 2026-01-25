@@ -1,4 +1,8 @@
 -- Create database schema for Prediction Cup application
+-- Set UTF-8 encoding
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
+
 USE betsdb;
 
 -- Drop existing tables if they exist (in correct order to handle foreign keys)

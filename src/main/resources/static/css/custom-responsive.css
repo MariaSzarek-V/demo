@@ -1,0 +1,233 @@
+/* Custom Responsive Styles for PredictionCup */
+
+/* Base font size improvements */
+body {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Improved heading sizes for readability */
+h1, .h1 { font-size: 2rem; }
+h2, .h2 { font-size: 1.75rem; }
+h3, .h3 { font-size: 1.5rem; }
+h4, .h4 { font-size: 1.25rem; }
+h5, .h5 { font-size: 1.1rem; }
+h6, .h6 { font-size: 1rem; }
+
+/* Better button sizing for mobile */
+.btn {
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+    min-height: 44px; /* Touch-friendly minimum */
+}
+
+.btn-sm {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    min-height: 38px;
+}
+
+/* Form inputs larger for mobile */
+.form-control {
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    min-height: 44px;
+}
+
+.form-control-user {
+    font-size: 1rem !important;
+    padding: 0.875rem 1.25rem !important;
+}
+
+/* Card improvements */
+.card {
+    margin-bottom: 1.5rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Table improvements for mobile */
+.table {
+    font-size: 0.95rem;
+}
+
+.table thead th {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* Link and text sizing */
+a, p, li, span {
+    font-size: 1rem;
+}
+
+.small, small {
+    font-size: 0.9rem;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    /* Larger fonts on mobile */
+    body {
+        font-size: 18px;
+    }
+    
+    h1, .h1 { font-size: 2.25rem; }
+    h2, .h2 { font-size: 2rem; }
+    h3, .h3 { font-size: 1.75rem; }
+    h4, .h4 { font-size: 1.5rem; }
+    h5, .h5 { font-size: 1.25rem; }
+    
+    /* Bigger buttons on mobile */
+    .btn {
+        font-size: 1.1rem;
+        padding: 1rem 1.5rem;
+        min-height: 50px;
+    }
+    
+    .btn-block {
+        width: 100%;
+    }
+    
+    /* Form inputs bigger on mobile */
+    .form-control {
+        font-size: 1.1rem;
+        padding: 1rem 1.25rem;
+        min-height: 50px;
+    }
+    
+    .form-control-user {
+        font-size: 1.1rem !important;
+        padding: 1rem 1.25rem !important;
+        border-radius: 10rem !important;
+    }
+    
+    /* Card padding */
+    .card-body {
+        padding: 2rem 1.5rem;
+    }
+    
+    /* Container padding */
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    /* Table responsive */
+    .table {
+        font-size: 1rem;
+    }
+    
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Better spacing for mobile */
+    .my-5 {
+        margin-top: 2rem !important;
+        margin-bottom: 2rem !important;
+    }
+    
+    .p-5 {
+        padding: 2rem !important;
+    }
+    
+    /* Navbar improvements */
+    .navbar-nav {
+        font-size: 1.1rem;
+    }
+    
+    .navbar-nav .nav-link {
+        padding: 0.75rem 1rem;
+    }
+    
+    /* Links */
+    a {
+        font-size: 1.1rem;
+    }
+    
+    .small, small {
+        font-size: 1rem;
+    }
+}
+
+/* Very small devices */
+@media (max-width: 576px) {
+    body {
+        font-size: 17px;
+    }
+    
+    h1, .h1 { font-size: 2rem; }
+    h2, .h2 { font-size: 1.75rem; }
+    h3, .h3 { font-size: 1.5rem; }
+    h4, .h4 { font-size: 1.25rem; }
+    
+    .btn {
+        font-size: 1rem;
+        padding: 0.875rem 1.25rem;
+    }
+    
+    .card-body {
+        padding: 1.5rem 1rem;
+    }
+    
+    .p-5 {
+        padding: 1.5rem !important;
+    }
+    
+    /* Tighter spacing on very small screens */
+    .my-5 {
+        margin-top: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+}
+
+/* Tablet landscape and desktop */
+@media (min-width: 992px) {
+    /* Ensure good readability on larger screens too */
+    body {
+        font-size: 16px;
+    }
+    
+    .table {
+        font-size: 0.95rem;
+    }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+    /* For touch devices, make everything a bit bigger */
+    .btn {
+        min-height: 48px;
+        font-size: 1.05rem;
+    }
+    
+    .form-control {
+        min-height: 48px;
+        font-size: 1.05rem;
+    }
+    
+    a {
+        padding: 0.25rem 0;
+        display: inline-block;
+    }
+}
+
+/* Improve form validation messages */
+.text-danger, .invalid-feedback {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+
+/* Better spacing */
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+.mt-4 {
+    margin-top: 1.5rem !important;
+}

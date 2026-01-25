@@ -21,6 +21,9 @@
 
   <!-- Custom styles for this page -->
   <link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
+  
+  <!-- Table borders fix -->
+  <link th:href="@{/css/table-borders.css}" rel="stylesheet">
 
 </head>
 
@@ -33,7 +36,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/dashboard}">
         <div class="sidebar-brand-icon rotate-n-15">
         </div>
         <div class="sidebar-brand-text">PredictionCUP</div>

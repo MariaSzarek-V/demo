@@ -1,0 +1,455 @@
+<div th:replace="header"></div>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Nagłówek sekcji statystyk -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+    <h1 class="h3 mb-0 text-gray-800">Twoje wyniki</h1>
+  </div>
+  <!-- Content Row - Statystyki -->
+  <div class="row">
+
+    <!-- Pozycja w rankingu -->
+    <div class="col-xl-6 col-md-6 mb-4">
+      <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                Pozycja w rankingu</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">
+                #<span th:text="${stats.currentPosition ?: '-'}"></span>
+                <small th:if="${stats.positionChange != 0}">
+                                    <span th:if="${stats.positionChange > 0}" class="text-success">
+                                        ↑ <span th:text="${stats.positionChange}"></span>
+                                    </span>
+                  <span th:if="${stats.positionChange < 0}" class="text-danger">
+                                        ↓ <span th:text="${-stats.positionChange}"></span>
+                                    </span>
+                </small>
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-trophy fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Suma punktów -->
+    <div class="col-xl-6 col-md-6 mb-4">
+      <div class="card border-left-success shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                Suma punktów</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${stats.totalPoints ?: 0}">0</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-star fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- Page Heading - Najbliższe mecze -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Najbliższe mecze</h1>
+    </div>
+    
+    <!-- Sekcja najbliższych meczów -->
+    <div class="row" th:if="${stats.upcomingGames != null and !stats.upcomingGames.isEmpty()}">
+        <div class="col-12 mb-4" th:each="game : ${stats.upcomingGames}">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                <span th:text="${#temporals.format(game.gameDate, 'dd.MM.yyyy HH:mm')}"></span>
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                <span th:text="${game.homeTeam}"></span> : <span th:text="${game.awayTeam}"></span>
+                            </div>
+                            <div class="mt-2" th:if="${!game.hasPrediction}">
+                                <a th:href="@{/predictions/new/{id}(id=${game.gameId})}" 
+                                   class="btn btn-primary btn-sm">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-futbol"></i>
+                                    </span>
+                                    <span class="text"> Typuj wynik</span>
+                                </a>
+                            </div>
+                            <div class="mt-2" th:if="${game.hasPrediction}">
+                                <div class="text-success font-weight-bold">
+                                    <i class="fas fa-check-circle"></i> 
+                                    Twój typ: 
+                                    <span th:text="${game.predictedHomeScore}"></span>:<span th:text="${game.predictedAwayScore}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar-alt fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Komunikat gdy brak meczów -->
+    <div class="row" th:if="${stats.upcomingGames == null or stats.upcomingGames.isEmpty()}">
+        <div class="col-12 mb-4">
+            <div class="card border-left-secondary shadow h-100 py-2">
+                <div class="card-body text-center">
+                    <p class="text-gray-600 mb-0">
+                        <i class="fas fa-info-circle"></i> 
+                        Brak zaplanowanych meczów
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Nagłówek sekcji ostatnich meczów -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+        <h1 class="h3 mb-0 text-gray-800">Ostatnie mecze</h1>
+    </div>
+    
+    <!-- Sekcja ostatnich meczów -->
+    <div class="row" th:if="${stats.recentGames != null and !stats.recentGames.isEmpty()}">
+        <div class="col-12 mb-4" th:each="game : ${stats.recentGames}">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                <span th:text="${#temporals.format(game.gameDate, 'dd.MM.yyyy HH:mm')}"></span>
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                <span th:text="${game.homeTeam}"></span> : <span th:text="${game.awayTeam}"></span>
+                            </div>
+                            <div class="mt-2">
+                                <div class="font-weight-bold text-primary">
+                                    Wynik: 
+                                    <span th:text="${game.homeScore}"></span>:<span th:text="${game.awayScore}"></span>
+                                </div>
+                            </div>
+                            <div class="mt-1" th:if="${game.hasPrediction}">
+                                <div class="text-gray-700">
+                                    Twój typ: 
+                                    <span th:text="${game.predictedHomeScore}"></span>:<span th:text="${game.predictedAwayScore}"></span>
+                                    <span th:if="${game.points != null}">
+                                        - <span th:classappend="${game.points == 3} ? 'text-success' : (${game.points == 1} ? 'text-warning' : 'text-danger')" 
+                                               th:text="'+' + ${game.points} + ' pkt'"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="mt-1" th:if="${!game.hasPrediction}">
+                                <div class="text-muted">
+                                    <i class="fas fa-times-circle"></i> Brak typu
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-history fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Komunikat gdy brak ostatnich meczów -->
+    <div class="row" th:if="${stats.recentGames == null or stats.recentGames.isEmpty()}">
+        <div class="col-12 mb-4">
+            <div class="card border-left-secondary shadow h-100 py-2">
+                <div class="card-body text-center">
+                    <p class="text-gray-600 mb-0">
+                        <i class="fas fa-info-circle"></i> 
+                        Brak zakończonych meczów
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Row - Wykres liniowy i Donut obok siebie -->
+    <div class="row">
+
+        <!-- Wykres pozycji w rankingu (lewa strona) -->
+        <div class="col-xl-6 col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Historia pozycji w rankingu</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas id="rankingChart" style="height: 300px;"></canvas>
+                    </div>
+                    <hr>
+                    <p class="text-muted">
+                        <i class="fas fa-info-circle"></i> 
+                        Wykres pokazuje Twoją pozycję w rankingu po kolejnych meczach. 
+                        Im niższy numer, tym lepsza pozycja!
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Nested Donut: Typy vs Rzeczywistość (prawa strona) -->
+        <div class="col-xl-6 col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-success">Porównanie: Remisy vs Zwycięstwa</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-pie pt-4 pb-2" style="height: 300px; width: 100%; max-width: 100%; position: relative; display: flex; justify-content: center; align-items: center;">
+                        <canvas id="nestedChart" style="max-height: 100%; max-width: 100%;"></canvas>
+                    </div>
+                    <hr>
+                    <p class="text-muted">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Wewnętrzna obręcz (jaśniejsza)</strong>: Twoje typy | 
+                        <strong>Zewnętrzna obręcz (ciemniejsza)</strong>: Rzeczywiste wyniki
+                        <br>
+                        Porównaj czy Twoje typy pasują do rzeczywistości!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!-- /.container-fluid -->
+
+</div>
+<!-- End of Main Content -->
+
+<!-- Dodaj Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+    // Pobierz dane z Thymeleaf
+    var gameLabels = /*[[${stats.gameLabels}]]*/ [];
+    var rankingPositions = /*[[${stats.rankingPositions}]]*/ [];
+    
+    // Dane do donuta zagnieżdżonego (2 kategorie)
+    var predictedDraws = /*[[${stats.predictedDraws}]]*/ 0;
+    var predictedWins = /*[[${stats.predictedWins}]]*/ 0;
+    
+    var actualDraws = /*[[${stats.actualDraws}]]*/ 0;
+    var actualWins = /*[[${stats.actualWins}]]*/ 0;
+    
+    // Nested Donut: Dwie obręcze w jednym wykresie
+    var nestedCtx = document.getElementById('nestedChart').getContext('2d');
+    var nestedChart = new Chart(nestedCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Remisy', 'Zwycięstwa'],
+            datasets: [
+                {
+                    label: 'Twoje typy',
+                    data: [predictedDraws, predictedWins],
+                    backgroundColor: [
+                        'rgba(246, 194, 62, 0.6)',  // Remisy - żółty (jaśniejszy)
+                        'rgba(28, 200, 138, 0.6)'   // Zwycięstwa - zielony (jaśniejszy)
+                    ],
+                    hoverBackgroundColor: [
+                        'rgba(246, 194, 62, 0.8)',
+                        'rgba(28, 200, 138, 0.8)'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                },
+                {
+                    label: 'Rzeczywistość',
+                    data: [actualDraws, actualWins],
+                    backgroundColor: [
+                        'rgba(246, 194, 62, 1)',    // Remisy - żółty (ciemniejszy)
+                        'rgba(28, 200, 138, 1)'     // Zwycięstwa - zielony (ciemniejszy)
+                    ],
+                    hoverBackgroundColor: [
+                        'rgba(244, 182, 25, 1)',
+                        'rgba(23, 166, 115, 1)'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // Zmienione na false - wykres się dopasuje do kontenera
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        generateLabels: function(chart) {
+                            return [
+                                {
+                                    text: 'Remisy (Twoje typy)',
+                                    fillStyle: 'rgba(246, 194, 62, 0.6)',
+                                    hidden: false,
+                                    index: 0
+                                },
+                                {
+                                    text: 'Remisy (Rzeczywistość)',
+                                    fillStyle: 'rgba(246, 194, 62, 1)',
+                                    hidden: false,
+                                    index: 1
+                                },
+                                {
+                                    text: 'Zwycięstwa (Twoje typy)',
+                                    fillStyle: 'rgba(28, 200, 138, 0.6)',
+                                    hidden: false,
+                                    index: 2
+                                },
+                                {
+                                    text: 'Zwycięstwa (Rzeczywistość)',
+                                    fillStyle: 'rgba(28, 200, 138, 1)',
+                                    hidden: false,
+                                    index: 3
+                                }
+                            ];
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            var datasetLabel = context.dataset.label || '';
+                            var label = context.label || '';
+                            var value = context.parsed || 0;
+                            var total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            var percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                            return datasetLabel + ' - ' + label + ': ' + value + ' (' + percentage + '%)';
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    // Pobierz dane wszystkich użytkowników
+    var allUsersHistory = /*[[${stats.allUsersRankingHistory}]]*/ [];
+    var currentUsername = /*[[${username}]]*/ '';
+    
+    // Przygotuj datasety dla wszystkich użytkowników
+    var datasets = [];
+    var colors = [
+        '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b',
+        '#858796', '#5a5c69', '#2e59d9', '#17a673', '#2c9faf'
+    ];
+    
+    allUsersHistory.forEach(function(userHistory, index) {
+        var isCurrentUser = userHistory.username === currentUsername;
+        var color = isCurrentUser ? '#4e73df' : colors[index % colors.length];
+        var alpha = isCurrentUser ? 1 : 0.4;
+        
+        datasets.push({
+            label: userHistory.username,
+            data: userHistory.positions,
+            borderColor: color,
+            backgroundColor: 'rgba(78, 115, 223, 0.05)',
+            borderWidth: isCurrentUser ? 4 : 2,
+            tension: 0.3,
+            fill: false,
+            pointRadius: isCurrentUser ? 5 : 3,
+            pointBackgroundColor: color,
+            pointBorderColor: '#fff',
+            pointBorderWidth: isCurrentUser ? 2 : 1,
+            pointHoverRadius: isCurrentUser ? 7 : 5,
+            hidden: false
+        });
+    });
+    
+    // Wykres pozycji w rankingu - wszystkie użytkownicy
+    var ctx = document.getElementById('rankingChart').getContext('2d');
+    var rankingChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: gameLabels,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'nearest',
+                axis: 'x',
+                intersect: false
+            },
+            onHover: function(event, activeElements) {
+                // Reset wszystkich linii do normalnej grubości (oprócz zalogowanego użytkownika)
+                rankingChart.data.datasets.forEach(function(dataset, index) {
+                    var isCurrentUser = dataset.label === currentUsername;
+                    dataset.borderWidth = isCurrentUser ? 4 : 2;
+                });
+                
+                // Pogrub linię pod kursorem
+                if (activeElements.length > 0) {
+                    var hoveredIndex = activeElements[0].datasetIndex;
+                    rankingChart.data.datasets[hoveredIndex].borderWidth = 5;
+                }
+                
+                rankingChart.update('none'); // Update bez animacji
+            },
+            scales: {
+                y: {
+                    reverse: true, // Odwróć oś Y (1 na górze = najlepszy)
+                    beginAtZero: false,
+                    ticks: {
+                        stepSize: 1,
+                        callback: function(value) {
+                            return '#' + value; // Dodaj # przed numerem pozycji
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Pozycja w rankingu'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Mecze'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true
+                    }
+                },
+                tooltip: {
+                    enabled: true,
+                    mode: 'nearest',
+                    callbacks: {
+                        title: function(context) {
+                            // Pokaż username jako tytuł tooltip
+                            return context[0].dataset.label;
+                        },
+                        label: function(context) {
+                            return 'Pozycja: #' + context.parsed.y;
+                        }
+                    }
+                }
+            }
+        }
+    });
+/*]]>*/
+</script>
+
+<div th:replace="footer"></div>
