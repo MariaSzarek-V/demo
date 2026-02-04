@@ -50,6 +50,9 @@ public class DashboardStatsDTO {
     // Ostatnie mecze
     private List<RecentGameDTO> recentGames; // Lista ostatnich zakończonych meczów
     
+    // Mini ranking
+    private List<MiniRankingDTO> miniRanking; // Top 3 + użytkownik + sąsiedzi
+    
     @Data
     @Builder
     @NoArgsConstructor
@@ -80,5 +83,16 @@ public class DashboardStatsDTO {
         private Integer predictedHomeScore;  // Typ użytkownika
         private Integer predictedAwayScore;  // Typ użytkownika
         private Integer points;              // Punkty zdobyte za typ
+    }
+    
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MiniRankingDTO {
+        private Integer position;
+        private String username;
+        private Integer totalPoints;
+        private Boolean isCurrentUser;       // Czy to zalogowany użytkownik
     }
 }

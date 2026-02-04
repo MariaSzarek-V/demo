@@ -157,6 +157,9 @@ public class DashboardService {
         // 10. Pobierz ostatnie mecze
         List<DashboardStatsDTO.RecentGameDTO> recentGames = getRecentGames(user);
         
+        // 11. Przygotuj mini ranking
+        List<DashboardStatsDTO.MiniRankingDTO> miniRanking = getMiniRanking(user, currentRanking);
+        
         return DashboardStatsDTO.builder()
                 .currentPosition(userRanking.getPosition())
                 .positionChange(positionChange)
@@ -176,6 +179,8 @@ public class DashboardService {
                 .upcomingGames(upcomingGames)
                 // Ostatnie mecze
                 .recentGames(recentGames)
+                // Mini ranking
+                .miniRanking(miniRanking)
                 .build();
     }
     
@@ -320,5 +325,69 @@ public class DashboardService {
         }
         
         return recentGameDTOs;
+    }
+    
+    private List<DashboardStatsDTO.MiniRankingDTO> getMiniRanking(User user, List<RankingDTO> currentRanking) {
+        List<DashboardStatsDTO.MiniRankingDTO> miniRanking = new ArrayList<>();
+        String currentUsername = user.getUsername();
+        
+        // Znajdź pozycję użytkownika
+        int userPosition = -1;
+        for (int i = 0; i < currentRanking.size(); i++) {
+            if (currentRanking.get(i).getUsername().equals(currentUsername)) {
+                userPosition = i;
+                break;
+            }
+        }
+        
+        // 1. Dodaj top 3
+        for (int i = 0; i < Math.min(3, currentRanking.size()); i++) {
+            RankingDTO rankingDTO = currentRanking.get(i);
+            miniRanking.add(DashboardStatsDTO.MiniRankingDTO.builder()
+                    .position(rankingDTO.getPosition())
+                    .username(rankingDTO.getUsername())
+                    .totalPoints(rankingDTO.getTotalPoints())
+                    .isCurrentUser(rankingDTO.getUsername().equals(currentUsername))
+                    .build());
+        }
+        
+        // 2. Jeśli użytkownik nie jest w top 3, dodaj jego pozycję + sąsiadów
+        if (userPosition > 2) {
+            // Dodaj separator (null)
+            miniRanking.add(null);
+            
+            // Dodaj jednego nad użytkownikiem (jeśli istnieje)
+            if (userPosition > 0) {
+                RankingDTO aboveUser = currentRanking.get(userPosition - 1);
+                miniRanking.add(DashboardStatsDTO.MiniRankingDTO.builder()
+                        .position(aboveUser.getPosition())
+                        .username(aboveUser.getUsername())
+                        .totalPoints(aboveUser.getTotalPoints())
+                        .isCurrentUser(false)
+                        .build());
+            }
+            
+            // Dodaj samego użytkownika
+            RankingDTO userRanking = currentRanking.get(userPosition);
+            miniRanking.add(DashboardStatsDTO.MiniRankingDTO.builder()
+                    .position(userRanking.getPosition())
+                    .username(userRanking.getUsername())
+                    .totalPoints(userRanking.getTotalPoints())
+                    .isCurrentUser(true)
+                    .build());
+            
+            // Dodaj jednego pod użytkownikiem (jeśli istnieje)
+            if (userPosition < currentRanking.size() - 1) {
+                RankingDTO belowUser = currentRanking.get(userPosition + 1);
+                miniRanking.add(DashboardStatsDTO.MiniRankingDTO.builder()
+                        .position(belowUser.getPosition())
+                        .username(belowUser.getUsername())
+                        .totalPoints(belowUser.getTotalPoints())
+                        .isCurrentUser(false)
+                        .build());
+            }
+        }
+        
+        return miniRanking;
     }
 }

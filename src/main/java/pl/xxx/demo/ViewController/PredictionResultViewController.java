@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.xxx.demo.PredictionResult.GamePredictionResultDTO;
 import pl.xxx.demo.PredictionResult.GamePredictionResultService;
+import pl.xxx.demo.PredictionResult.GameStatsDTO;
 
 import java.util.List;
 
@@ -21,7 +22,10 @@ public class PredictionResultViewController {
     @GetMapping("/{gameId}")
     public String getGameWithPredictionsAndResults(@PathVariable Long gameId, Model model) {
         List<GamePredictionResultDTO> predictionResult = gamePredictionResultService.getGameWithPredictionsAndPoints(gameId);
+        GameStatsDTO gameStats = gamePredictionResultService.getGameStats(gameId);
+        
         model.addAttribute("result", predictionResult);
+        model.addAttribute("gameStats", gameStats);
         return "resultpergame";
     }
 }

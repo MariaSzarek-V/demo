@@ -9,9 +9,7 @@ Lista potencjalnych ulepszeń dla aplikacji PredictionCup - system typowania wyn
 ### Wysoki Priorytet
 - [ ] **Dashboard użytkownika** - Strona główna z podsumowaniem:
   - Statystyki osobiste (% trafnych typów, średnia punktów)
-  - Najbliższe mecze do typowania
-  - Ostatnie wyniki i zdobyte punkty
-  - Obecna pozycja w rankingu
+
   
 - [ ] **Responsywność mobilna** - Pełna optymalizacja pod urządzenia mobilne
   - Dotykowe interfejsy do wprowadzania wyników
