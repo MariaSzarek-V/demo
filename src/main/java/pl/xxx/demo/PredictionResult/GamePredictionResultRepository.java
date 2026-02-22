@@ -36,7 +36,7 @@ public interface GamePredictionResultRepository extends JpaRepository<Game, Long
         LEFT JOIN p.user u
         LEFT JOIN UserPoints up ON up.prediction.id = p.id AND up.user.id = :userId
         WHERE g.gameStatus <> pl.xxx.demo.Enum.GameStatus.ADMIN_VIEW
-        ORDER BY g.gameDate DESC
+        ORDER BY g.gameDate ASC
 """)
     List<GamePredictionResultDTO> findAllGamesWithUserPedictionAndPoints(@Param("userId") Long userId);
 
