@@ -1,97 +1,98 @@
 
 <div th:replace="header"></div>
 <!-- Begin Page Content -->
-<div class="container-fluid">
+<div class="container-fluid px-2 px-md-4 px-lg-5">
 
     <!-- Page Heading -->
-
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Moje mecze</h1>
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">
+            <i class="fas fa-futbol text-primary"></i> Moje mecze
+        </h1>
     </div>
 
-    <!-- DataTales Example -->
-    <div class="card shadow mb-4">
+    <!-- Lista meczy - styl jak ranking -->
+    <div class="card border-left-primary shadow mb-4">
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                    <tr>
-                        <th class="text-center">Nr</th>
-                        <th class="text-center">Mecz</th>
-                        <th class="text-center">Wynik</th>
-                        <th class="text-center">Data</th>
-                        <th class="text-center">Typowany wynik</th>
-                        <th class="text-center">Uzyskane punkty</th>
-                        <th class="text-center">Rezultat innych graczy</th>
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-2">
+            </div>
+            <div th:if="${games != null and !games.isEmpty()}">
+                <div class="games-list" style="font-size: 0.9rem;">
+                    <div th:each="row, iterStat : ${games}"
+                         th:if="${row != null}"
+                         class="game-item d-flex flex-wrap justify-content-between align-items-center"
+                         style="padding: 4px 8px; border-radius: 4px; margin-bottom: 4px; border-bottom: 1px solid #e3e6f0;">
 
-                    <tbody>
-                    <tr th:each="row,iter : ${games}">
-                        <td class="text-center" th:text="${iter.index + 1}"></td>
-                        <td class="text-center">
-                            <span th:text="${{row.homeTeam}}"></span> : <span th:text="${{row.awayTeam}}"></span>
-                        </td>
-                        <td class="text-center">
-                            <span th:text="${{row.homeScore}}"></span> : <span th:text="${{row.awayScore}}"></span>
-                        </td>
-                        <td class="text-center" th:text="${{row.gameDate}}"></td>
-                        <td class="text-center">
-                            <a th:if="${row.predictionId == null and row.gameStatus != T(pl.xxx.demo.Enum.GameStatus).FINISHED and T(java.time.LocalDateTime).now().isBefore(row.gameDate)}"
-                               th:href="@{/predictions/new/{id}(id=${row.gameId})}" class="btn btn-primary w-100">
-                                <span class="icon text-white-50">
+                        <!-- Linia 1: # + Data -->
+                        <div class="game-header d-flex align-items-center" style="min-width: 0;">
+                            <span class="game-number text-gray-600 font-weight-bold" style="display: inline-block; width: 30px;">#<span th:text="${iterStat.index + 1}"></span></span>
+                            <span class="game-date text-muted" style="display: inline-block; width: 140px;" th:text="${{row.gameDate}}"></span>
+
+                            <!-- Desktop: drużyny w tej samej linii -->
+                            <span class="game-teams-desktop" style="display: inline-block; min-width: 220px;">
+                                <span th:class="'fi fi-' + ${row.homeCountryCode}" style="margin-right: 4px;"></span>
+                                <span style="display: inline-block; width: 80px; text-align: right;" th:text="${{row.homeTeam}}"></span>
+                                <strong class="text-primary" style="display: inline-block; width: 40px; text-align: center;">
+                                    <span th:text="${{row.homeScore}}">-</span>:<span th:text="${{row.awayScore}}">-</span>
+                                </strong>
+                                <span style="display: inline-block; width: 80px;" th:text="${{row.awayTeam}}"></span>
+                                <span th:class="'fi fi-' + ${row.awayCountryCode}" style="margin-left: 4px;"></span>
+                            </span>
+                        </div>
+
+                        <!-- Linia 2 (tylko mobile): Drużyny -->
+                        <div class="game-teams-mobile" style="display: none; width: 100%; padding-left: 30px;">
+                            <span th:class="'fi fi-' + ${row.homeCountryCode}" style="margin-right: 4px;"></span>
+                            <span th:text="${{row.homeTeam}}"></span>
+                            <strong class="text-primary mx-2">
+                                <span th:text="${{row.homeScore}}">-</span>:<span th:text="${{row.awayScore}}">-</span>
+                            </strong>
+                            <span th:text="${{row.awayTeam}}"></span>
+                            <span th:class="'fi fi-' + ${row.awayCountryCode}" style="margin-left: 4px;"></span>
+                        </div>
+
+                        <!-- Linia 3: Typ, punkty i przyciski -->
+                        <div class="game-actions d-flex align-items-center text-nowrap">
+                            <span th:if="${row.predictionId != null}" class="text-muted mr-2">
+                                Typ: <span class="badge badge-info badge-sm">
+                                    <span th:text="${row.predictedHomeScore}"></span>:<span th:text="${row.predictedAwayScore}"></span>
                                 </span>
-                                <span class="text">Typuj wynik</span>
+                            </span>
+                            <span th:if="${row.pointsId != null}" class="badge badge-success badge-sm mr-2">
+                                <span th:text="${row.points}"></span> pkt
+                            </span>
+                            <a th:if="${row.predictionId == null and row.gameStatus != T(pl.xxx.demo.Enum.GameStatus).FINISHED and T(java.time.LocalDateTime).now().isBefore(row.gameDate)}"
+                               th:href="@{/predictions/new/{id}(id=${row.gameId})}"
+                               class="btn btn-xs btn-primary mr-1">
+                                <i class="fas fa-futbol"></i> Typuj
                             </a>
-                            <span th:if="${row.predictionId != null}">
-                                <span th:text="${row.predictedHomeScore}"></span> :
-                                <span th:text="${row.predictedAwayScore}"></span>
-                            </span>
-                            <div class="mt-2">
-                                <a th:if="${row.predictionId != null and row.gameStatus != T(pl.xxx.demo.Enum.GameStatus).FINISHED and T(java.time.LocalDateTime).now().isBefore(row.gameDate)}"
-                                   th:href="@{/predictions/edit/{id}(id=${row.predictionId})}"
-                                   class="btn btn-outline-primary mb-2 w-100">
-                                    <span class="icon text-white-50">
-                                    </span>
-                                    <span class="text">Modyfikuj</span>
-                                </a>
-                                <form th:if="${row.predictionId != null and row.gameStatus != T(pl.xxx.demo.Enum.GameStatus).FINISHED and T(java.time.LocalDateTime).now().isBefore(row.gameDate)}"
-                                      th:action="@{/predictions/delete/{id}(id=${row.predictionId})}"
-                                      method="post"
-                                      onsubmit="return confirm('Czy na pewno chcesz usunąć ten typowany wynik?');"
-                                      style="display:block;">
-                                    <button type="submit" class="btn btn-outline-danger w-100">
-                                        <span class="icon text-white-50"></span>
-                                        <span class="text">Usuń</span>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                        <td class="text-center">
-                            <span th:if="${row.pointsId != null}">
-                                <span th:text="${row.points}"></span>
-                            </span>
-                            <span th:if="${row.pointsId == null}">
-                                <span>-</span>
-                            </span>
-                        </td>
-                        <td class="text-center">
+                            <a th:if="${row.predictionId != null and row.gameStatus != T(pl.xxx.demo.Enum.GameStatus).FINISHED and T(java.time.LocalDateTime).now().isBefore(row.gameDate)}"
+                               th:href="@{/predictions/edit/{id}(id=${row.predictionId})}"
+                               class="btn btn-xs btn-outline-primary mr-1">
+                                <i class="fas fa-edit"></i> Edytuj
+                            </a>
+                            <form th:if="${row.predictionId != null and row.gameStatus != T(pl.xxx.demo.Enum.GameStatus).FINISHED and T(java.time.LocalDateTime).now().isBefore(row.gameDate)}"
+                                  th:action="@{/predictions/delete/{id}(id=${row.predictionId})}"
+                                  method="post"
+                                  onsubmit="return confirm('Czy na pewno chcesz usunąć ten typowany wynik?');"
+                                  style="display: inline;">
+                                <button type="submit" class="btn btn-xs btn-outline-danger mr-1">
+                                    <i class="fas fa-trash"></i> Usuń
+                                </button>
+                            </form>
                             <a th:if="${row.gameStatus == T(pl.xxx.demo.Enum.GameStatus).FINISHED}"
                                th:href="@{/results/{id}(id=${row.gameId})}"
-                               class="btn btn-outline-primary btn-sm"
-                               data-bs-toggle="tooltip"
-                               data-bs-placement="top"
-                               title="Zobacz typy i wyniki innych graczy po zakończeniu meczu">
-                                <span class="icon text-white-50"></span>
-                                <i class="fas fa-search"></i>
-                                <span class="text"></span>
+                               class="btn btn-xs btn-outline-info">
+                                <i class="fas fa-search"></i> Wyniki
                             </a>
-                        </td>
-
-                    </tr>
-                    <tr th:if="${#lists.isEmpty(games)}">
-                        <td colspan="7" class="text-center h3 mb-2 text-gray-80">Brak meczy do wyświetlenia</td>
-                    </tr>
-                    </tbody>
-                </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${games == null or games.isEmpty()}">
+                <p class="text-muted mb-0 text-center py-3">
+                    <i class="fas fa-futbol fa-2x mb-2 text-gray-300 d-block"></i>
+                    Brak meczy do wyświetlenia
+                </p>
             </div>
         </div>
     </div>
@@ -99,6 +100,5 @@
 </div>
 <!-- /.container-fluid -->
 
-</div>
 <!-- End of Main Content -->
 <div th:replace="footer"></div>

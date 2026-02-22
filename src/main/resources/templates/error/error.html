@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Błąd - Prediction Cup</title>
+</head>
+<body>
+    <div th:replace="~{header}"></div>
+
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+        <!-- Error Text -->
+        <div class="text-center">
+            <div class="error mx-auto" th:attr="data-text=${statusCode}" th:text="${statusCode}">Error</div>
+            <p class="lead text-gray-800 mb-5">Wystąpił błąd</p>
+            <p class="text-gray-500 mb-3" th:text="${errorMessage} ?: 'Przepraszamy, wystąpił nieoczekiwany błąd podczas przetwarzania Twojego żądania.'">
+                Przepraszamy, wystąpił nieoczekiwany błąd podczas przetwarzania Twojego żądania.
+            </p>
+            <a href="/games">Powrót do strony głównej</a>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+
+    <div th:replace="~{footer}"></div>
+</body>
+</html>

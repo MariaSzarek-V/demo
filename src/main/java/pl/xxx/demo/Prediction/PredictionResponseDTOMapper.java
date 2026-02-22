@@ -14,8 +14,8 @@ public class PredictionResponseDTOMapper {
                 .gameId(prediction.getGame().getId())
                 .predictedAwayScore(prediction.getPredictedAwayScore())
                 .predictedHomeScore(prediction.getPredictedHomeScore())
-                .homeTeam(prediction.getGame().getHomeTeam())
-                .awayTeam(prediction.getGame().getAwayTeam())
+                .homeTeam(prediction.getGame().getHomeCountry() != null ? prediction.getGame().getHomeCountry().getName() : null)
+                .awayTeam(prediction.getGame().getAwayCountry() != null ? prediction.getGame().getAwayCountry().getName() : null)
                 .build();
     }
 

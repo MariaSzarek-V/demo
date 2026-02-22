@@ -19,6 +19,8 @@ public class GamePredictionResultDTO {
 
     private String homeTeam;
     private String awayTeam;
+    private String homeCountryCode;
+    private String awayCountryCode;
     private Integer homeScore;
     private Integer awayScore;
     private LocalDateTime gameDate;
@@ -38,6 +40,8 @@ public class GamePredictionResultDTO {
             Long gameId,
             String homeTeam,
             String awayTeam,
+            String homeCountryCode,
+            String awayCountryCode,
             Integer homeScore,
             Integer awayScore,
             LocalDateTime gameDate,
@@ -53,6 +57,8 @@ public class GamePredictionResultDTO {
         this.gameId = gameId;
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
+        this.homeCountryCode = homeCountryCode;
+        this.awayCountryCode = awayCountryCode;
         this.homeScore = homeScore;
         this.awayScore = awayScore;
         this.gameDate = gameDate;

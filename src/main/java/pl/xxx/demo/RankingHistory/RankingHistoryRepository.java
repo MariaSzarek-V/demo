@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface RankingHistoryRepository extends JpaRepository<RankingHistory, Long> {
 
     Optional<RankingHistory> findFirstByOrderByIdDesc();
-    List<RankingHistory> findByGameId(Long gameId);
+    List<RankingHistory> findByGameIdOrderByPositionAsc(Long gameId);
 
     @Query("select max(rh.gameId) from RankingHistory rh WHere rh.gameId < :currentGameId")
     Optional<Long> findPreviousGameId(@Param("currentGameId") Long currentGameId);

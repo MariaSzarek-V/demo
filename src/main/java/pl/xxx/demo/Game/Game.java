@@ -2,7 +2,9 @@ package pl.xxx.demo.Game;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pl.xxx.demo.Country.Country;
 import pl.xxx.demo.Enum.GameStatus;
+import pl.xxx.demo.Group.Group;
 
 import java.time.LocalDateTime;
 
@@ -17,11 +19,13 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String homeTeam;
+    @ManyToOne
+    @JoinColumn(name = "home_country_id", nullable = false)
+    private Country homeCountry;
 
-    @Column(nullable = false)
-    private String awayTeam;
+    @ManyToOne
+    @JoinColumn(name = "away_country_id", nullable = false)
+    private Country awayCountry;
 
     private Integer homeScore;
     private Integer awayScore;
@@ -31,5 +35,9 @@ public class Game {
 
     @Enumerated(EnumType.STRING)
     private GameStatus gameStatus = GameStatus.ADMIN_VIEW;
+
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
 
 }

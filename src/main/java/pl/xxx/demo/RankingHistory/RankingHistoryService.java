@@ -24,7 +24,7 @@ public class RankingHistoryService {
     public List<RankingHistoryDTO> getLastRankingHistory() {
         Optional<RankingHistory> oneLastRankingHistory = rankingHistoryRepository.findFirstByOrderByIdDesc();
         if (oneLastRankingHistory.isPresent()) {
-            List<RankingHistory> lastRankingHistoryList = rankingHistoryRepository.findByGameId(oneLastRankingHistory.get().getGameId());
+            List<RankingHistory> lastRankingHistoryList = rankingHistoryRepository.findByGameIdOrderByPositionAsc(oneLastRankingHistory.get().getGameId());
 
              return lastRankingHistoryList.stream()
                     .map(rh -> new RankingHistoryDTO(

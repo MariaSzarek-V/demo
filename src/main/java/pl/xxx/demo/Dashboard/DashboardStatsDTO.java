@@ -21,6 +21,14 @@ public class DashboardStatsDTO {
     private Integer lastPredictedHomeScore; // Typowany wynik gospodarzy
     private Integer lastPredictedAwayScore; // Typowany wynik gości
     
+    // Dodatkowe statystyki dla karty "Twoje wyniki"
+    private String mostFrequentPrediction;  // Najczęściej typowany wynik (np. "2:1")
+    private Integer mostFrequentCount;       // Ile razy został wytypowany
+    private Integer exactMatches;            // Liczba dokładnych trafień (3 pkt)
+    private Integer partialMatches;          // Liczba częściowych trafień (1 pkt)
+    private Integer noMatches;               // Liczba nietrafień (0 pkt)
+    private Integer almostPerfect;           // Liczba meczów gdzie zabrakło 1 bramki do 3 pkt
+    
     // Dane do wykresu pozycji w rankingu
     private List<String> gameLabels;        // Etykiety meczów ["Mecz 1", "Mecz 2", ...]
     private List<Integer> rankingPositions; // Pozycje w rankingu [8, 7, 5, 5, ...]
@@ -40,6 +48,9 @@ public class DashboardStatsDTO {
     // Dane do donuta - uproszczone (2 kategorie)
     private Integer predictedDraws;         // Ile razy typowałeś remis
     private Integer predictedWins;          // Ile razy typowałeś zwycięstwo (gospodarzy lub gości)
+    
+    private Integer averagePredictedDraws;  // Średnia typów remisów innych graczy
+    private Integer averagePredictedWins;   // Średnia typów zwycięstw innych graczy
     
     private Integer actualDraws;            // Ile było remisów
     private Integer actualWins;             // Ile było zwycięstw (gospodarzy lub gości)
@@ -61,6 +72,8 @@ public class DashboardStatsDTO {
         private Long gameId;
         private String homeTeam;
         private String awayTeam;
+        private String homeCountryCode;
+        private String awayCountryCode;
         private LocalDateTime gameDate;
         private Boolean hasPrediction;
         private Long predictionId;
@@ -76,6 +89,8 @@ public class DashboardStatsDTO {
         private Long gameId;
         private String homeTeam;
         private String awayTeam;
+        private String homeCountryCode;
+        private String awayCountryCode;
         private LocalDateTime gameDate;
         private Integer homeScore;           // Rzeczywisty wynik gospodarzy
         private Integer awayScore;           // Rzeczywisty wynik gości

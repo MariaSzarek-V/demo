@@ -15,8 +15,10 @@ public interface GamePredictionResultRepository extends JpaRepository<Game, Long
         :userId,
         u.username,
         g.id,
-        g.homeTeam,
-        g.awayTeam, 
+        g.homeCountry.name,
+        g.awayCountry.name,
+        g.homeCountry.code,
+        g.awayCountry.code,
         g.homeScore,
         g.awayScore,
         g.gameDate,
@@ -26,10 +28,10 @@ public interface GamePredictionResultRepository extends JpaRepository<Game, Long
         p.id,
         up.points,
         up.id
-        
+
         )
         FROM Game g
-        
+
         LEFT JOIN Prediction p ON p.game.id = g.id AND p.user.id = :userId
         LEFT JOIN p.user u
         LEFT JOIN UserPoints up ON up.prediction.id = p.id AND up.user.id = :userId
@@ -45,8 +47,10 @@ public interface GamePredictionResultRepository extends JpaRepository<Game, Long
     u.id,
     u.username,
     g.id,
-    g.homeTeam,
-    g.awayTeam,
+    g.homeCountry.name,
+    g.awayCountry.name,
+    g.homeCountry.code,
+    g.awayCountry.code,
     g.homeScore,
     g.awayScore,
     g.gameDate,
@@ -72,8 +76,10 @@ public interface GamePredictionResultRepository extends JpaRepository<Game, Long
         u.id,
         u.username,
         g.id,
-        g.homeTeam,
-        g.awayTeam,
+        g.homeCountry.name,
+        g.awayCountry.name,
+        g.homeCountry.code,
+        g.awayCountry.code,
         g.homeScore,
         g.awayScore,
         g.gameDate,

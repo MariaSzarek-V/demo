@@ -2,6 +2,8 @@
 
 Lista potencjalnych ulepszeń dla aplikacji PredictionCup - system typowania wyników meczów.
 
+- przycisk w meczach - odbyte , nadchodzace
+- jakie jeszcze/? jakies filtrowanie 
 ---
 
 ## 📱 UI/UX - Interfejs Użytkownika
@@ -62,6 +64,12 @@ Lista potencjalnych ulepszeń dla aplikacji PredictionCup - system typowania wyn
   - Automatyczne zamykanie typowania X minut przed meczem
 
 ### Średni Priorytet
+- [ ] **Ranking w grupach Mundial 2026**:
+  - Zakładka z rankingiem użytkowników w poszczególnych grupach (A-L)
+  - Ile punktów zebrał dany użytkownik w typowaniu meczów danej grupy
+  - Na którym miejscu w rankingu jest w obrębie tej konkretnej grupy
+  - Porównanie wyników między grupami
+
 - [ ] **Grupy prywatne**:
   - Tworzenie prywatnych mini-lig z przyjaciółmi
   - Własne zasady punktacji w grupach

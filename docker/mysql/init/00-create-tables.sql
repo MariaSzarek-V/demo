@@ -13,6 +13,8 @@ DROP TABLE IF EXISTS `user_points`;
 DROP TABLE IF EXISTS `game_prediction_result`;
 DROP TABLE IF EXISTS `prediction`;
 DROP TABLE IF EXISTS `game`;
+DROP TABLE IF EXISTS `country`;
+DROP TABLE IF EXISTS `group`;
 DROP TABLE IF EXISTS `user`;
 
 -- Create User table
@@ -27,18 +29,45 @@ CREATE TABLE `user` (
     INDEX `idx_email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Create Group table
+CREATE TABLE `group` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(10) NOT NULL UNIQUE,
+    PRIMARY KEY (`id`),
+    INDEX `idx_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Create Country table
+CREATE TABLE `country` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL UNIQUE,
+    `code` VARCHAR(10) NULL,
+    `group_id` BIGINT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`group_id`) REFERENCES `group`(`id`) ON DELETE SET NULL,
+    INDEX `idx_name` (`name`),
+    INDEX `idx_group_id` (`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Create Game table
 CREATE TABLE `game` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
-    `home_team` VARCHAR(100) NOT NULL,
-    `away_team` VARCHAR(100) NOT NULL,
+    `home_country_id` BIGINT NOT NULL,
+    `away_country_id` BIGINT NOT NULL,
     `home_score` INT NULL,
     `away_score` INT NULL,
     `game_date` DATETIME NOT NULL,
     `game_status` VARCHAR(20) NOT NULL DEFAULT 'ADMIN_VIEW',
+    `group_id` BIGINT NULL,
     PRIMARY KEY (`id`),
+    FOREIGN KEY (`home_country_id`) REFERENCES `country`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`away_country_id`) REFERENCES `country`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`group_id`) REFERENCES `group`(`id`) ON DELETE SET NULL,
     INDEX `idx_game_date` (`game_date`),
-    INDEX `idx_game_status` (`game_status`)
+    INDEX `idx_game_status` (`game_status`),
+    INDEX `idx_group_id` (`group_id`),
+    INDEX `idx_home_country_id` (`home_country_id`),
+    INDEX `idx_away_country_id` (`away_country_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Create Prediction table

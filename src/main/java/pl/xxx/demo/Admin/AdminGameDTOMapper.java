@@ -8,13 +8,15 @@ import java.util.List;
 public class AdminGameDTOMapper {
 
 //aktualizacja encji an postawie DTO
+    // TODO: This method needs refactoring to use CountryRepository for team name lookups
     public static void updateGameFromDto(AdminGameDTO dto, Game game) {
-        if (dto.getHomeTeam() != null) {
-            game.setHomeTeam(dto.getHomeTeam());
-        }
-        if (dto.getAwayTeam() != null) {
-            game.setAwayTeam(dto.getAwayTeam());
-        }
+        // Country updates removed - need CountryRepository to lookup countries by name
+        // if (dto.getHomeTeam() != null) {
+        //     game.setHomeCountry(...); // Need repository
+        // }
+        // if (dto.getAwayTeam() != null) {
+        //     game.setAwayCountry(...); // Need repository
+        // }
         if (dto.getHomeScore() != null) {
             game.setHomeScore(dto.getHomeScore());
         }
@@ -31,8 +33,8 @@ public class AdminGameDTOMapper {
     public static AdminGameDTO convertToAdminGameDTO(Game game) {
         return AdminGameDTO.builder()
                 .id(game.getId())
-                .homeTeam(game.getHomeTeam())
-                .awayTeam(game.getAwayTeam())
+                .homeTeam(game.getHomeCountry() != null ? game.getHomeCountry().getName() : null)
+                .awayTeam(game.getAwayCountry() != null ? game.getAwayCountry().getName() : null)
                 .homeScore(game.getHomeScore())
                 .awayScore(game.getAwayScore())
                 .gameDate(game.getGameDate())
@@ -40,11 +42,12 @@ public class AdminGameDTOMapper {
                 .build();
     }
 
+    // TODO: This method needs refactoring to use CountryRepository for team name lookups
     public static Game convertToAdminGame(AdminGameDTO dto) {
         return Game.builder()
                 .id(dto.getId())
-                .homeTeam(dto.getHomeTeam())
-                .awayTeam(dto.getAwayTeam())
+                // .homeCountry(...) // Need repository to lookup by name
+                // .awayCountry(...) // Need repository to lookup by name
                 .homeScore(dto.getHomeScore())
                 .awayScore(dto.getAwayScore())
                 .gameDate(dto.getGameDate())
