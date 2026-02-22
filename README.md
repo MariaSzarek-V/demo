@@ -19,8 +19,8 @@ Administrators have the ability to menage games.
 - View other players’ predictions and points after game completion,
 - Comment section for public discussions.
 
-![img_10.png](docs/img_10.png)
-
+![img.png](img.png)
+![img_1.png](img_1.png)
 ---
 
 ### Admin Features
