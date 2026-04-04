@@ -15,7 +15,6 @@ public class CommentRequestDTO {
     private String text;
 
     private Long parentCommentId;
-    private Long postId;
     private Long quotedCommentId;
 }
 

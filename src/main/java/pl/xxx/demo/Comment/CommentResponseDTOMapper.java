@@ -29,8 +29,6 @@ public class CommentResponseDTOMapper  {
             parentCommentAvatarUrl = comment.getParentComment().getUser().getAvatarUrl();
         }
 
-        Long postId = comment.getPost() != null ? comment.getPost().getId() : null;
-
         Long quotedCommentId = null;
         String quotedCommentText = null;
         String quotedCommentUsername = null;
@@ -52,7 +50,6 @@ public class CommentResponseDTOMapper  {
                 .parentCommentText(parentCommentText)
                 .parentCommentUsername(parentCommentUsername)
                 .parentCommentAvatarUrl(parentCommentAvatarUrl)
-                .postId(postId)
                 .quotedCommentId(quotedCommentId)
                 .quotedCommentText(quotedCommentText)
                 .quotedCommentUsername(quotedCommentUsername)

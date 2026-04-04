@@ -19,11 +19,6 @@ public class CommentController {
         return commentService.getAllComments();
     }
 
-    @GetMapping("/post/{postId}")
-    public List<CommentResponseDTO> getCommentsByPost(@PathVariable Long postId) {
-        return commentService.getCommentsByPost(postId);
-    }
-
     @PostMapping
     public CommentResponseDTO createComment(@Valid @RequestBody CommentRequestDTO dto) {
         return commentService.add(dto);

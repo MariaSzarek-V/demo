@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.xxx.demo.Error.ResourceNotFoundException;
-import pl.xxx.demo.Post.Post;
-import pl.xxx.demo.Post.PostRepository;
 import pl.xxx.demo.User.UserRepository;
 
 import java.time.LocalDateTime;
@@ -17,18 +15,10 @@ import java.util.List;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
-    private final PostRepository postRepository;
 
     public List<CommentResponseDTO> getAllComments() {
         List<Comment> com = commentRepository.findAllByOrderByCreatedAtDesc();
         return CommentResponseDTOMapper.convertToCommentResponseDTO(com);
-    }
-
-    public List<CommentResponseDTO> getCommentsByPost(Long postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
-        List<Comment> comments = commentRepository.findByPostOrderByCreatedAtAsc(post);
-        return CommentResponseDTOMapper.convertToCommentResponseDTO(comments);
     }
 
     public CommentResponseDTO add(CommentRequestDTO dto) {
@@ -47,13 +37,6 @@ public class CommentService {
             Comment parentComment = commentRepository.findById(dto.getParentCommentId())
                     .orElseThrow(() -> new ResourceNotFoundException("Parent comment not found"));
             comment.setParentComment(parentComment);
-        }
-
-        // Set post if provided
-        if (dto.getPostId() != null) {
-            Post post = postRepository.findById(dto.getPostId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
-            comment.setPost(post);
         }
 
         // Set quoted comment if provided

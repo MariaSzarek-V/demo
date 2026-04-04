@@ -21,7 +21,6 @@ public class CommentResponseDTO {
     private String parentCommentText;
     private String parentCommentUsername;
     private String parentCommentAvatarUrl;
-    private Long postId;
     private Long quotedCommentId;
     private String quotedCommentText;
     private String quotedCommentUsername;

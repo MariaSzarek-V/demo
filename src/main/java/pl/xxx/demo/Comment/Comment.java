@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import pl.xxx.demo.Post.Post;
 import pl.xxx.demo.User.User;
 
 import java.time.LocalDateTime;
@@ -41,11 +40,6 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
-
-    @ManyToOne
-    @JoinColumn(name = "post_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Post post;
 
     @ManyToOne
     @JoinColumn(name = "quoted_comment_id")
