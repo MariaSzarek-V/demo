@@ -15,6 +15,8 @@ public class GameResponseDTO {
     private Long gameId;
     private String homeTeam;
     private String awayTeam;
+    private String homeCountryCode;
+    private String awayCountryCode;
     private Integer homeScore;
     private Integer awayScore;
     private LocalDateTime gameDate;

@@ -12,7 +12,10 @@ public class UserResponseDTOMapper {
     public static UserResponseDTO convertToUserDTO(User user) {
         return UserResponseDTO
                 .builder()
+                .id(user.getId())
                 .username(user.getUsername())
+                .email(user.getEmail())
+                .avatarUrl(user.getAvatarUrl())
                 .build();
     }
 

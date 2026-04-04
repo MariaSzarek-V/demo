@@ -317,7 +317,154 @@ a:hover {
 }
 
 /* ========================================
-   10. BADGES & TAGS
+   10. NAVIGATION - Navbar styles (wzór z SB Admin 2 Sidebar)
+   ======================================== */
+
+/* NAVBAR - PROSTE USTAWIENIA */
+#mainNavbar.topbar {
+    padding: 0.25rem 0 !important;
+}
+
+.navbar-content-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar-first-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem 0.25rem 1rem;
+}
+
+.navbar-second-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem 0.25rem 1rem;
+}
+
+/* Navigation Menu Items */
+.navbar-menu-items {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.navbar-menu-items .nav-item {
+    margin: 0;
+}
+
+.navbar-menu-items .nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+    padding: 0.25rem 1rem !important; /* Zmniejszony padding góra/dół */
+    border-radius: 0.35rem !important;
+    transition: all 0.3s ease !important;
+    background-color: transparent !important;
+    display: flex !important;
+    align-items: center !important;
+    line-height: 1 !important; /* Kompaktowy line-height */
+}
+
+.navbar-menu-items .nav-link:hover {
+    color: #fff !important;
+    text-decoration: none !important;
+}
+
+/* Active state dla nav items */
+.navbar-menu-items .nav-item.active .nav-link {
+    color: #fff !important;
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    font-weight: var(--font-weight-semibold) !important;
+}
+
+/* Ikony w nawigacji - szerokość fixed jak w sidebarze */
+.navbar-menu-items .nav-link i.fa-fw {
+    width: 1.25rem;
+    text-align: center;
+    margin-right: 0.5rem;
+}
+
+/* Admin Dropdown */
+.navbar-menu-items .dropdown-toggle::after {
+    vertical-align: middle;
+    margin-left: 0.5rem;
+}
+
+.navbar-menu-items .dropdown-menu {
+    border: none;
+    box-shadow: var(--shadow-lg);
+}ok
+
+.navbar-menu-items .dropdown-item {
+    padding: 0.75rem 1.5rem;
+    transition: all 0.2s ease;
+}
+
+.navbar-menu-items .dropdown-item:hover {
+    background-color: #f8f9fc;
+    padding-left: 1.75rem;
+}
+
+/* User Dropdown - identyczne style jak menu items */
+/* Dodajemy bardziej specyficzne selektory żeby nadpisać Bootstrap defaults */
+.navbar-light .navbar-user-mobile .nav-link,
+#mainNavbar .navbar-user-mobile .nav-link,
+.navbar-user-mobile .nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+    padding: 0.25rem 1rem !important; /* Zmniejszony padding góra/dół */
+    border-radius: 0.35rem !important;
+    transition: all 0.3s ease !important;
+    background-color: transparent !important;
+    display: flex !important;
+    align-items: center !important;
+    line-height: 1 !important; /* Kompaktowy line-height */
+}
+
+.navbar-light .navbar-user-mobile .nav-link:hover,
+#mainNavbar .navbar-user-mobile .nav-link:hover,
+.navbar-user-mobile .nav-link:hover {
+    color: #fff !important;
+    text-decoration: none !important;
+}
+
+.navbar-light .navbar-user-mobile .nav-link i.fa-fw,
+#mainNavbar .navbar-user-mobile .nav-link i.fa-fw,
+.navbar-user-mobile .nav-link i.fa-fw {
+    width: 1.25rem;
+    text-align: center;
+    margin-right: 0.5rem;
+}
+
+.navbar-user-mobile .dropdown-menu {
+    border: none;
+    box-shadow: var(--shadow-lg);
+}
+
+.navbar-user-mobile .dropdown-item {
+    padding: 0.75rem 1.5rem;
+    transition: all 0.2s ease;
+}
+
+.navbar-user-mobile .dropdown-item:hover {
+    background-color: #f8f9fc;
+    padding-left: 1.75rem;
+}
+
+/* ========================================
+   RESPONSIVE VISIBILITY - User Dropdown
+   ======================================== */
+
+/* User zawsze widoczny w pierwszej linijce (obok logo) */
+.navbar-user-mobile {
+    display: block !important;
+}
+
+/* Nie używamy już .navbar-user-desktop - usunięty z HTML */
+
+/* ========================================
+   11. BADGES & TAGS
    ======================================== */
 
 .badge {
@@ -329,7 +476,7 @@ a:hover {
 }
 
 /* ========================================
-   11. ALERTS & MESSAGES
+   12. ALERTS & MESSAGES
    ======================================== */
 
 .alert {
@@ -346,7 +493,7 @@ a:hover {
 }
 
 /* ========================================
-   12. RESPONSIVE - Mobile First
+   13. RESPONSIVE - Mobile First
    ======================================== */
 
 /* Mobile devices (< 768px) */
@@ -396,7 +543,7 @@ a:hover {
 }
 
 /* ========================================
-   13. UTILITY CLASSES
+   14. UTILITY CLASSES
    ======================================== */
 
 /* Spacing utilities */
@@ -429,7 +576,7 @@ a:hover {
 .font-bold { font-weight: var(--font-weight-bold) !important; }
 
 /* ========================================
-   14. ACCESSIBILITY
+   15. ACCESSIBILITY
    ======================================== */
 
 /* Focus states - WCAG 2.1 compliant */

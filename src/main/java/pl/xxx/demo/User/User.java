@@ -31,4 +31,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole userRole = UserRole.USER;
 
+    @Column(length = 500)
+    private String avatarUrl;
+
 }

@@ -25,8 +25,8 @@
   <!-- Table borders fix -->
   <link th:href="@{/css/table-borders.css}" rel="stylesheet">
 
-  <!-- Mobile optimizations -->
-  <link th:href="@{/css/mobile-optimizations.css}" rel="stylesheet">
+  <!-- Design System - Custom navigation styles -->
+  <link th:href="@{/css/design-system.css}" rel="stylesheet">
 
   <!-- Flag Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css"/>
@@ -48,6 +48,7 @@
         <nav class="navbar navbar-expand navbar-light bg-gradient-primary topbar mb-4 static-top shadow" id="mainNavbar">
 
           <div class="navbar-content-wrapper w-100">
+
             <!-- First Row: Brand and User -->
             <div class="navbar-first-row">
               <!-- Brand -->
@@ -56,10 +57,10 @@
                 <span class="font-weight-bold">PredictionCUP</span>
               </a>
 
-              <!-- User Dropdown (visible on mobile in first row) -->
+              <!-- User Dropdown -->
               <div class="navbar-user-mobile dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdownMobile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgba(255,255,255,0.8);">
-                  <i class="fas fa-user-circle fa-lg mr-1"></i>
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdownMobile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-fw fa-user-circle"></i>
                   <span sec:authentication="name">User</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdownMobile">
@@ -87,70 +88,40 @@
               <ul class="navbar-nav navbar-menu-items">
                 <!-- Nav Item - Games -->
                 <li class="nav-item">
-                  <a th:href="@{/games}" class="nav-link" style="color: rgba(255,255,255,0.8);">
-                    <i class="fas fa-futbol mr-1"></i>
+                  <a th:href="@{/games}" class="nav-link">
                     <span>Mecze</span>
                   </a>
                 </li>
 
                 <!-- Nav Item - Ranking -->
                 <li class="nav-item">
-                  <a th:href="@{/ranking}" class="nav-link" style="color: rgba(255,255,255,0.8);">
-                    <i class="fas fa-trophy mr-1"></i>
+                  <a th:href="@{/ranking}" class="nav-link">
                     <span>Ranking</span>
                   </a>
                 </li>
 
                 <!-- Nav Item - Comments -->
                 <li class="nav-item">
-                  <a th:href="@{/comments}" class="nav-link" style="color: rgba(255,255,255,0.8);">
-                    <i class="fas fa-comments mr-1"></i>
+                  <a th:href="@{/comments}" class="nav-link">
                     <span>Komentarze</span>
                   </a>
                 </li>
 
                 <!-- Admin Dropdown -->
                 <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
-                  <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgba(255,255,255,0.8);">
-                    <i class="fas fa-cog mr-1"></i>
+                  <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span>Admin</span>
                   </a>
                   <div class="dropdown-menu" aria-labelledby="adminDropdown">
                     <a class="dropdown-item" th:href="@{/admin/games}">
-                      <i class="fas fa-cog fa-sm fa-fw mr-2 text-gray-400"></i>
                       Zarządzanie meczami
                     </a>
                     <a class="dropdown-item" th:href="@{/admin/games/new}">
-                      <i class="fas fa-plus-circle fa-sm fa-fw mr-2 text-gray-400"></i>
                       Dodaj mecz
                     </a>
                   </div>
                 </li>
               </ul>
-
-              <!-- User Dropdown -->
-              <div class="navbar-user-desktop dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdownDesktop" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgba(255,255,255,0.8); padding: 0.5rem 1rem;">
-                  <i class="fas fa-user-circle fa-lg mr-2"></i>
-                  <span sec:authentication="name">User</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdownDesktop">
-                  <a class="dropdown-item" th:href="@{/profile}">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Profil
-                  </a>
-                  <a class="dropdown-item" th:href="@{/notifications}">
-                    <i class="fas fa-bell fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Powiadomienia
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form-desktop').submit();">
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Wyloguj
-                  </a>
-                </div>
-                <form id="logout-form-desktop" th:action="@{/logout}" method="post" style="display: none;"></form>
-              </div>
             </div>
           </div>
 

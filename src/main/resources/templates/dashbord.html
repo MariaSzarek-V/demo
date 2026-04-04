@@ -17,33 +17,31 @@
               
               <!-- Najczęściej typowany wynik -->
               <div class="mb-2" th:if="${stats.mostFrequentPrediction != null}">
-                <div class="text-xs font-weight-bold text-gray-600 mb-1">Najczęściej typujesz</div>
+                <div class="text-md font-weight-bold text-gray-600 mb-1">Najczęściej typujesz</div>
                 <div class="text-gray-800">
                   <strong th:text="${stats.mostFrequentPrediction}">2:1</strong>
-                  <small class="text-muted">(<span th:text="${stats.mostFrequentCount}">0</span>x)</small>
+                  <strong class="text-muted">x<span th:text="${stats.mostFrequentCount}">0</span></strong>
                 </div>
               </div>
               
               <!-- Statystyki punktowe -->
               <div class="mb-1">
+                <div class="text-md font-weight-bold text-gray-600 mb-1">Efektywność typowania</div>
                 <span class="text-success">🏆 <span th:text="${stats.exactMatches ?: 0}">0</span></span>
-                <small class="text-gray-600">(3 pkt)</small>
+                <strong class="text-gray-600">x 3 pkt</strong>
               </div>
               <div class="mb-1">
                 <span class="text-warning">⚡ <span th:text="${stats.partialMatches ?: 0}">0</span></span>
-                <small class="text-gray-600">(1 pkt)</small>
+                <small class="text-gray-600">x 1 pkt</small>
               </div>
               <div class="mb-1">
                 <span class="text-danger">❌ <span th:text="${stats.noMatches ?: 0}">0</span></span>
-                <small class="text-gray-600">(0 pkt)</small>
+                <small class="text-gray-600">x 0 pkt</small>
               </div>
               <div class="mb-1" th:if="${stats.almostPerfect != null and stats.almostPerfect > 0}">
                 <span class="text-info">😫 <span th:text="${stats.almostPerfect}">0</span></span>
-                <small class="text-gray-600">(prawie!)</small>
+                <small class="text-gray-600">x prawie!</small>
               </div>
-            </div>
-            <div class="col-auto">
-              <i class="fas fa-chart-line fa-2x text-gray-300"></i>
             </div>
           </div>
         </div>

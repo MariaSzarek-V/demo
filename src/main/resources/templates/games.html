@@ -8,11 +8,6 @@
         <h1 class="h3 mb-0 text-gray-800">
             <i class="fas fa-futbol text-primary"></i> Moje mecze
         </h1>
-        <div class="btn-group" role="group">
-            <button type="button" class="btn btn-sm btn-primary" onclick="filterGames('all', this)">Wszystkie</button>
-            <button type="button" class="btn btn-sm btn-outline-primary" onclick="filterGames('finished', this)">Zakończone</button>
-            <button type="button" class="btn btn-sm btn-outline-primary" onclick="filterGames('upcoming', this)">Nadchodzące</button>
-        </div>
     </div>
 
     <!-- Lista meczy - styl jak ranking -->
@@ -25,7 +20,6 @@
                     <div th:each="row, iterStat : ${games}"
                          th:if="${row != null}"
                          class="game-item d-flex flex-wrap justify-content-between align-items-center"
-                         th:attr="data-status=${row.gameStatus.name() == 'FINISHED' ? 'finished' : 'upcoming'}"
                          style="padding: 4px 8px; border-radius: 4px; margin-bottom: 4px; border-bottom: 1px solid #e3e6f0;">
 
                         <!-- Data i drużyny -->
@@ -108,46 +102,5 @@
 <!-- /.container-fluid -->
 
 <!-- End of Main Content -->
-
-<script>
-function filterGames(status, clickedButton) {
-    console.log('filterGames called with status:', status);
-    const games = document.querySelectorAll('.game-item');
-    console.log('Found games:', games.length);
-    const buttons = document.querySelectorAll('.btn-group button');
-
-    // Usuń aktywną klasę z wszystkich przycisków i dodaj outline
-    buttons.forEach(btn => {
-        btn.classList.remove('btn-primary');
-        btn.classList.add('btn-outline-primary');
-    });
-
-    // Dodaj aktywną klasę do klikniętego przycisku
-    clickedButton.classList.remove('btn-outline-primary');
-    clickedButton.classList.add('btn-primary');
-
-    // Filtruj mecze
-    let visibleCount = 0;
-    let hiddenCount = 0;
-    games.forEach(game => {
-        const gameStatus = game.getAttribute('data-status');
-        console.log('Game data-status:', gameStatus, 'filter:', status);
-
-        if (status === 'all') {
-            game.style.display = '';
-            visibleCount++;
-        } else {
-            if (gameStatus === status) {
-                game.style.display = '';
-                visibleCount++;
-            } else {
-                game.style.display = 'none';
-                hiddenCount++;
-            }
-        }
-    });
-    console.log('Visible:', visibleCount, 'Hidden:', hiddenCount);
-}
-</script>
 
 <div th:replace="footer"></div>

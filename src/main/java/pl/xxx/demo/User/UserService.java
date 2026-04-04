@@ -59,6 +59,29 @@ public class UserService {
         userRepository.save(existingUser);
     }
 
+    public UserResponseDTO updateProfile(UserProfileUpdateDTO dto) {
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        User existingUser = userRepository.findByUsername(currentUsername)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
+
+        // Update username if provided and different
+        if (dto.getUsername() != null && !dto.getUsername().equals(currentUsername)) {
+            // Check if new username is already taken
+            if (userRepository.existsUsersByUsername(dto.getUsername())) {
+                throw new UsernameEmailAlreadyUsed();
+            }
+            existingUser.setUsername(dto.getUsername());
+        }
+
+        // Update avatar URL if provided
+        if (dto.getAvatarUrl() != null) {
+            existingUser.setAvatarUrl(dto.getAvatarUrl());
+        }
+
+        User saved = userRepository.save(existingUser);
+        return UserResponseDTOMapper.convertToUserDTO(saved);
+    }
+
     public boolean checkIfUserUnique(UserRequestDTO dto) {
         return !userRepository.existsUsersByEmail(dto.getEmail()) && !userRepository.existsUsersByUsername(dto.getUsername());
     }

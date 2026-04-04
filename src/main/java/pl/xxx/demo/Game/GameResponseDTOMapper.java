@@ -12,6 +12,8 @@ public class GameResponseDTOMapper {
                 .gameId(game.getId())
                 .homeTeam(game.getHomeCountry() != null ? game.getHomeCountry().getName() : null)
                 .awayTeam(game.getAwayCountry() != null ? game.getAwayCountry().getName() : null)
+                .homeCountryCode(game.getHomeCountry() != null ? game.getHomeCountry().getCode() : null)
+                .awayCountryCode(game.getAwayCountry() != null ? game.getAwayCountry().getCode() : null)
                 .homeScore(game.getHomeScore())
                 .awayScore(game.getAwayScore())
                 .gameDate(game.getGameDate())

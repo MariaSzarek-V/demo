@@ -30,6 +30,7 @@ public class RankingHistoryService {
                     .map(rh -> new RankingHistoryDTO(
                             rh.getGameId(),
                             rh.getUser().getUsername(),
+                            rh.getUser().getAvatarUrl(),
                             rh.getTotalPoints(),
                             rh.getPosition(),
                             rh.getPositionChange()
