@@ -29,16 +29,21 @@ public class GamePredictionResultService {
 
         return gamePredictionResultRepository.findAllPredictionsByUserWithResults(currentUser.getId())
                 .stream()
-                .map(dto -> new GamePredictionResultResponseDTO(
-                        dto.getUsername(),
-                        dto.getHomeTeam(),
-                        dto.getAwayTeam(),
-                        dto.getHomeScore(),
-                        dto.getAwayScore(),
-                        dto.getPredictedHomeScore(),
-                        dto.getPredictedAwayScore(),
-                        dto.getPoints()
-                ))
+                .map(dto -> {
+                    GamePredictionResultResponseDTO responseDTO = new GamePredictionResultResponseDTO();
+                    responseDTO.setUsername(dto.getUsername());
+                    responseDTO.setHomeTeam(dto.getHomeTeam());
+                    responseDTO.setAwayTeam(dto.getAwayTeam());
+                    responseDTO.setHomeCountryCode(dto.getHomeCountryCode());
+                    responseDTO.setAwayCountryCode(dto.getAwayCountryCode());
+                    responseDTO.setHomeScore(dto.getHomeScore());
+                    responseDTO.setAwayScore(dto.getAwayScore());
+                    responseDTO.setPredictedHomeScore(dto.getPredictedHomeScore());
+                    responseDTO.setPredictedAwayScore(dto.getPredictedAwayScore());
+                    responseDTO.setPoints(dto.getPoints());
+                    responseDTO.setGameDate(dto.getGameDate() != null ? dto.getGameDate().toString() : null);
+                    return responseDTO;
+                })
                 .toList();
     }
 
@@ -48,16 +53,21 @@ public class GamePredictionResultService {
 
         return gamePredictionResultRepository.findGameWithAllUserPredictionsAndPoints(gameId)
                 .stream()
-                .map(dto -> new GamePredictionResultResponseDTO(
-                        dto.getUsername(),
-                        dto.getHomeTeam(),
-                        dto.getAwayTeam(),
-                        dto.getHomeScore(),
-                        dto.getAwayScore(),
-                        dto.getPredictedHomeScore(),
-                        dto.getPredictedAwayScore(),
-                        dto.getPoints()
-                ))
+                .map(dto -> {
+                    GamePredictionResultResponseDTO responseDTO = new GamePredictionResultResponseDTO();
+                    responseDTO.setUsername(dto.getUsername());
+                    responseDTO.setHomeTeam(dto.getHomeTeam());
+                    responseDTO.setAwayTeam(dto.getAwayTeam());
+                    responseDTO.setHomeCountryCode(dto.getHomeCountryCode());
+                    responseDTO.setAwayCountryCode(dto.getAwayCountryCode());
+                    responseDTO.setHomeScore(dto.getHomeScore());
+                    responseDTO.setAwayScore(dto.getAwayScore());
+                    responseDTO.setPredictedHomeScore(dto.getPredictedHomeScore());
+                    responseDTO.setPredictedAwayScore(dto.getPredictedAwayScore());
+                    responseDTO.setPoints(dto.getPoints());
+                    responseDTO.setGameDate(dto.getGameDate() != null ? dto.getGameDate().toString() : null);
+                    return responseDTO;
+                })
                 .toList();
     }
 

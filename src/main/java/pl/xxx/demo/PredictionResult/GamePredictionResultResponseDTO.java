@@ -15,9 +15,12 @@ public class GamePredictionResultResponseDTO {
     private String username;
     private String homeTeam;
     private String awayTeam;
+    private String homeCountryCode;
+    private String awayCountryCode;
     private Integer homeScore;
     private Integer awayScore;
     private Integer predictedHomeScore;
     private Integer predictedAwayScore;
     private Integer points;
+    private String gameDate;
 }
