@@ -1,4 +1,4 @@
-package pl.xxx.demo.Comment;
+package pl.xxx.demo.ChatMessage;
 
 import jakarta.persistence.Embeddable;
 import lombok.*;
@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CommentReaction {
+public class ChatMessageReaction {
     private String emoji;
     private String username;
 }

@@ -1,4 +1,4 @@
-package pl.xxx.demo.Comment;
+package pl.xxx.demo.ChatMessage;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-public class CommentReactionDTO {
+public class ChatMessageReactionDTO {
     private String emoji;
     private String username;
 }

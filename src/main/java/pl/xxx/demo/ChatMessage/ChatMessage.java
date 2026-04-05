@@ -1,4 +1,4 @@
-package pl.xxx.demo.Comment;
+package pl.xxx.demo.ChatMessage;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,12 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "chat_message")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Comment {
+public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,16 +34,16 @@ public class Comment {
     private User user;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "comment_reactions", joinColumns = @JoinColumn(name = "comment_id"))
+    @CollectionTable(name = "chat_message_reactions", joinColumns = @JoinColumn(name = "chat_message_id"))
     @Builder.Default
-    private List<CommentReaction> reactions = new ArrayList<>();
+    private List<ChatMessageReaction> reactions = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "parent_comment_id")
-    private Comment parentComment;
+    @JoinColumn(name = "parent_message_id")
+    private ChatMessage parentMessage;
 
     @ManyToOne
-    @JoinColumn(name = "quoted_comment_id")
-    private Comment quotedComment;
+    @JoinColumn(name = "quoted_message_id")
+    private ChatMessage quotedMessage;
 
 }

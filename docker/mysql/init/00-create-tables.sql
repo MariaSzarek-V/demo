@@ -6,7 +6,8 @@ SET CHARACTER SET utf8mb4;
 USE betsdb;
 
 -- Drop existing tables if they exist (in correct order to handle foreign keys)
-DROP TABLE IF EXISTS `comment`;
+DROP TABLE IF EXISTS `chat_message_reactions`;
+DROP TABLE IF EXISTS `chat_message`;
 DROP TABLE IF EXISTS `ranking_history`;
 DROP TABLE IF EXISTS `ranking`;
 DROP TABLE IF EXISTS `user_points`;
@@ -86,8 +87,8 @@ CREATE TABLE `prediction` (
     UNIQUE KEY `unique_user_game` (`user_id`, `game_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Create Comment table
-CREATE TABLE `comment` (
+-- Create Chat Message table
+CREATE TABLE `chat_message` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `content` TEXT,
     `text` TEXT,
@@ -100,6 +101,18 @@ CREATE TABLE `comment` (
     FOREIGN KEY (`game_id`) REFERENCES `game`(`id`) ON DELETE SET NULL,
     INDEX `idx_user_id` (`user_id`),
     INDEX `idx_game_id` (`game_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Create Chat Message Reactions table
+CREATE TABLE `chat_message_reactions` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `chat_message_id` BIGINT NOT NULL,
+    `emoji` VARCHAR(10) NOT NULL,
+    `username` VARCHAR(50) NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`chat_message_id`) REFERENCES `chat_message`(`id`) ON DELETE CASCADE,
+    INDEX `idx_chat_message_id` (`chat_message_id`),
+    UNIQUE KEY `unique_message_user_emoji` (`chat_message_id`, `username`, `emoji`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Create User Points table
