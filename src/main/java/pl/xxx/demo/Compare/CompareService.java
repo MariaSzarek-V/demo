@@ -74,10 +74,18 @@ public class CompareService {
 
         List<CompareDTO.PredictionComparisonDTO> predictionComparisons = new ArrayList<>();
         for (Prediction prediction : predictions) {
+            // Only include finished games
+            if (prediction.getGame().getGameStatus() != pl.xxx.demo.Enum.GameStatus.FINISHED) {
+                continue;
+            }
+
             CompareDTO.PredictionComparisonDTO predictionDTO = new CompareDTO.PredictionComparisonDTO();
             predictionDTO.setGameId(prediction.getGame().getId());
             predictionDTO.setHomeTeam(prediction.getGame().getHomeCountry().getName());
             predictionDTO.setAwayTeam(prediction.getGame().getAwayCountry().getName());
+            predictionDTO.setHomeCountryCode(prediction.getGame().getHomeCountry().getCode());
+            predictionDTO.setAwayCountryCode(prediction.getGame().getAwayCountry().getCode());
+            predictionDTO.setGameDate(prediction.getGame().getGameDate().toString());
             predictionDTO.setActualHomeScore(prediction.getGame().getHomeScore());
             predictionDTO.setActualAwayScore(prediction.getGame().getAwayScore());
             predictionDTO.setPredictedHomeScore(prediction.getPredictedHomeScore());

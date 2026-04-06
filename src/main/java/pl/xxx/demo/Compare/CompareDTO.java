@@ -36,6 +36,9 @@ public class CompareDTO {
         private Long gameId;
         private String homeTeam;
         private String awayTeam;
+        private String homeCountryCode;
+        private String awayCountryCode;
+        private String gameDate;
         private Integer actualHomeScore;
         private Integer actualAwayScore;
         private Integer predictedHomeScore;
