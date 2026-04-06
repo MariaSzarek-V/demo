@@ -29,6 +29,7 @@ CREATE TABLE `user` (
     `email` VARCHAR(255) NOT NULL UNIQUE,
     `password` VARCHAR(255) NOT NULL,
     `user_role` VARCHAR(20) NOT NULL DEFAULT 'USER',
+    `avatar_url` VARCHAR(500) NULL,
     PRIMARY KEY (`id`),
     INDEX `idx_username` (`username`),
     INDEX `idx_email` (`email`)
@@ -94,17 +95,18 @@ CREATE TABLE `prediction` (
 -- Create Chat Message table
 CREATE TABLE `chat_message` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
-    `content` TEXT,
-    `text` TEXT,
-    `username` VARCHAR(50),
-    `created_at` DATETIME,
-    `user_id` BIGINT NULL,
-    `game_id` BIGINT NULL,
+    `text` TEXT NOT NULL,
+    `created_at` DATETIME NOT NULL,
+    `user_id` BIGINT NOT NULL,
+    `parent_message_id` BIGINT NULL,
+    `quoted_message_id` BIGINT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE SET NULL,
-    FOREIGN KEY (`game_id`) REFERENCES `game`(`id`) ON DELETE SET NULL,
+    FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`parent_message_id`) REFERENCES `chat_message`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`quoted_message_id`) REFERENCES `chat_message`(`id`) ON DELETE CASCADE,
     INDEX `idx_user_id` (`user_id`),
-    INDEX `idx_game_id` (`game_id`)
+    INDEX `idx_parent_message_id` (`parent_message_id`),
+    INDEX `idx_quoted_message_id` (`quoted_message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Create Chat Message Reactions table
@@ -214,7 +216,7 @@ CREATE TABLE `post_comment` (
 CREATE TABLE `post_reactions` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `post_id` BIGINT NOT NULL,
-    `emoji` VARCHAR(10) NOT NULL,
+    `emoji` VARCHAR(50) NOT NULL,
     `username` VARCHAR(50) NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`post_id`) REFERENCES `post`(`id`) ON DELETE CASCADE,
@@ -226,7 +228,7 @@ CREATE TABLE `post_reactions` (
 CREATE TABLE `post_comment_reactions` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `post_comment_id` BIGINT NOT NULL,
-    `emoji` VARCHAR(10) NOT NULL,
+    `emoji` VARCHAR(50) NOT NULL,
     `username` VARCHAR(50) NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`post_comment_id`) REFERENCES `post_comment`(`id`) ON DELETE CASCADE,

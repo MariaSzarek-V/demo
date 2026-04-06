@@ -1,3 +1,7 @@
+-- Ustawienie kodowania UTF-8
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
+
 -- Czyszczenie starych danych
 SET FOREIGN_KEY_CHECKS = 0;
 TRUNCATE TABLE post_comment_reactions;
