@@ -23,4 +23,7 @@ public interface RankingHistoryRepository extends JpaRepository<RankingHistory, 
     
     // Pobierz historię rankingu użytkownika posortowaną po gameId
     List<RankingHistory> findByUserIdOrderByGameIdAsc(Long userId);
+
+    @Query("SELECT rh FROM RankingHistory rh WHERE rh.gameId = (SELECT MAX(rh2.gameId) FROM RankingHistory rh2) ORDER BY rh.position ASC")
+    List<RankingHistory> findLatestRanking();
 }

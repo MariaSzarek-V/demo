@@ -15,6 +15,7 @@ public class RankingHistoryDTO {
 
     @JsonIgnore
     private Long gameId;
+    private Long userId;
     private String username;
     private String avatarUrl;
     private Integer totalPoints;

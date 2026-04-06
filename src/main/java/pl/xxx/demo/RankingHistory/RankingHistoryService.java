@@ -29,6 +29,7 @@ public class RankingHistoryService {
              return lastRankingHistoryList.stream()
                     .map(rh -> new RankingHistoryDTO(
                             rh.getGameId(),
+                            rh.getUser().getId(),
                             rh.getUser().getUsername(),
                             rh.getUser().getAvatarUrl(),
                             rh.getTotalPoints(),
