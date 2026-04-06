@@ -6,6 +6,10 @@ SET CHARACTER SET utf8mb4;
 USE betsdb;
 
 -- Drop existing tables if they exist (in correct order to handle foreign keys)
+DROP TABLE IF EXISTS `post_comment_reactions`;
+DROP TABLE IF EXISTS `post_reactions`;
+DROP TABLE IF EXISTS `post_comment`;
+DROP TABLE IF EXISTS `post`;
 DROP TABLE IF EXISTS `chat_message_reactions`;
 DROP TABLE IF EXISTS `chat_message`;
 DROP TABLE IF EXISTS `ranking_history`;
@@ -168,6 +172,66 @@ CREATE TABLE `game_prediction_result` (
     FOREIGN KEY (`prediction_id`) REFERENCES `prediction`(`id`) ON DELETE SET NULL,
     INDEX `idx_game_id` (`game_id`),
     INDEX `idx_user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Create Post table
+CREATE TABLE `post` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(255) NOT NULL,
+    `content` TEXT NOT NULL,
+    `image_url` VARCHAR(500) NULL,
+    `created_at` DATETIME NOT NULL,
+    `updated_at` DATETIME NULL,
+    `user_id` BIGINT NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE CASCADE,
+    INDEX `idx_user_id` (`user_id`),
+    INDEX `idx_created_at` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Create Post Comment table
+CREATE TABLE `post_comment` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `text` TEXT NOT NULL,
+    `created_at` DATETIME NOT NULL,
+    `updated_at` DATETIME NULL,
+    `user_id` BIGINT NOT NULL,
+    `post_id` BIGINT NOT NULL,
+    `parent_comment_id` BIGINT NULL,
+    `quoted_comment_id` BIGINT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`post_id`) REFERENCES `post`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`parent_comment_id`) REFERENCES `post_comment`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`quoted_comment_id`) REFERENCES `post_comment`(`id`) ON DELETE SET NULL,
+    INDEX `idx_user_id` (`user_id`),
+    INDEX `idx_post_id` (`post_id`),
+    INDEX `idx_parent_comment_id` (`parent_comment_id`),
+    INDEX `idx_created_at` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Create Post Reactions table
+CREATE TABLE `post_reactions` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `post_id` BIGINT NOT NULL,
+    `emoji` VARCHAR(10) NOT NULL,
+    `username` VARCHAR(50) NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`post_id`) REFERENCES `post`(`id`) ON DELETE CASCADE,
+    INDEX `idx_post_id` (`post_id`),
+    UNIQUE KEY `unique_post_user_emoji` (`post_id`, `username`, `emoji`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Create Post Comment Reactions table
+CREATE TABLE `post_comment_reactions` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `post_comment_id` BIGINT NOT NULL,
+    `emoji` VARCHAR(10) NOT NULL,
+    `username` VARCHAR(50) NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`post_comment_id`) REFERENCES `post_comment`(`id`) ON DELETE CASCADE,
+    INDEX `idx_post_comment_id` (`post_comment_id`),
+    UNIQUE KEY `unique_comment_user_emoji` (`post_comment_id`, `username`, `emoji`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 COMMIT;
