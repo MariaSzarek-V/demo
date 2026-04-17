@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.xxx.demo.Error.ResourceNotFoundException;
+import pl.xxx.demo.League.League;
+import pl.xxx.demo.League.LeagueRepository;
 import pl.xxx.demo.User.UserRepository;
 
 import java.time.LocalDateTime;
@@ -15,21 +17,30 @@ import java.util.List;
 public class ChatMessageService {
     private final ChatMessageRepository chatMessageRepository;
     private final UserRepository userRepository;
+    private final LeagueRepository leagueRepository;
 
     public List<ChatMessageResponseDTO> getAllMessages() {
         List<ChatMessage> messages = chatMessageRepository.findAllByOrderByCreatedAtDesc();
         return ChatMessageResponseDTOMapper.convertToChatMessageResponseDTO(messages);
     }
 
+    public List<ChatMessageResponseDTO> getMessagesByLeague(Long leagueId) {
+        List<ChatMessage> messages = chatMessageRepository.findByLeagueIdOrderByCreatedAtDesc(leagueId);
+        return ChatMessageResponseDTOMapper.convertToChatMessageResponseDTO(messages);
+    }
+
     public ChatMessageResponseDTO add(ChatMessageRequestDTO dto) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        League league = leagueRepository.findById(dto.getLeagueId())
+                .orElseThrow(() -> new ResourceNotFoundException("League not found"));
 
         ChatMessage message = ChatMessage.builder()
                 .text(dto.getText())
                 .createdAt(LocalDateTime.now())
                 .user(userRepository.findByUsername(username)
                         .orElseThrow(() -> new ResourceNotFoundException("User not found")))
+                .league(league)
                 .build();
 
         // Set parent message if provided

@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import pl.xxx.demo.Enum.UserRole;
+import pl.xxx.demo.League.UserLeague;
+
+import java.util.ArrayList;
+import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -33,5 +37,9 @@ public class User {
 
     @Column(length = 500)
     private String avatarUrl;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<UserLeague> userLeagues = new ArrayList<>();
 
 }

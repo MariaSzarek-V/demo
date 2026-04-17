@@ -1,6 +1,7 @@
 package pl.xxx.demo.ChatMessage;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -16,4 +17,7 @@ public class ChatMessageRequestDTO {
 
     private Long parentMessageId;
     private Long quotedMessageId;
+
+    @NotNull(message = "League ID jest wymagane")
+    private Long leagueId;
 }

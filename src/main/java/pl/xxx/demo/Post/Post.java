@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import pl.xxx.demo.League.League;
 import pl.xxx.demo.User.User;
 
 import java.time.LocalDateTime;
@@ -41,6 +42,11 @@ public class Post {
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "league_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private League league;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "post_reactions", joinColumns = @JoinColumn(name = "post_id"))

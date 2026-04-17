@@ -15,7 +15,10 @@ public class ChatMessageController {
     private final ChatMessageService chatMessageService;
 
     @GetMapping
-    public List<ChatMessageResponseDTO> getAllMessages() {
+    public List<ChatMessageResponseDTO> getAllMessages(@RequestParam(required = false) Long leagueId) {
+        if (leagueId != null) {
+            return chatMessageService.getMessagesByLeague(leagueId);
+        }
         return chatMessageService.getAllMessages();
     }
 

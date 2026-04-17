@@ -3,6 +3,8 @@ package pl.xxx.demo.Ranking;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.xxx.demo.Error.ResourceNotFoundException;
+import pl.xxx.demo.League.League;
+import pl.xxx.demo.League.LeagueRepository;
 import pl.xxx.demo.RankingHistory.RankingHistory;
 import pl.xxx.demo.RankingHistory.RankingHistoryRepository;
 import pl.xxx.demo.User.User;
@@ -20,9 +22,22 @@ public class RankingService {
 
     private final UserRepository userRepository;
     private final UserPointsRepository userPointsRepository;
+    private final LeagueRepository leagueRepository;
 
     public List<RankingDTO> getCurrentRanking() {
         List<User> users = userRepository.findAll();
+        return buildRanking(users);
+    }
+
+    public List<RankingDTO> getCurrentRankingByLeague(Long leagueId) {
+        League league = leagueRepository.findById(leagueId)
+                .orElseThrow(() -> new ResourceNotFoundException("League not found"));
+
+        List<User> users = userRepository.findUsersByLeagueId(leagueId);
+        return buildRanking(users);
+    }
+
+    private List<RankingDTO> buildRanking(List<User> users) {
         List<RankingDTO> ranking = new ArrayList<>();
         for (User user : users) {
             Integer totalPoints = userPointsRepository.sumPointsByUserId(user.getId());

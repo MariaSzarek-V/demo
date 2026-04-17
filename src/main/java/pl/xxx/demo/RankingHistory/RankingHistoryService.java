@@ -11,6 +11,7 @@ import pl.xxx.demo.User.UserRepository;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,38 @@ public class RankingHistoryService {
             List<RankingHistory> lastRankingHistoryList = rankingHistoryRepository.findByGameIdOrderByPositionAsc(oneLastRankingHistory.get().getGameId());
 
              return lastRankingHistoryList.stream()
+                    .map(rh -> new RankingHistoryDTO(
+                            rh.getGameId(),
+                            rh.getUser().getId(),
+                            rh.getUser().getUsername(),
+                            rh.getUser().getAvatarUrl(),
+                            rh.getTotalPoints(),
+                            rh.getPosition(),
+                            rh.getPositionChange()
+                    )).toList();
+        }
+        return Collections.emptyList();
+    }
+
+    public List<RankingHistoryDTO> getLastRankingHistoryByLeague(Long leagueId) {
+        Optional<RankingHistory> oneLastRankingHistory = rankingHistoryRepository.findFirstByOrderByIdDesc();
+        if (oneLastRankingHistory.isPresent()) {
+            List<RankingHistory> lastRankingHistoryList = rankingHistoryRepository.findByGameIdOrderByPositionAsc(oneLastRankingHistory.get().getGameId());
+
+            List<User> leagueUsers = userRepository.findUsersByLeagueId(leagueId);
+            List<Long> leagueUserIds = leagueUsers.stream()
+                    .map(User::getId)
+                    .collect(Collectors.toList());
+
+            List<RankingHistory> filteredRankingHistory = lastRankingHistoryList.stream()
+                    .filter(rh -> leagueUserIds.contains(rh.getUser().getId()))
+                    .collect(Collectors.toList());
+
+            for (int i = 0; i < filteredRankingHistory.size(); i++) {
+                filteredRankingHistory.get(i).setPosition(i + 1);
+            }
+
+            return filteredRankingHistory.stream()
                     .map(rh -> new RankingHistoryDTO(
                             rh.getGameId(),
                             rh.getUser().getId(),

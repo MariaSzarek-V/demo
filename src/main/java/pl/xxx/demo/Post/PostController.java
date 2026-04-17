@@ -19,9 +19,15 @@ public class PostController {
     @GetMapping
     public ResponseEntity<Page<PostResponseDTO>> getAllPosts(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) Long leagueId
     ) {
-        Page<PostResponseDTO> posts = postService.getAllPosts(page, size);
+        Page<PostResponseDTO> posts;
+        if (leagueId != null) {
+            posts = postService.getPostsByLeague(page, size, leagueId);
+        } else {
+            posts = postService.getAllPosts(page, size);
+        }
         return ResponseEntity.ok(posts);
     }
 

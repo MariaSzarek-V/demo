@@ -1,6 +1,7 @@
 package pl.xxx.demo.Post;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -18,4 +19,7 @@ public class PostRequestDTO {
     private String content;
 
     private String imageUrl;
+
+    @NotNull(message = "League ID jest wymagane")
+    private Long leagueId;
 }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import pl.xxx.demo.League.League;
 import pl.xxx.demo.User.User;
 
 
@@ -12,8 +13,8 @@ import pl.xxx.demo.User.User;
 @Entity
 @Getter
 @Setter
-//gwarancja, że jeden user ma jeden wpis rankingu na jeden mecz
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"game_id", "user_id"})
+//gwarancja, że jeden user ma jeden wpis rankingu na jeden mecz w danej lidze
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"game_id", "user_id", "league_id"})
 )
 public class RankingHistory {
 
@@ -28,6 +29,11 @@ public class RankingHistory {
     @JoinColumn(nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "league_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private League league;
 
     @JoinColumn(nullable = false)
     private Integer totalPoints;

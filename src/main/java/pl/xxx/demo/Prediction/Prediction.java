@@ -36,6 +36,11 @@ public class Prediction {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Game game;
 
+    @ManyToOne
+    @JoinColumn(name = "league_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private League league;
+
     @Builder.Default
     @Column(nullable = false)
     private Boolean calculated = false;

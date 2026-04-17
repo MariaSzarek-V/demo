@@ -11,6 +11,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p ORDER BY p.createdAt DESC")
     Page<Post> findAllOrderByCreatedAtDesc(Pageable pageable);
+    @Query("SELECT p FROM Post p WHERE p.league.id = :leagueId ORDER BY p.createdAt DESC")
+    Page<Post> findByLeagueIdOrderByCreatedAtDesc(Long leagueId, Pageable pageable);
 
     @Query("SELECT COUNT(pc) FROM PostComment pc WHERE pc.post.id = :postId")
     Integer countCommentsByPostId(Long postId);

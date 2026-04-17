@@ -8,6 +8,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.xxx.demo.League.League;
+import pl.xxx.demo.League.LeagueRepository;
 import pl.xxx.demo.User.User;
 import pl.xxx.demo.User.UserRepository;
 
@@ -20,12 +22,24 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final LeagueRepository leagueRepository;
     private final PostResponseDTOMapper postMapper;
 
     @Transactional(readOnly = true)
     public Page<PostResponseDTO> getAllPosts(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> posts = postRepository.findAllOrderByCreatedAtDesc(pageable);
+
+        return posts.map(post -> {
+            Integer commentsCount = postRepository.countCommentsByPostId(post.getId());
+            return postMapper.map(post, commentsCount);
+        });
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PostResponseDTO> getPostsByLeague(int page, int size, Long leagueId) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> posts = postRepository.findByLeagueIdOrderByCreatedAtDesc(leagueId, pageable);
 
         return posts.map(post -> {
             Integer commentsCount = postRepository.countCommentsByPostId(post.getId());
@@ -45,12 +59,15 @@ public class PostService {
     @Transactional
     public PostResponseDTO createPost(PostRequestDTO dto) {
         User currentUser = getCurrentUser();
+        League league = leagueRepository.findById(dto.getLeagueId())
+                .orElseThrow(() -> new RuntimeException("Liga nie znaleziona"));
 
         Post post = Post.builder()
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .imageUrl(dto.getImageUrl())
                 .user(currentUser)
+                .league(league)
                 .build();
 
         Post savedPost = postRepository.save(post);
