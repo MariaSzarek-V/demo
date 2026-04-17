@@ -21,23 +21,24 @@ public class AdminGameService {
     private final GameRepository gameRepository;
     private final UserPointsService userPointsService;
     private final RankingHistoryService rankingHistoryService;
+    private final AdminGameDTOMapper adminGameDTOMapper;
 
     public List<AdminGameDTO> getAllGames() {
         List<Game> games = gameRepository.findAll();
-        return AdminGameDTOMapper.convertToAdminGameDTOList(games);
+        return adminGameDTOMapper.convertToAdminGameDTOList(games);
     }
 
     public AdminGameDTO getGameById(Long id) {
         Game game = gameRepository.findById(id).orElseThrow(() ->new ResourceNotFoundException(ErrorMessages.GAME_NOT_FOUND));
-        return AdminGameDTOMapper.convertToAdminGameDTO(game);
+        return adminGameDTOMapper.convertToAdminGameDTO(game);
     }
 
 
     public AdminGameDTO addGame(AdminGameDTO dto) {
         checkIfGameDateIsCorrect(dto);
-        Game game = AdminGameDTOMapper.convertToAdminGame(dto);
+        Game game = adminGameDTOMapper.convertToAdminGame(dto);
         gameRepository.save(game);
-        return AdminGameDTOMapper.convertToAdminGameDTO(game);
+        return adminGameDTOMapper.convertToAdminGameDTO(game);
     }
 
     /*
@@ -54,14 +55,14 @@ public class AdminGameService {
                 throw new GameScoreEmptyException();
             }
         dto.setId(id);
-        AdminGameDTOMapper.updateGameFromDto(dto, existingGame);
+        adminGameDTOMapper.updateGameFromDto(dto, existingGame);
         Game savedGame = gameRepository.save(existingGame);
 
         if (savedGame.getGameStatus() == GameStatus.FINISHED) {
             userPointsService.calculatePredictionForGame(savedGame);
             rankingHistoryService.saveCurrentRankingToHistory(savedGame.getId());
         }
-        return AdminGameDTOMapper.convertToAdminGameDTO(savedGame);
+        return adminGameDTOMapper.convertToAdminGameDTO(savedGame);
     }
 
 

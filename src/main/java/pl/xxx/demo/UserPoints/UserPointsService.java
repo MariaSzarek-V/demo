@@ -19,20 +19,26 @@ public class UserPointsService {
 
     public void calculatePredictionForGame(Game game) {
         /**
-         * DONE!!!!
-         * medoda do podlliczenia punktow za predykcje
-         * gdy admin zmieni status meczu na completed
-         * do wykorzystania w adminGameController
+         * Metoda do przeliczenia punktow za predykcje
+         * gdy admin zmieni status meczu na FINISHED lub zaktualizuje wynik
+         * Sprawdza czy UserPoints juz istnieje - jesli tak, nadpisuje punkty
+         * Dzieki temu wielokrotna zmiana wyniku nie duplikuje punktow
          */
         List<Prediction> predictions = predictionRepository.findByGameId(game.getId());
         for (Prediction prediction : predictions) {
             int points = calculatePointsForGame(prediction);
             User user = prediction.getUser();
-            UserPoints userPoints = new UserPoints();
+
+            // Sprawdz czy UserPoints dla tej predykcji juz istnieje
+            UserPoints userPoints = userPointsRepository
+                .findByPredictionId(prediction.getId())
+                .orElse(new UserPoints());
+
             userPoints.setUser(user);
-            userPoints.setPoints(points);
+            userPoints.setPoints(points);  // Nadpisuje stare punkty jesli istnieja
             userPoints.setPrediction(prediction);
             userPointsRepository.save(userPoints);
+
             prediction.setCalculated(true);
             predictionRepository.save(prediction);
         }

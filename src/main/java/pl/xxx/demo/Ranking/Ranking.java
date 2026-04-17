@@ -1,30 +1,24 @@
-package pl.xxx.demo.Prediction;
+package pl.xxx.demo.Ranking;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import pl.xxx.demo.Game.Game;
 import pl.xxx.demo.League.League;
 import pl.xxx.demo.User.User;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@Table(name = "ranking",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "league_id"}))
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "game_id", "league_id"}))
-public class Prediction {
+public class Ranking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    private Integer predictedHomeScore;
-
-    @Column(nullable = false)
-    private Integer predictedAwayScore;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -32,11 +26,18 @@ public class Prediction {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "game_id", nullable = false)
+    @JoinColumn(name = "league_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Game game;
+    private League league;
 
-    @Builder.Default
     @Column(nullable = false)
-    private Boolean calculated = false;
+    @Builder.Default
+    private Integer totalPoints = 0;
+
+    @Column(nullable = false)
+    private Integer position;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer positionChange = 0;
 }

@@ -35,6 +35,14 @@ public class AdminGameDTO {
     private String homeTeam;
     @NotBlank(message = "Nazwa drużyny nie może być pusta")
     private String awayTeam;
+    @NotNull(message = "ID kraju gospodarzy nie może być puste")
+    private Long homeCountryId;
+    @NotNull(message = "ID kraju gości nie może być puste")
+    private Long awayCountryId;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String homeCountryCode;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String awayCountryCode;
     @Min(value = 0, message = "Wynik nie może być ujemny")
     private Integer homeScore;
     @Min(value = 0, message = "Wynik nie może być ujemny")

@@ -1,22 +1,31 @@
 package pl.xxx.demo.Admin;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import pl.xxx.demo.Country.Country;
+import pl.xxx.demo.Country.CountryRepository;
 import pl.xxx.demo.Game.Game;
 
 import java.util.List;
 
 
+@Component
+@RequiredArgsConstructor
 public class AdminGameDTOMapper {
 
-//aktualizacja encji an postawie DTO
-    // TODO: This method needs refactoring to use CountryRepository for team name lookups
-    public static void updateGameFromDto(AdminGameDTO dto, Game game) {
-        // Country updates removed - need CountryRepository to lookup countries by name
-        // if (dto.getHomeTeam() != null) {
-        //     game.setHomeCountry(...); // Need repository
-        // }
-        // if (dto.getAwayTeam() != null) {
-        //     game.setAwayCountry(...); // Need repository
-        // }
+    private final CountryRepository countryRepository;
+
+    public void updateGameFromDto(AdminGameDTO dto, Game game) {
+        if (dto.getHomeCountryId() != null) {
+            Country homeCountry = countryRepository.findById(dto.getHomeCountryId())
+                    .orElseThrow(() -> new RuntimeException("Home country not found"));
+            game.setHomeCountry(homeCountry);
+        }
+        if (dto.getAwayCountryId() != null) {
+            Country awayCountry = countryRepository.findById(dto.getAwayCountryId())
+                    .orElseThrow(() -> new RuntimeException("Away country not found"));
+            game.setAwayCountry(awayCountry);
+        }
         if (dto.getHomeScore() != null) {
             game.setHomeScore(dto.getHomeScore());
         }
@@ -30,11 +39,16 @@ public class AdminGameDTOMapper {
             game.setGameStatus(dto.getGameStatus());
         }
     }
-    public static AdminGameDTO convertToAdminGameDTO(Game game) {
+
+    public AdminGameDTO convertToAdminGameDTO(Game game) {
         return AdminGameDTO.builder()
                 .id(game.getId())
                 .homeTeam(game.getHomeCountry() != null ? game.getHomeCountry().getName() : null)
                 .awayTeam(game.getAwayCountry() != null ? game.getAwayCountry().getName() : null)
+                .homeCountryId(game.getHomeCountry() != null ? game.getHomeCountry().getId() : null)
+                .awayCountryId(game.getAwayCountry() != null ? game.getAwayCountry().getId() : null)
+                .homeCountryCode(game.getHomeCountry() != null ? game.getHomeCountry().getCode() : null)
+                .awayCountryCode(game.getAwayCountry() != null ? game.getAwayCountry().getCode() : null)
                 .homeScore(game.getHomeScore())
                 .awayScore(game.getAwayScore())
                 .gameDate(game.getGameDate())
@@ -42,12 +56,16 @@ public class AdminGameDTOMapper {
                 .build();
     }
 
-    // TODO: This method needs refactoring to use CountryRepository for team name lookups
-    public static Game convertToAdminGame(AdminGameDTO dto) {
+    public Game convertToAdminGame(AdminGameDTO dto) {
+        Country homeCountry = countryRepository.findById(dto.getHomeCountryId())
+                .orElseThrow(() -> new RuntimeException("Home country not found"));
+        Country awayCountry = countryRepository.findById(dto.getAwayCountryId())
+                .orElseThrow(() -> new RuntimeException("Away country not found"));
+
         return Game.builder()
                 .id(dto.getId())
-                // .homeCountry(...) // Need repository to lookup by name
-                // .awayCountry(...) // Need repository to lookup by name
+                .homeCountry(homeCountry)
+                .awayCountry(awayCountry)
                 .homeScore(dto.getHomeScore())
                 .awayScore(dto.getAwayScore())
                 .gameDate(dto.getGameDate())
@@ -56,9 +74,9 @@ public class AdminGameDTOMapper {
     }
 
 
-    public static List<AdminGameDTO> convertToAdminGameDTOList(List<Game> games) {
+    public List<AdminGameDTO> convertToAdminGameDTOList(List<Game> games) {
         return games.stream()
-                .map(game -> convertToAdminGameDTO(game))
+                .map(this::convertToAdminGameDTO)
                 .toList();
     }
 }

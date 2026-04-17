@@ -1,6 +1,7 @@
 package pl.xxx.demo.User;
 
 import lombok.*;
+import pl.xxx.demo.Enum.UserRole;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,4 +13,5 @@ public class UserResponseDTO {
     private String username;
     private String email;
     private String avatarUrl;
+    private UserRole userRole;
 }
