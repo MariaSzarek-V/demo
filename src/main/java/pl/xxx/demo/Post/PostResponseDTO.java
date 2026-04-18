@@ -15,6 +15,7 @@ public class PostResponseDTO {
     private String title;
     private String content;
     private String imageUrl;
+    private String gifUrl;
     private String username;
     private String avatarUrl;
     private LocalDateTime createdAt;

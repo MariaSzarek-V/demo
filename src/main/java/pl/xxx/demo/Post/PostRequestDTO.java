@@ -20,6 +20,8 @@ public class PostRequestDTO {
 
     private String imageUrl;
 
+    private String gifUrl;
+
     @NotNull(message = "League ID jest wymagane")
     private Long leagueId;
 }

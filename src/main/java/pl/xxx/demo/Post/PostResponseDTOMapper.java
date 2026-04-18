@@ -13,6 +13,7 @@ public class PostResponseDTOMapper {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .imageUrl(post.getImageUrl())
+                .gifUrl(post.getGifUrl())
                 .username(post.getUser().getUsername())
                 .avatarUrl(post.getUser().getAvatarUrl())
                 .createdAt(post.getCreatedAt())
