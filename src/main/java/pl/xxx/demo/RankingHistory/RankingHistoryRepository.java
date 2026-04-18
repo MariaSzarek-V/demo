@@ -15,6 +15,7 @@ public interface RankingHistoryRepository extends JpaRepository<RankingHistory, 
 
     Optional<RankingHistory> findFirstByOrderByIdDesc();
     List<RankingHistory> findByGameIdOrderByPositionAsc(Long gameId);
+    List<RankingHistory> findByGameIdAndLeagueIdOrderByPositionAsc(Long gameId, Long leagueId);
 
     @Query("select max(rh.gameId) from RankingHistory rh WHere rh.gameId < :currentGameId")
     Optional<Long> findPreviousGameId(@Param("currentGameId") Long currentGameId);

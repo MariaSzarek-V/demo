@@ -54,22 +54,11 @@ public class RankingHistoryService {
     public List<RankingHistoryDTO> getLastRankingHistoryByLeague(Long leagueId) {
         Optional<RankingHistory> oneLastRankingHistory = rankingHistoryRepository.findFirstByOrderByIdDesc();
         if (oneLastRankingHistory.isPresent()) {
-            List<RankingHistory> lastRankingHistoryList = rankingHistoryRepository.findByGameIdOrderByPositionAsc(oneLastRankingHistory.get().getGameId());
+            // Pobierz ranking_history tylko dla danej ligi (filtruj po league_id)
+            List<RankingHistory> lastRankingHistoryList = rankingHistoryRepository
+                    .findByGameIdAndLeagueIdOrderByPositionAsc(oneLastRankingHistory.get().getGameId(), leagueId);
 
-            List<User> leagueUsers = userRepository.findUsersByLeagueId(leagueId);
-            List<Long> leagueUserIds = leagueUsers.stream()
-                    .map(User::getId)
-                    .collect(Collectors.toList());
-
-            List<RankingHistory> filteredRankingHistory = lastRankingHistoryList.stream()
-                    .filter(rh -> leagueUserIds.contains(rh.getUser().getId()))
-                    .collect(Collectors.toList());
-
-            for (int i = 0; i < filteredRankingHistory.size(); i++) {
-                filteredRankingHistory.get(i).setPosition(i + 1);
-            }
-
-            return filteredRankingHistory.stream()
+            return lastRankingHistoryList.stream()
                     .map(rh -> new RankingHistoryDTO(
                             rh.getGameId(),
                             rh.getUser().getId(),

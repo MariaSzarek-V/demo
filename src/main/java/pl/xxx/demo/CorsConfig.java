@@ -1,5 +1,6 @@
 package pl.xxx.demo;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -7,21 +8,40 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Configuration
 public class CorsConfig {
+
+    @Value("${cors.allowed-origins:}")
+    private String additionalOrigins;
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // Dozwolone origin (React dev server)
-        configuration.setAllowedOrigins(Arrays.asList(
+        // Bazowe dozwolone origin (lokalne developerskie)
+        List<String> baseOrigins = Arrays.asList(
             "http://localhost:5173",
             "http://localhost:5174",
             "http://localhost:5175",
             "http://localhost:3000"
-        ));
+        );
+
+        // Dodaj dodatkowe origin z konfiguracji (np. z docker-compose)
+        List<String> allOrigins = baseOrigins;
+        if (additionalOrigins != null && !additionalOrigins.isEmpty()) {
+            List<String> extraOrigins = Arrays.stream(additionalOrigins.split(","))
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .collect(Collectors.toList());
+            allOrigins = Stream.concat(baseOrigins.stream(), extraOrigins.stream())
+                    .collect(Collectors.toList());
+        }
+
+        configuration.setAllowedOrigins(allOrigins);
 
         // Dozwolone HTTP metody
         configuration.setAllowedMethods(Arrays.asList(
