@@ -67,21 +67,17 @@ services:
       retries: 5
       start_period: 60s
 
-  # phpMyAdmin for database management (optional)
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: prediction-phpmyadmin
+  # React Frontend
+  frontend:
+    build:
+      context: ../demo_front
+      dockerfile: Dockerfile
+    container_name: prediction-frontend
     restart: unless-stopped
     ports:
-      - "8081:80"
-    environment:
-      PMA_HOST: mysql
-      PMA_PORT: 3306
-      PMA_USER: root
-      PMA_PASSWORD: root
-      MYSQL_ROOT_PASSWORD: root
+      - "3000:80"
     depends_on:
-      - mysql
+      - app
     networks:
       - prediction-network
 
