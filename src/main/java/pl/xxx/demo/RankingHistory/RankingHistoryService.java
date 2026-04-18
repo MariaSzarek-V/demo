@@ -185,6 +185,83 @@ public class RankingHistoryService {
     }
 
     /**
+     * Pobiera pełną historię rankingu dla wszystkich użytkowników w danej lidze - dla wykresu
+     */
+    public RankingHistoryChartDTO getAllUsersRankingHistoryForChartByLeague(Long leagueId) {
+        // Pobierz historię tylko dla danej ligi
+        List<RankingHistory> allRankingHistory = rankingHistoryRepository.findByLeagueId(leagueId);
+
+        if (allRankingHistory == null || allRankingHistory.isEmpty()) {
+            return RankingHistoryChartDTO.builder()
+                    .gameLabels(new ArrayList<>())
+                    .allUsersHistory(new ArrayList<>())
+                    .build();
+        }
+
+        // 1. Pobierz wszystkie unikalne game_id (posortowane)
+        List<Long> allGameIds = allRankingHistory.stream()
+                .map(RankingHistory::getGameId)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
+
+        // 2. Dla każdego meczu utwórz etykietę
+        List<String> gameLabels = new ArrayList<>();
+        for (Long gameId : allGameIds) {
+            Optional<Game> gameOpt = gameRepository.findById(gameId);
+            if (gameOpt.isPresent()) {
+                Game game = gameOpt.get();
+                String homeTeamName = game.getHomeCountry() != null ? game.getHomeCountry().getName() : "?";
+                String awayTeamName = game.getAwayCountry() != null ? game.getAwayCountry().getName() : "?";
+                String label = String.format("%s %d:%d %s",
+                        homeTeamName,
+                        game.getHomeScore() != null ? game.getHomeScore() : 0,
+                        game.getAwayScore() != null ? game.getAwayScore() : 0,
+                        awayTeamName);
+                gameLabels.add(label);
+            } else {
+                gameLabels.add("Mecz #" + gameId);
+            }
+        }
+
+        // 3. Grupuj historię po użytkownikach
+        Map<String, List<RankingHistory>> historiesByUser = allRankingHistory.stream()
+                .filter(rh -> rh.getUser() != null)
+                .collect(Collectors.groupingBy(rh -> rh.getUser().getUsername()));
+
+        // 4. Dla każdego użytkownika utwórz listę pozycji dla WSZYSTKICH meczów
+        List<RankingHistoryChartDTO.UserRankingHistoryDTO> allUsersHistory = new ArrayList<>();
+
+        historiesByUser.forEach((username, histories) -> {
+            List<Integer> positions = new ArrayList<>();
+
+            // Dla każdego gameId w allGameIds, znajdź pozycję użytkownika
+            for (Long gameId : allGameIds) {
+                Optional<RankingHistory> historyForGame = histories.stream()
+                        .filter(rh -> rh.getGameId().equals(gameId))
+                        .findFirst();
+
+                if (historyForGame.isPresent()) {
+                    positions.add(historyForGame.get().getPosition());
+                } else {
+                    // Jeśli użytkownik nie ma wpisu dla tego meczu, użyj null
+                    positions.add(null);
+                }
+            }
+
+            allUsersHistory.add(RankingHistoryChartDTO.UserRankingHistoryDTO.builder()
+                    .username(username)
+                    .positions(positions)
+                    .build());
+        });
+
+        return RankingHistoryChartDTO.builder()
+                .gameLabels(gameLabels)
+                .allUsersHistory(allUsersHistory)
+                .build();
+    }
+
+    /**
      * Odbudowuje całą historię rankingu chronologicznie dla wszystkich zakończonych meczów
      */
     @Transactional

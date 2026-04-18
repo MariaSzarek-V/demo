@@ -29,6 +29,11 @@ public class RankingHistoryController {
         return rankingHistoryService.getAllUsersRankingHistoryForChart();
     }
 
+    @GetMapping("/history/chart")
+    public RankingHistoryChartDTO getAllUsersRankingHistoryByLeague(@RequestParam Long leagueId) {
+        return rankingHistoryService.getAllUsersRankingHistoryForChartByLeague(leagueId);
+    }
+
     @PostMapping("/history/rebuild")
     public ResponseEntity<String> rebuildRankingHistory() {
         rankingHistoryService.rebuildRankingHistory();
