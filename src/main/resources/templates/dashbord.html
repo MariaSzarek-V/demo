@@ -5,51 +5,8 @@
   <!-- Content Row - Statystyki -->
   <div class="row mt-4">
 
-    <!-- Twoje wyniki - Połączona karta -->
-    <div class="col-xl-6 col-md-6 mb-6">
-      <div class="card border-left-primary shadow h-100 py-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <!-- Tytuł -->
-              <div class="text-xs font-weight-bold text-primary text-uppercase mb-3">
-                Twoje wyniki</div>
-              
-              <!-- Najczęściej typowany wynik -->
-              <div class="mb-2" th:if="${stats.mostFrequentPrediction != null}">
-                <div class="text-md font-weight-bold text-gray-600 mb-1">Najczęściej typujesz</div>
-                <div class="text-gray-800">
-                  <strong th:text="${stats.mostFrequentPrediction}">2:1</strong>
-                  <strong class="text-muted">x<span th:text="${stats.mostFrequentCount}">0</span></strong>
-                </div>
-              </div>
-              
-              <!-- Statystyki punktowe -->
-              <div class="mb-1">
-                <div class="text-md font-weight-bold text-gray-600 mb-1">Efektywność typowania</div>
-                <span class="text-success">🏆 <span th:text="${stats.exactMatches ?: 0}">0</span></span>
-                <strong class="text-gray-600">x 3 pkt</strong>
-              </div>
-              <div class="mb-1">
-                <span class="text-warning">⚡ <span th:text="${stats.partialMatches ?: 0}">0</span></span>
-                <small class="text-gray-600">x 1 pkt</small>
-              </div>
-              <div class="mb-1">
-                <span class="text-danger">❌ <span th:text="${stats.noMatches ?: 0}">0</span></span>
-                <small class="text-gray-600">x 0 pkt</small>
-              </div>
-              <div class="mb-1" th:if="${stats.almostPerfect != null and stats.almostPerfect > 0}">
-                <span class="text-info">😫 <span th:text="${stats.almostPerfect}">0</span></span>
-                <small class="text-gray-600">x prawie!</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Mini Ranking -->
-    <div class="col-xl-6 col-md-6 mb-6">
+    <div class="col-xl-12 col-md-12 mb-6">
       <div class="card border-left-warning shadow h-100 py-2">
         <div class="card-body">
           <div class="text-xs font-weight-bold text-warning text-uppercase mb-2">
@@ -205,22 +162,6 @@
             </div>
         </div>
     </div>
-  <div class="row">
-        <!-- Nested Donut: Typy vs Rzeczywistość (prawa strona) -->
-        <div class="col-12">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-success">Porównanie: Remisy vs Zwycięstwa</h6>
-                </div>
-                <div class="card-body">
-                    <div class="chart-pie pt-4 pb-2" style="height: 300px; width: 100%; max-width: 100%; position: relative; display: flex; justify-content: center; align-items: center;">
-                        <canvas id="nestedChart" style="max-height: 100%; max-width: 100%;"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
 
 </div>
 <!-- /.container-fluid -->
@@ -236,134 +177,7 @@
     // Pobierz dane z Thymeleaf
     var gameLabels = /*[[${stats.gameLabels}]]*/ [];
     var rankingPositions = /*[[${stats.rankingPositions}]]*/ [];
-    
-    // Dane do donuta zagnieżdżonego (3 obręcze)
-    var predictedDraws = /*[[${stats.predictedDraws}]]*/ 0;
-    var predictedWins = /*[[${stats.predictedWins}]]*/ 0;
-    
-    var averagePredictedDraws = /*[[${stats.averagePredictedDraws}]]*/ 0;
-    var averagePredictedWins = /*[[${stats.averagePredictedWins}]]*/ 0;
-    
-    var actualDraws = /*[[${stats.actualDraws}]]*/ 0;
-    var actualWins = /*[[${stats.actualWins}]]*/ 0;
-    
-    // Nested Donut: Trzy obręcze w jednym wykresie
-    var nestedCtx = document.getElementById('nestedChart').getContext('2d');
-    var nestedChart = new Chart(nestedCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Remisy', 'Zwycięstwa'],
-            datasets: [
-                {
-                    label: 'Twoje typy',
-                    data: [predictedDraws, predictedWins],
-                    backgroundColor: [
-                        'rgba(246, 194, 62, 0.4)',  // Remisy - żółty (najjaśniejszy)
-                        'rgba(28, 200, 138, 0.4)'   // Zwycięstwa - zielony (najjaśniejszy)
-                    ],
-                    hoverBackgroundColor: [
-                        'rgba(246, 194, 62, 0.6)',
-                        'rgba(28, 200, 138, 0.6)'
-                    ],
-                    borderWidth: 2,
-                    borderColor: '#fff'
-                },
-                {
-                    label: 'Średnia innych graczy',
-                    data: [averagePredictedDraws, averagePredictedWins],
-                    backgroundColor: [
-                        'rgba(246, 194, 62, 0.7)',  // Remisy - żółty (średni)
-                        'rgba(28, 200, 138, 0.7)'   // Zwycięstwa - zielony (średni)
-                    ],
-                    hoverBackgroundColor: [
-                        'rgba(246, 194, 62, 0.85)',
-                        'rgba(28, 200, 138, 0.85)'
-                    ],
-                    borderWidth: 2,
-                    borderColor: '#fff'
-                },
-                {
-                    label: 'Rzeczywistość',
-                    data: [actualDraws, actualWins],
-                    backgroundColor: [
-                        'rgba(246, 194, 62, 1)',    // Remisy - żółty (najciemniejszy)
-                        'rgba(28, 200, 138, 1)'     // Zwycięstwa - zielony (najciemniejszy)
-                    ],
-                    hoverBackgroundColor: [
-                        'rgba(244, 182, 25, 1)',
-                        'rgba(23, 166, 115, 1)'
-                    ],
-                    borderWidth: 2,
-                    borderColor: '#fff'
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false, // Zmienione na false - wykres się dopasuje do kontenera
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        generateLabels: function(chart) {
-                            return [
-                                {
-                                    text: 'Remisy (Twoje typy)',
-                                    fillStyle: 'rgba(246, 194, 62, 0.4)',
-                                    hidden: false,
-                                    index: 0
-                                },
-                                {
-                                    text: 'Remisy (Średnia innych)',
-                                    fillStyle: 'rgba(246, 194, 62, 0.7)',
-                                    hidden: false,
-                                    index: 1
-                                },
-                                {
-                                    text: 'Remisy (Rzeczywistość)',
-                                    fillStyle: 'rgba(246, 194, 62, 1)',
-                                    hidden: false,
-                                    index: 2
-                                },
-                                {
-                                    text: 'Zwycięstwa (Twoje typy)',
-                                    fillStyle: 'rgba(28, 200, 138, 0.4)',
-                                    hidden: false,
-                                    index: 3
-                                },
-                                {
-                                    text: 'Zwycięstwa (Średnia innych)',
-                                    fillStyle: 'rgba(28, 200, 138, 0.7)',
-                                    hidden: false,
-                                    index: 4
-                                },
-                                {
-                                    text: 'Zwycięstwa (Rzeczywistość)',
-                                    fillStyle: 'rgba(28, 200, 138, 1)',
-                                    hidden: false,
-                                    index: 5
-                                }
-                            ];
-                        }
-                    }
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            var datasetLabel = context.dataset.label || '';
-                            var label = context.label || '';
-                            var value = context.parsed || 0;
-                            var total = context.dataset.data.reduce((a, b) => a + b, 0);
-                            var percentage = total > 0 ? Math.round((value / total) * 100) : 0;
-                            return datasetLabel + ' - ' + label + ': ' + value + ' (' + percentage + '%)';
-                        }
-                    }
-                }
-            }
-        }
-    });
-    
+
     // Pobierz dane wszystkich użytkowników
     var allUsersHistory = /*[[${stats.allUsersRankingHistory}]]*/ [];
     var currentUsername = /*[[${username}]]*/ '';

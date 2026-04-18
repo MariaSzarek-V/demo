@@ -78,15 +78,19 @@ Administrators have the ability to manage games.
 
 - **Docker Desktop** (version 20.10 or newer)
 - **Docker Compose** (version 2.0 or newer)
-- **Frontend repository** cloned next to backend: `/workspace/coderslab/demo_front`
+- **Frontend repository** cloned next to backend
 
 ### Repository Structure
 
+**IMPORTANT**: Both repositories must be cloned in the same parent directory:
+
 ```
 workspace/coderslab/
-├── demo/           (backend - this repository)
-└── demo_front/     (frontend - React application)
+├── demo/         (backend - this repository)
+└── demo-front/   (frontend - React application)
 ```
+
+⚠️ **Note**: The frontend directory must be named `demo-front` (with hyphen), matching the GitHub repository name.
 
 ### Check if Docker is installed
 
@@ -102,13 +106,25 @@ If Docker is not installed, download it from [https://www.docker.com/products/do
 ### Step 1: Clone the repositories
 
 ```bash
-# Clone backend
-git clone <backend-repo-url> /workspace/coderslab/demo
-cd /workspace/coderslab/demo
+# Create workspace directory
+mkdir -p workspace/coderslab
+cd workspace/coderslab
 
-# Clone frontend (must be in the same parent directory)
-cd ..
-git clone <frontend-repo-url> demo_front
+# Clone backend
+git clone <backend-repo-url> demo
+
+# Clone frontend (MUST be named demo-front)
+git clone <frontend-repo-url> demo-front
+
+# Navigate to backend directory
+cd demo
+```
+
+**Alternative with SSH**:
+```bash
+cd workspace/coderslab
+git clone git@github.trusted.visa.com:your-org/demo.git
+git clone git@github.trusted.visa.com:your-org/demo-front.git
 cd demo
 ```
 
@@ -298,7 +314,7 @@ docker-compose up -d
 docker-compose stop frontend
 
 # Start frontend locally with hot reload
-cd ../demo_front
+cd ../demo-front
 npm install  # Only first time
 npm run dev  # Start dev server
 
@@ -366,7 +382,7 @@ SELECT * FROM league;
    - Automatically connects to the database
 
 3. **frontend** (`prediction-frontend`)
-   - Built from `../demo_front/Dockerfile` (React + Vite + nginx)
+   - Built from `../demo-front/Dockerfile` (React + Vite + nginx)
    - Port: `3000` (mapped to container port 80)
    - nginx serves static files and proxies `/api` requests to backend
    - Depends on: `app`
@@ -389,6 +405,21 @@ The database is automatically initialized on first startup by SQL scripts in ord
 ---
 
 ## Troubleshooting
+
+### Frontend container fails to build
+
+If you get an error like "failed to compute cache key" or "context path not found":
+- **Check directory structure**: Make sure `demo-front` directory exists next to `demo`
+- **Correct structure**:
+  ```
+  workspace/coderslab/
+  ├── demo/         (backend)
+  └── demo-front/   (frontend) ← must be named exactly "demo-front"
+  ```
+- **Custom location**: If your frontend is elsewhere, use:
+  ```bash
+  FRONTEND_PATH=/path/to/your/frontend docker-compose up -d
+  ```
 
 ### Frontend shows gray overlay and can't click anything
 

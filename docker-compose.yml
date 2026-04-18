@@ -70,7 +70,7 @@ services:
   # React Frontend
   frontend:
     build:
-      context: ../demo_front
+      context: ${FRONTEND_PATH:-../demo-front}
       dockerfile: Dockerfile
     container_name: prediction-frontend
     restart: unless-stopped
