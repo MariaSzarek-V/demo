@@ -200,4 +200,100 @@ public class GamePredictionResultService {
                 .totalPredictions(total)
                 .build();
     }
+
+    /**
+     * Pobiera statystyki profilu typowania: remisy vs wygrane
+     * Dla użytkownika, średniej innych graczy w lidze oraz rzeczywistości
+     */
+    public PredictionPatternStatsDTO getPredictionPatternStats(Long leagueId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        // Pobierz wszystkie przewidywania użytkownika z wynikami
+        List<GamePredictionResultResponseDTO> myResults = getAllPredictionsByUserWithResult();
+
+        // Pobierz wszystkich użytkowników z ligi
+        List<User> leagueUsers = userRepository.findUsersByLeagueId(leagueId);
+
+        // Statystyki użytkownika
+        int myDraws = 0;
+        int myWins = 0;
+
+        for (GamePredictionResultResponseDTO result : myResults) {
+            if (result.getPredictedHomeScore() != null && result.getPredictedAwayScore() != null) {
+                if (result.getPredictedHomeScore().equals(result.getPredictedAwayScore())) {
+                    myDraws++;
+                } else {
+                    myWins++;
+                }
+            }
+        }
+
+        // Statystyki innych graczy w lidze
+        int othersDrawsTotal = 0;
+        int othersWinsTotal = 0;
+        int otherPlayersCount = 0;
+
+        for (User user : leagueUsers) {
+            if (!user.getId().equals(currentUser.getId())) {
+                List<GamePredictionResultResponseDTO> userResults =
+                    gamePredictionResultRepository.findAllPredictionsByUserWithResults(user.getId())
+                        .stream()
+                        .map(dto -> {
+                            GamePredictionResultResponseDTO responseDTO = new GamePredictionResultResponseDTO();
+                            responseDTO.setPredictedHomeScore(dto.getPredictedHomeScore());
+                            responseDTO.setPredictedAwayScore(dto.getPredictedAwayScore());
+                            return responseDTO;
+                        })
+                        .toList();
+
+                for (GamePredictionResultResponseDTO result : userResults) {
+                    if (result.getPredictedHomeScore() != null && result.getPredictedAwayScore() != null) {
+                        if (result.getPredictedHomeScore().equals(result.getPredictedAwayScore())) {
+                            othersDrawsTotal++;
+                        } else {
+                            othersWinsTotal++;
+                        }
+                    }
+                }
+                if (!userResults.isEmpty()) {
+                    otherPlayersCount++;
+                }
+            }
+        }
+
+        // Oblicz średnią (zaokrąglenie)
+        int othersDraws = otherPlayersCount > 0 ? Math.round((float) othersDrawsTotal / otherPlayersCount) : 0;
+        int othersWins = otherPlayersCount > 0 ? Math.round((float) othersWinsTotal / otherPlayersCount) : 0;
+
+        // Rzeczywiste wyniki meczów
+        int actualDraws = 0;
+        int actualWins = 0;
+
+        // Pobierz wszystkie zakończone mecze z wynikami
+        for (GamePredictionResultResponseDTO result : myResults) {
+            if (result.getHomeScore() != null && result.getAwayScore() != null) {
+                if (result.getHomeScore().equals(result.getAwayScore())) {
+                    actualDraws++;
+                } else {
+                    actualWins++;
+                }
+            }
+        }
+
+        int totalGames = myDraws + myWins;
+
+        return PredictionPatternStatsDTO.builder()
+                .myDraws(myDraws)
+                .myWins(myWins)
+                .othersDraws(othersDraws)
+                .othersWins(othersWins)
+                .actualDraws(actualDraws)
+                .actualWins(actualWins)
+                .totalGames(totalGames)
+                .build();
+    }
 }

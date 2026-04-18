@@ -28,4 +28,9 @@ public class GamePredictionResultController {
     public List<GamePredictionResultResponseDTO> getUsersPredictionResultsByGameId(@PathVariable Long gameId) {
         return gamePredictionResultService.getGameWithPredictionsAndPointsB(gameId);
     }
+
+    @GetMapping("/prediction-pattern-stats")
+    public PredictionPatternStatsDTO getPredictionPatternStats(@org.springframework.web.bind.annotation.RequestParam Long leagueId) {
+        return gamePredictionResultService.getPredictionPatternStats(leagueId);
+    }
 }

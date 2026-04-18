@@ -19,6 +19,12 @@ public interface UserPointsRepository extends JpaRepository<UserPoints, Long> {
     // Znajdź UserPoints dla konkretnej predykcji
     java.util.Optional<UserPoints> findByPredictionId(Long predictionId);
 
+    // Zsumuj punkty użytkownika do konkretnego meczu włącznie
+    @Query("SELECT SUM(up.points) FROM UserPoints up " +
+           "JOIN up.prediction p " +
+           "WHERE up.user.id = :userId AND p.game.id <= :gameId")
+    Integer sumPointsByUserIdUpToGame(@Param("userId") Long userId, @Param("gameId") Long gameId);
+
 }
 
 

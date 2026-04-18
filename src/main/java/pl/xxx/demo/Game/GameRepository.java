@@ -33,4 +33,7 @@ public interface GameRepository extends JpaRepository<Game, Long> {
             Pageable pageable
     );
 
+    // Znajdź wszystkie zakończone mecze posortowane po ID rosnąco (chronologicznie)
+    List<Game> findByGameStatusOrderByIdAsc(GameStatus gameStatus);
+
 }

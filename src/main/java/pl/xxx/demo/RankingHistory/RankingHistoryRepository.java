@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import pl.xxx.demo.League.League;
 import pl.xxx.demo.User.User;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public interface RankingHistoryRepository extends JpaRepository<RankingHistory, 
     Optional<Long> findPreviousGameId(@Param("currentGameId") Long currentGameId);
 
     Optional<RankingHistory> findByGameIdAndUser(Long gameId, User user);
+    Optional<RankingHistory> findByGameIdAndUserAndLeague(Long gameId, User user, League league);
     boolean existsByGameId(Long gameId);
     
     // Pobierz historię rankingu użytkownika posortowaną po gameId

@@ -21,6 +21,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,17 +66,24 @@ public class DashboardService {
             }
         }
         
-        // 4. Pobierz historię pozycji w rankingu
+        // 4. Pobierz historię pozycji w rankingu - dla zalogowanego użytkownika
         List<RankingHistory> rankingHistory = rankingHistoryRepository
                 .findByUserIdOrderByGameIdAsc(user.getId());
 
-        // Przygotuj dane do wykresu
+        // Przygotuj dane do wykresu - dla zalogowanego użytkownika
         List<String> gameLabels = new ArrayList<>();
         List<Integer> rankingPositions = new ArrayList<>();
 
-        for (RankingHistory history : rankingHistory) {
-            // Pobierz game dla tego rankingu
-            Game game = gameRepository.findById(history.getGameId()).orElse(null);
+        // Pobierz WSZYSTKIE unikalne game_id z ranking_history (dla osi X wykresu)
+        List<Long> allGameIds = rankingHistoryRepository.findAll().stream()
+                .map(RankingHistory::getGameId)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
+
+        // Dla każdego meczu w historii, utwórz etykietę
+        for (Long gameId : allGameIds) {
+            Game game = gameRepository.findById(gameId).orElse(null);
             if (game != null) {
                 // Format: "Polska 2:1 Niemcy"
                 String homeTeamName = game.getHomeCountry() != null ? game.getHomeCountry().getName() : "?";
@@ -86,14 +94,26 @@ public class DashboardService {
                     game.getAwayScore() != null ? game.getAwayScore() : 0,
                     awayTeamName);
                 gameLabels.add(label);
+
+                // Znajdź pozycję zalogowanego użytkownika dla tego meczu
+                Optional<RankingHistory> userHistoryForGame = rankingHistory.stream()
+                        .filter(rh -> rh.getGameId().equals(gameId))
+                        .findFirst();
+
+                if (userHistoryForGame.isPresent()) {
+                    rankingPositions.add(userHistoryForGame.get().getPosition());
+                } else {
+                    // Jeśli użytkownik nie ma wpisu dla tego meczu, użyj null (brak punktu na wykresie)
+                    rankingPositions.add(null);
+                }
             } else {
-                gameLabels.add("Mecz");
+                gameLabels.add("Mecz #" + gameId);
+                rankingPositions.add(null);
             }
-            rankingPositions.add(history.getPosition());
         }
 
-        // Jeśli nie ma historii, użyj aktualnej pozycji
-        if (rankingHistory.isEmpty() && userRanking.getPosition() != null) {
+        // Jeśli nie ma historii w ogóle, użyj aktualnej pozycji
+        if (allGameIds.isEmpty() && userRanking.getPosition() != null) {
             gameLabels.add("Obecnie");
             rankingPositions.add(userRanking.getPosition());
         }
@@ -243,20 +263,33 @@ public class DashboardService {
         List<RankingHistory> allRankingHistory = rankingHistoryRepository.findAll();
         if (allRankingHistory != null && !allRankingHistory.isEmpty()) {
             // Grupuj po użytkownikach
-            allRankingHistory.stream()
+            java.util.Map<String, List<RankingHistory>> historiesByUser = allRankingHistory.stream()
                     .filter(rh -> rh.getUser() != null)
-                    .collect(Collectors.groupingBy(rh -> rh.getUser().getUsername()))
-                    .forEach((username, histories) -> {
-                        List<Integer> positions = histories.stream()
-                                .sorted(Comparator.comparingLong(RankingHistory::getGameId))
-                                .map(RankingHistory::getPosition)
-                                .collect(Collectors.toList());
+                    .collect(Collectors.groupingBy(rh -> rh.getUser().getUsername()));
 
-                        allUsersHistory.add(DashboardStatsDTO.UserRankingHistoryDTO.builder()
-                                .username(username)
-                                .positions(positions)
-                                .build());
-                    });
+            // Dla każdego użytkownika, utwórz listę pozycji dla WSZYSTKICH meczów
+            historiesByUser.forEach((username, histories) -> {
+                List<Integer> positions = new ArrayList<>();
+
+                // Dla każdego gameId w allGameIds, znajdź pozycję użytkownika
+                for (Long gameId : allGameIds) {
+                    Optional<RankingHistory> historyForGame = histories.stream()
+                            .filter(rh -> rh.getGameId().equals(gameId))
+                            .findFirst();
+
+                    if (historyForGame.isPresent()) {
+                        positions.add(historyForGame.get().getPosition());
+                    } else {
+                        // Jeśli użytkownik nie ma wpisu dla tego meczu, użyj null
+                        positions.add(null);
+                    }
+                }
+
+                allUsersHistory.add(DashboardStatsDTO.UserRankingHistoryDTO.builder()
+                        .username(username)
+                        .positions(positions)
+                        .build());
+            });
         }
         
         // 9. Pobierz najbliższe mecze

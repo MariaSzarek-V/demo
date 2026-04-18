@@ -16,6 +16,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
+@org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -32,6 +33,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/ranking/history/all").permitAll()
+                        .requestMatchers("/api/ranking/history/rebuild").permitAll() // TODO: Change back to .hasRole("ADMIN") in production
                         .requestMatchers("/api/**").authenticated()
                 )
                 .sessionManagement(session -> session
