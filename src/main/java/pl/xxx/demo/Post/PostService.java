@@ -66,7 +66,6 @@ public class PostService {
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .imageUrl(dto.getImageUrl())
-                .gifUrl(dto.getGifUrl())
                 .user(currentUser)
                 .league(league)
                 .build();
@@ -88,7 +87,6 @@ public class PostService {
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
         post.setImageUrl(dto.getImageUrl());
-        post.setGifUrl(dto.getGifUrl());
 
         Post updatedPost = postRepository.save(post);
         Integer commentsCount = postRepository.countCommentsByPostId(post.getId());

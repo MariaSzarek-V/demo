@@ -13,6 +13,9 @@ public interface UserPointsRepository extends JpaRepository<UserPoints, Long> {
     @Query("SELECT SUM(up.points) FROM UserPoints up WHERE up.user.id = :userId")
     Integer sumPointsByUserId(@Param("userId") Long userId);
 
+    @Query("SELECT SUM(up.points) FROM UserPoints up WHERE up.user.id = :userId AND up.league.id = :leagueId")
+    Integer sumPointsByUserIdAndLeagueId(@Param("userId") Long userId, @Param("leagueId") Long leagueId);
+
     // Pobierz wszystkie punkty użytkownika posortowane od najnowszych
     List<UserPoints> findByUserIdOrderByIdDesc(Long userId);
 

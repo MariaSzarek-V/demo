@@ -18,6 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<Object> findByEmail(String email);
 
-    @Query("SELECT u FROM User u JOIN u.userLeagues ul WHERE ul.league.id = :leagueId")
+    @Query("SELECT DISTINCT u FROM User u JOIN u.userLeagues ul WHERE ul.league.id = :leagueId")
     List<User> findUsersByLeagueId(@Param("leagueId") Long leagueId);
 }

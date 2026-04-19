@@ -32,9 +32,6 @@ public class Post {
     @Column(name = "image_url", length = 500)
     private String imageUrl;
 
-    @Column(name = "gif_url", length = 500)
-    private String gifUrl;
-
     @Column(nullable = false)
     private LocalDateTime createdAt;
 

@@ -15,12 +15,18 @@ public class PredictionRequestDTOMapper {
 
 
     public static Prediction convertToPrediction(PredictionRequestDTO dto, Game game, User user) {
+        // Get the first league the user belongs to
+        if (user.getUserLeagues() == null || user.getUserLeagues().isEmpty()) {
+            throw new ResourceNotFoundException("User has no leagues assigned");
+        }
+
         return Prediction
                 .builder()
                 .predictedAwayScore(dto.getPredictedAwayScore())
                 .predictedHomeScore(dto.getPredictedHomeScore())
                 .game(game)
                 .user(user)
+                .league(user.getUserLeagues().get(0).getLeague())
                 .build();
     }
 

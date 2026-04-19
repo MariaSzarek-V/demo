@@ -34,13 +34,31 @@ public class RankingService {
                 .orElseThrow(() -> new ResourceNotFoundException("League not found"));
 
         List<User> users = userRepository.findUsersByLeagueId(leagueId);
-        return buildRanking(users);
+        return buildRankingForLeague(users, leagueId);
     }
 
     private List<RankingDTO> buildRanking(List<User> users) {
         List<RankingDTO> ranking = new ArrayList<>();
         for (User user : users) {
             Integer totalPoints = userPointsRepository.sumPointsByUserId(user.getId());
+            if (totalPoints == null) {
+                totalPoints = 0;
+            }
+            ranking.add(new RankingDTO(null, user.getUsername(), totalPoints));
+        }
+        ranking.sort((a, b) -> b.getTotalPoints() - a.getTotalPoints());
+
+        for (int i = 0; i < ranking.size(); i++) {
+            RankingDTO rankingDTO = ranking.get(i);
+            rankingDTO.setPosition(i + 1);
+        }
+        return ranking;
+    }
+
+    private List<RankingDTO> buildRankingForLeague(List<User> users, Long leagueId) {
+        List<RankingDTO> ranking = new ArrayList<>();
+        for (User user : users) {
+            Integer totalPoints = userPointsRepository.sumPointsByUserIdAndLeagueId(user.getId(), leagueId);
             if (totalPoints == null) {
                 totalPoints = 0;
             }
