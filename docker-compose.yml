@@ -19,8 +19,10 @@ services:
       - prediction-network
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
-      timeout: 20s
+      interval: 10s
+      timeout: 5s
       retries: 10
+      start_period: 60s
 
   # Spring Boot Application
   app:
