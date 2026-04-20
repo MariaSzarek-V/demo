@@ -33,12 +33,20 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/leagues").permitAll() // Allow fetching all active leagues without auth
                         .requestMatchers("/api/ranking/history/all").permitAll()
                         .requestMatchers("/api/ranking/history/rebuild").permitAll() // TODO: Change back to .hasRole("ADMIN") in production
                         .requestMatchers("/api/**").authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // lub STATELESS z JWT
+                )
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(403);
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"error\":\"Unauthorized\",\"message\":\"" + authException.getMessage() + "\"}");
+                        })
                 );
         return http.build();
     }

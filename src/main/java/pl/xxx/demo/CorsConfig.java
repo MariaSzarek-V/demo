@@ -27,7 +27,11 @@ public class CorsConfig {
             "http://localhost:5173",
             "http://localhost:5174",
             "http://localhost:5175",
-            "http://localhost:3000"
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+            "http://host.docker.internal:3000",
+            // Wildcards for local development - allows any local IP (192.168.x.x, 10.x.x.x, etc.)
+            "*"
         );
 
         // Dodaj dodatkowe origin z konfiguracji (np. z docker-compose)
