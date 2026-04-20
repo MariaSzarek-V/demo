@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
@@ -16,4 +18,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT COUNT(pc) FROM PostComment pc WHERE pc.post.id = :postId")
     Integer countCommentsByPostId(Long postId);
+
+    Long countByCreatedAtAfter(LocalDateTime dateTime);
+    Long countByLeagueIdAndCreatedAtAfter(Long leagueId, LocalDateTime dateTime);
 }

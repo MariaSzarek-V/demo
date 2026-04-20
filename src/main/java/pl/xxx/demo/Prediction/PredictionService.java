@@ -91,4 +91,73 @@ public class PredictionService {
         predictionRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Prediction with id " + id + " not found"));
         predictionRepository.deleteById(id);
     }
+
+    public List<PredictionHistoryDTO> getMyPredictionHistory(Long leagueId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        List<Prediction> myPredictions = predictionRepository.findByUserIdAndLeagueIdOrderByGameGameDateDesc(
+                currentUser.getId(), leagueId);
+
+        return myPredictions.stream()
+                .map(prediction -> {
+                    Game game = prediction.getGame();
+                    return PredictionHistoryDTO.builder()
+                            .gameId(game.getId())
+                            .homeTeam(game.getHomeCountry().getName())
+                            .awayTeam(game.getAwayCountry().getName())
+                            .homeCountryCode(game.getHomeCountry().getCode())
+                            .awayCountryCode(game.getAwayCountry().getCode())
+                            .gameDate(game.getGameDate())
+                            .gameStatus(game.getGameStatus().toString())
+                            .actualHomeScore(game.getHomeScore())
+                            .actualAwayScore(game.getAwayScore())
+                            .predictedHomeScore(prediction.getPredictedHomeScore())
+                            .predictedAwayScore(prediction.getPredictedAwayScore())
+                            .points(calculatePoints(prediction, game))
+                            .build();
+                })
+                .toList();
+    }
+
+    private Integer calculatePoints(Prediction prediction, Game game) {
+        // Only calculate points for finished games
+        if (!game.getGameStatus().equals(GameStatus.FINISHED)) {
+            return null;
+        }
+
+        if (game.getHomeScore() == null || game.getAwayScore() == null) {
+            return null;
+        }
+
+        int predHome = prediction.getPredictedHomeScore();
+        int predAway = prediction.getPredictedAwayScore();
+        int actualHome = game.getHomeScore();
+        int actualAway = game.getAwayScore();
+
+        // Exact score: 5 points
+        if (predHome == actualHome && predAway == actualAway) {
+            return 5;
+        }
+
+        // Correct result (win/draw/loss): 3 points
+        int predDiff = predHome - predAway;
+        int actualDiff = actualHome - actualAway;
+        if ((predDiff > 0 && actualDiff > 0) || // Both home win
+            (predDiff == 0 && actualDiff == 0) || // Both draw
+            (predDiff < 0 && actualDiff < 0)) {   // Both away win
+            return 3;
+        }
+
+        // Correct goal difference: 1 point
+        if (predDiff == actualDiff) {
+            return 1;
+        }
+
+        // Nothing correct: 0 points
+        return 0;
+    }
 }

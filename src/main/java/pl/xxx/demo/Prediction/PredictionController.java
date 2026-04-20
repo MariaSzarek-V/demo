@@ -18,6 +18,11 @@ public class PredictionController {
         return predictionService.getMyPredictions();
     }
 
+    @GetMapping("/my/history")
+    public List<PredictionHistoryDTO> getMyPredictionHistory(@RequestParam Long leagueId) {
+        return predictionService.getMyPredictionHistory(leagueId);
+    }
+
     @GetMapping("/{id}")
     public PredictionResponseDTO getPredictionById(@PathVariable Long id) {
         return predictionService.get(id);

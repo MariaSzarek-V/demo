@@ -1,0 +1,85 @@
+-- Insert countries participating in World Cup 2026 and qualifiers
+-- Includes all countries from qualifiers and tournament groups
+
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
+
+USE betsdb;
+
+-- Insert countries (code will be added later if needed)
+INSERT IGNORE INTO `country` (name, code) VALUES
+-- Kwalifikacje
+('Polska', 'PL'),
+('Litwa', 'LT'),
+('Malta', 'MT'),
+('Finlandia', 'FI'),
+('Cypr', 'CY'),
+('San Marino', 'SM'),
+('Rumunia', 'RO'),
+('Bośnia i Hercegowina', 'BA'),
+('Andora', 'AD'),
+('Łotwa', 'LV'),
+('Anglia', 'GB-ENG'),
+('Albania', 'AL'),
+('Mołdawia', 'MD'),
+('Norwegia', 'NO'),
+('Izrael', 'IL'),
+('Estonia', 'EE'),
+('Liechtenstein', 'LI'),
+('Macedonia Północna', 'MK'),
+('Walia', 'GB-WLS'),
+('Kazachstan', 'KZ'),
+('Czarnogóra', 'ME'),
+('Gibraltar', 'GI'),
+('Czechy', 'CZ'),
+('Wyspy Owcze', 'FO'),
+('Włochy', 'IT'),
+('Belgia', 'BE'),
+('Chorwacja', 'HR'),
+('Holandia', 'NL'),
+('Austria', 'AT'),
+('Serbia', 'RS'),
+
+-- Mistrzostwa Świata 2026
+('Meksyk', 'MX'),
+('RPA', 'ZA'),
+('Korea Południowa', 'KR'),
+('Kanada', 'CA'),
+('USA', 'US'),
+('Paragwaj', 'PY'),
+('Katar', 'QA'),
+('Szwajcaria', 'CH'),
+('Brazylia', 'BR'),
+('Maroko', 'MA'),
+('Haiti', 'HT'),
+('Szkocja', 'GB-SCT'),
+('Australia', 'AU'),
+('Turcja', 'TR'),
+('Niemcy', 'DE'),
+('Curacao', 'CW'),
+('Japonia', 'JP'),
+('WKS', 'TBD'),
+('Ekwador', 'EC'),
+('Szwecja', 'SE'),
+('Tunezja', 'TN'),
+('Hiszpania', 'ES'),
+('Republika Zielonego Przylądka', 'CV'),
+('Egipt', 'EG'),
+('Arabia Saudyjska', 'SA'),
+('Urugwaj', 'UY'),
+('Iran', 'IR'),
+('Nowa Zelandia', 'NZ'),
+('Francja', 'FR'),
+('Senegal', 'SN'),
+('Irak', 'IQ'),
+('Argentyna', 'AR'),
+('Algieria', 'DZ'),
+('Jordania', 'JO'),
+('Portugalia', 'PT'),
+('DR Konga', 'CD'),
+('Ghana', 'GH'),
+('Panama', 'PA'),
+('Uzbekistan', 'UZ'),
+('Kolumbia', 'CO');
+
+COMMIT;

@@ -13,6 +13,7 @@ import pl.xxx.demo.League.LeagueRepository;
 import pl.xxx.demo.User.User;
 import pl.xxx.demo.User.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -157,5 +158,17 @@ public class PostService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+    }
+
+    @Transactional(readOnly = true)
+    public Long getUnreadPostsCount(Long leagueId) {
+        // Get posts from last 24 hours
+        LocalDateTime last24Hours = LocalDateTime.now().minusHours(24);
+
+        if (leagueId != null) {
+            return postRepository.countByLeagueIdAndCreatedAtAfter(leagueId, last24Hours);
+        } else {
+            return postRepository.countByCreatedAtAfter(last24Hours);
+        }
     }
 }

@@ -51,17 +51,16 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login").permitAll()
-                        .requestMatchers("/error").permitAll() // <-- DODANE
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/vendor/**", "/img/**", "/scss/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
                         .failureUrl("/login?error=true")
-                        .defaultSuccessUrl("/games", true)
+                        .defaultSuccessUrl("/dashboard", true)
                         .permitAll()
                 )
                 .logout(logout -> logout.permitAll());

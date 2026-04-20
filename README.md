@@ -23,14 +23,42 @@ Administrators have the ability to manage games.
 
 ### User Features
 
-- User registration and login (username-based authentication)
-- Change password functionality
-- Browse available games (SCHEDULED and FINISHED)
-- Submit or update predictions before game start
-- Earn points after game completion
-- View ranking with current position and position changes compared to previous matches
-- View other players' predictions and points after game completion
-- Comment section for public discussions
+- **User Authentication**
+  - User registration and login (username-based authentication)
+  - Change password functionality
+  - User profile management with avatar support
+
+- **Game Predictions**
+  - Browse available games (SCHEDULED and FINISHED)
+  - Submit or update predictions before game start
+  - Earn points after game completion
+  - View other players' predictions and points after game completion
+
+- **League System**
+  - Join multiple leagues
+  - Switch between different leagues
+  - League-specific rankings and competitions
+  - View league members
+
+- **Ranking System**
+  - View current ranking position
+  - Track position changes compared to previous matches
+  - **Interactive ranking history chart**:
+    - Visualize position changes over time for all games
+    - Sharp line graphs showing exact position movements
+    - Filter users: show only yourself, top 3/5 + you, or all users
+    - Search for specific users to compare
+    - Click legend to toggle user visibility
+    - Hover over lines to highlight specific users
+
+- **Social Features**
+  - **Posts system**: Create, edit, and delete posts within your league
+    - Add GIFs to posts (via GIF picker)
+    - React to posts with emojis
+    - Comment on posts with quote and reply functionality
+    - React to comments with emojis
+  - **Real-time chat**: Public chat for all league members
+  - View other users' prediction statistics and patterns
 
 ![img.png](img.png)
 ![img_1.png](img_1.png)
@@ -43,6 +71,7 @@ Administrators have the ability to manage games.
 - Admin-only game view with ADMIN_VIEW status
 - Change game status: When status changes to FINISHED, points are automatically calculated
 - Restrict deletion of games to those with ADMIN_VIEW status
+- Manage leagues and league memberships
 
 ![img_11.png](docs/img_11.png)
 
@@ -60,9 +89,14 @@ Administrators have the ability to manage games.
   - OpenAPI (Swagger UI)
 
 - **Frontend**:
-  - Thymeleaf
-  - Bootstrap 5
-  - thymeleaf-extras-springsecurity
+  - React 18
+  - Vite
+  - React Router
+  - React Bootstrap
+  - Chart.js (for ranking history visualization)
+  - Emoji Picker React
+  - date-fns (date formatting)
+  - nginx (static file serving and API proxy)
 
 - **Infrastructure**:
   - Docker
@@ -470,26 +504,27 @@ docker-compose up -d
 
 ## Application Structure
 
-### Web Endpoints
+### Frontend Routes (React SPA)
 
-- `/register` – User registration
+- `/` – Dashboard with upcoming matches and statistics
+- `/games` – Browse and predict game results
+- `/ranking` – User ranking with interactive history chart
+- `/chat` – Real-time chat for league members
+- `/posts` – League posts with reactions and comments
+- `/profile` – User profile management
 - `/login` – User login
-- `/games` – All games list
-- `/ranking` – User ranking
-- `/predictions/new/..` - Create predictions
-- `/predictions/edit/..` - Update predictions
-- `/results/..` - All users' predictions and points for a specific game
-- `/comments` - Comment section
+- `/register` – User registration
 
 ### Admin Panel
 
-- `/admin/games` - Game management
-- `/admin/games/new` - Add game
-- `/admin/games/edit/..` - Update game
+- Admin game management interface
+- League administration
+- User management
 
 ### REST API
 
 - `/swagger-ui/index.html` - REST API documentation
+- All API endpoints are prefixed with `/api`
 
 ---
 
@@ -537,40 +572,104 @@ docker-compose up -d
 
 ## API Endpoints
 
-| Method   | Endpoint                                           | Description                                       |
-|----------|----------------------------------------------------|---------------------------------------------------|
-| `GET`    | `/api/admin/games`                                 | Get all games visible for admin                   |
-| `GET`    | `/api/admin/games/{id}`                            | Get game by ID                                    |
-| `POST`   | `/api/admin/games`                                 | Create new game                                   |
-| `PUT`    | `/api/admin/games/{id}`                            | Update game                                       |
-| `DELETE` | `/api/admin/games/{id}`                            | Delete game                                       |
-| -        | -                                                  | -                                                 |
-| `GET`    | `/api/user`                                        | Get all users                                     |
-| `GET`    | `/api/user/{id}`                                   | Get user by ID                                    |
-| `POST`   | `/api/user`                                        | Create new user                                   |
-| `PUT`    | `/api/user`                                        | Update user password                              |
-| `DELETE` | `/api/user/{id}`                                   | Delete user                                       |
-| -        | -                                                  | -                                                 |
-| `GET`    | `/api/games`                                       | Get all games                                     |
-| `GET`    | `/api/games/{id}`                                  | Get game by ID                                    |
-| `GET`    | `/api/games/upcoming`                              | Get all games with status SCHEDULED               |
-| `GET`    | `/api/games/finished`                              | Get all games with status FINISHED                |
-| -        | -                                                  | -                                                 |
-| `GET`    | `/api/predictions/my`                              | Get all predictions for logged user               |
-| `GET`    | `/api/predictions/{id}`                            | Get prediction by ID                              |
-| `POST`   | `/api/predictions`                                 | Create new prediction                             |
-| `PUT`    | `/api/predictions/{id}`                            | Update prediction                                 |
-| `DELETE` | `/api/predictions/{id}`                            | Delete prediction by ID                           |
-| -        | -                                                  | -                                                 |
-| `GET`    | `/api/results/my-prediction-result`                | Get all predictions with result for logged user   |
-| `GET`    | `/api/results/allusers-prediction-result/{gameId}` | Get all predictions with result for one game      |
-| -        | -                                                  | -                                                 |
-| `GET`    | `/api/ranking`                                     | Get ranking                                       |
-| -        | -                                                  | -                                                 |
-| `GET`    | `/api/comments`                                    | Get all comments                                  |
-| `POST`   | `/api/comments`                                    | Create new comment                                |
+### Admin Endpoints
+| Method   | Endpoint                  | Description                    |
+|----------|---------------------------|--------------------------------|
+| `GET`    | `/api/admin/games`        | Get all games visible for admin|
+| `GET`    | `/api/admin/games/{id}`   | Get game by ID                 |
+| `POST`   | `/api/admin/games`        | Create new game                |
+| `PUT`    | `/api/admin/games/{id}`   | Update game                    |
+| `DELETE` | `/api/admin/games/{id}`   | Delete game                    |
+
+### User Management
+| Method   | Endpoint           | Description              |
+|----------|--------------------|--------------------------|
+| `GET`    | `/api/user`        | Get all users            |
+| `GET`    | `/api/user/{id}`   | Get user by ID           |
+| `POST`   | `/api/user`        | Create new user          |
+| `PUT`    | `/api/user`        | Update user password     |
+| `DELETE` | `/api/user/{id}`   | Delete user              |
+
+### Games
+| Method   | Endpoint               | Description                        |
+|----------|------------------------|------------------------------------|
+| `GET`    | `/api/games`           | Get all games                      |
+| `GET`    | `/api/games/{id}`      | Get game by ID                     |
+| `GET`    | `/api/games/upcoming`  | Get all games with status SCHEDULED|
+| `GET`    | `/api/games/finished`  | Get all games with status FINISHED |
+
+### Predictions
+| Method   | Endpoint                 | Description                              |
+|----------|--------------------------|------------------------------------------|
+| `GET`    | `/api/predictions/my`    | Get all predictions for logged user      |
+| `GET`    | `/api/predictions/{id}`  | Get prediction by ID                     |
+| `POST`   | `/api/predictions`       | Create new prediction                    |
+| `PUT`    | `/api/predictions/{id}`  | Update prediction                        |
+| `DELETE` | `/api/predictions/{id}`  | Delete prediction by ID                  |
+
+### Results
+| Method   | Endpoint                                           | Description                                  |
+|----------|----------------------------------------------------|----------------------------------------------|
+| `GET`    | `/api/results/my-prediction-result`                | Get all predictions with result for logged user |
+| `GET`    | `/api/results/allusers-prediction-result/{gameId}` | Get all predictions with result for one game |
+
+### Ranking
+| Method   | Endpoint                              | Description                                    |
+|----------|---------------------------------------|------------------------------------------------|
+| `GET`    | `/api/ranking`                        | Get current ranking for selected league        |
+| `GET`    | `/api/ranking/history/chart`          | Get ranking history for interactive chart      |
+| `POST`   | `/api/ranking/history/rebuild`        | Rebuild ranking history (admin)                |
+
+### Leagues
+| Method   | Endpoint                     | Description                        |
+|----------|------------------------------|------------------------------------|
+| `GET`    | `/api/leagues/my-leagues`    | Get leagues for current user       |
+| `POST`   | `/api/leagues/join/{code}`   | Join league by invitation code     |
+
+### Posts
+| Method   | Endpoint                      | Description                           |
+|----------|-------------------------------|---------------------------------------|
+| `GET`    | `/api/posts`                  | Get posts (paginated, by league)      |
+| `GET`    | `/api/posts/{id}`             | Get post by ID                        |
+| `POST`   | `/api/posts`                  | Create new post (supports GIF URL)    |
+| `PUT`    | `/api/posts/{id}`             | Update post                           |
+| `DELETE` | `/api/posts/{id}`             | Delete post                           |
+| `POST`   | `/api/posts/{id}/reactions`   | Add reaction to post                  |
+| `DELETE` | `/api/posts/{id}/reactions`   | Remove reaction from post             |
+
+### Comments
+| Method   | Endpoint                          | Description                        |
+|----------|-----------------------------------|------------------------------------|
+| `GET`    | `/api/comments/post/{postId}`     | Get comments for post              |
+| `POST`   | `/api/comments/post/{postId}`     | Create comment (with quote/reply)  |
+| `POST`   | `/api/comments/{id}/reactions`    | Add reaction to comment            |
+| `DELETE` | `/api/comments/{id}/reactions`    | Remove reaction from comment       |
+
+### Chat
+| Method   | Endpoint              | Description                     |
+|----------|-----------------------|---------------------------------|
+| `GET`    | `/api/chat/messages`  | Get recent chat messages        |
+| `POST`   | `/api/chat/messages`  | Send chat message               |
 
 ---
 
+## Recent Updates
+
+### Version 2.0 - Social Features & Enhanced UX
+- ✅ Migrated from Thymeleaf to React SPA
+- ✅ Interactive ranking history chart with Chart.js
+- ✅ Posts system with GIF support (via GIF picker)
+- ✅ Real-time chat for league members
+- ✅ League system with multiple leagues support
+- ✅ Emoji reactions for posts and comments
+- ✅ Comment system with quote and reply functionality
+- ✅ Ranking history rebuild functionality
+- ✅ Improved user interface with responsive design
+- ✅ User avatars and profile management
+
 ## Roadmap
-- Enhanced dashboard with statistics
+- Push notifications for new messages and game updates
+- Mobile app (React Native)
+- Advanced statistics and analytics dashboard
+- Tournament brackets visualization
+- Integration with external sports APIs for live scores

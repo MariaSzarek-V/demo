@@ -75,4 +75,10 @@ public class PostController {
         PostResponseDTO post = postService.removeReaction(id, emoji);
         return ResponseEntity.ok(post);
     }
+
+    @GetMapping("/unread-count")
+    public ResponseEntity<Long> getUnreadPostsCount(@RequestParam(required = false) Long leagueId) {
+        Long count = postService.getUnreadPostsCount(leagueId);
+        return ResponseEntity.ok(count);
+    }
 }
