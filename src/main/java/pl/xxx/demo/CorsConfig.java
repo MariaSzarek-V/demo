@@ -45,7 +45,10 @@ public class CorsConfig {
                     .collect(Collectors.toList());
         }
 
-        configuration.setAllowedOrigins(allOrigins);
+        // Use allowedOriginPatterns instead of allowedOrigins when using "*" with credentials
+        configuration.setAllowedOriginPatterns(allOrigins.stream()
+                .map(origin -> origin.equals("*") ? "*" : origin)
+                .collect(Collectors.toList()));
 
         // Dozwolone HTTP metody
         configuration.setAllowedMethods(Arrays.asList(
