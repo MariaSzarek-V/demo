@@ -32,4 +32,7 @@ public interface RankingHistoryRepository extends JpaRepository<RankingHistory, 
 
     @Query("SELECT rh FROM RankingHistory rh WHERE rh.gameId = (SELECT MAX(rh2.gameId) FROM RankingHistory rh2) ORDER BY rh.position ASC")
     List<RankingHistory> findLatestRanking();
+
+    @Query("SELECT rh FROM RankingHistory rh WHERE rh.league.id = :leagueId AND rh.gameId = (SELECT MAX(rh2.gameId) FROM RankingHistory rh2 WHERE rh2.league.id = :leagueId) ORDER BY rh.position ASC")
+    List<RankingHistory> findLatestRankingByLeague(@Param("leagueId") Long leagueId);
 }

@@ -19,6 +19,9 @@ public interface UserPointsRepository extends JpaRepository<UserPoints, Long> {
     // Pobierz wszystkie punkty użytkownika posortowane od najnowszych
     List<UserPoints> findByUserIdOrderByIdDesc(Long userId);
 
+    // Pobierz punkty użytkownika dla konkretnej ligi posortowane od najnowszych
+    List<UserPoints> findByUserIdAndLeagueIdOrderByIdDesc(Long userId, Long leagueId);
+
     // Znajdź UserPoints dla konkretnej predykcji
     java.util.Optional<UserPoints> findByPredictionId(Long predictionId);
 

@@ -31,6 +31,7 @@ public class GamePredictionResultService {
                 .stream()
                 .map(dto -> {
                     GamePredictionResultResponseDTO responseDTO = new GamePredictionResultResponseDTO();
+                    responseDTO.setUserId(dto.getUserId());
                     responseDTO.setUsername(dto.getUsername());
                     responseDTO.setHomeTeam(dto.getHomeTeam());
                     responseDTO.setAwayTeam(dto.getAwayTeam());
@@ -55,6 +56,7 @@ public class GamePredictionResultService {
                 .stream()
                 .map(dto -> {
                     GamePredictionResultResponseDTO responseDTO = new GamePredictionResultResponseDTO();
+                    responseDTO.setUserId(dto.getUserId());
                     responseDTO.setUsername(dto.getUsername());
                     responseDTO.setHomeTeam(dto.getHomeTeam());
                     responseDTO.setAwayTeam(dto.getAwayTeam());

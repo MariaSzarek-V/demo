@@ -19,11 +19,12 @@ public class CompareController {
     @GetMapping("/{userId}")
     public ResponseEntity<CompareDTO> compareWithUser(
             @PathVariable Long userId,
+            @RequestParam Long leagueId,
             @AuthenticationPrincipal UserDetails userDetails) {
 
         User currentUser = userRepository.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new RuntimeException("Current user not found"));
-        CompareDTO compareDTO = compareService.compareUsers(currentUser.getId(), userId);
+        CompareDTO compareDTO = compareService.compareUsers(currentUser.getId(), userId, leagueId);
 
         return ResponseEntity.ok(compareDTO);
     }

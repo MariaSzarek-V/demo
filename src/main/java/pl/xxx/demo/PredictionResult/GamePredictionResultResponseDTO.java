@@ -12,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GamePredictionResultResponseDTO {
+    private Long userId;
     private String username;
     private String homeTeam;
     private String awayTeam;

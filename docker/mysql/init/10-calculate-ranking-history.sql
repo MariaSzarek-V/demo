@@ -1,8 +1,7 @@
 -- Calculate ranking history for all finished games
 -- Points system:
--- 5 points: exact score match
--- 3 points: correct result (win/draw/loss) but not exact score
--- 1 point: correct goal difference
+-- 3 points: exact score match
+-- 1 point: correct result (win/draw/loss) but not exact score
 -- 0 points: nothing correct
 --
 -- IMPORTANT: Predictions are shared across all leagues (one prediction per user/game),
@@ -28,17 +27,14 @@ SELECT
     (
         SELECT COALESCE(SUM(
             CASE
-                -- Exact score: 5 points
+                -- Exact score: 3 points
                 WHEN p2.predicted_home_score = g2.home_score
                      AND p2.predicted_away_score = g2.away_score
-                THEN 5
-                -- Correct result (win/draw/loss): 3 points
+                THEN 3
+                -- Correct result (win/draw/loss): 1 point
                 WHEN (p2.predicted_home_score > p2.predicted_away_score AND g2.home_score > g2.away_score)
                      OR (p2.predicted_home_score = p2.predicted_away_score AND g2.home_score = g2.away_score)
                      OR (p2.predicted_home_score < p2.predicted_away_score AND g2.home_score < g2.away_score)
-                THEN 3
-                -- Correct goal difference: 1 point
-                WHEN (p2.predicted_home_score - p2.predicted_away_score) = (g2.home_score - g2.away_score)
                 THEN 1
                 -- Nothing correct: 0 points
                 ELSE 0

@@ -27,14 +27,14 @@ public class CompareService {
     private final UserPointsRepository userPointsRepository;
     private final RankingHistoryRepository rankingHistoryRepository;
 
-    public CompareDTO compareUsers(Long currentUserId, Long comparedUserId) {
+    public CompareDTO compareUsers(Long currentUserId, Long comparedUserId, Long leagueId) {
         User currentUser = userRepository.findById(currentUserId)
                 .orElseThrow(() -> new ResourceNotFoundException("Current user not found"));
         User comparedUser = userRepository.findById(comparedUserId)
                 .orElseThrow(() -> new ResourceNotFoundException("Compared user not found"));
 
-        CompareDTO.UserComparisonDTO currentUserData = buildUserComparison(currentUser);
-        CompareDTO.UserComparisonDTO comparedUserData = buildUserComparison(comparedUser);
+        CompareDTO.UserComparisonDTO currentUserData = buildUserComparison(currentUser, leagueId);
+        CompareDTO.UserComparisonDTO comparedUserData = buildUserComparison(comparedUser, leagueId);
 
         CompareDTO compareDTO = new CompareDTO();
         compareDTO.setCurrentUser(currentUserData);
@@ -43,17 +43,18 @@ public class CompareService {
         return compareDTO;
     }
 
-    private CompareDTO.UserComparisonDTO buildUserComparison(User user) {
+    private CompareDTO.UserComparisonDTO buildUserComparison(User user, Long leagueId) {
         CompareDTO.UserComparisonDTO userComparison = new CompareDTO.UserComparisonDTO();
         userComparison.setUserId(user.getId());
         userComparison.setUsername(user.getUsername());
         userComparison.setAvatarUrl(user.getAvatarUrl());
 
-        Integer totalPoints = userPointsRepository.sumPointsByUserId(user.getId());
+        // Pobierz punkty tylko dla danej ligi
+        Integer totalPoints = userPointsRepository.sumPointsByUserIdAndLeagueId(user.getId(), leagueId);
         userComparison.setTotalPoints(totalPoints != null ? totalPoints : 0);
 
-        // Pobierz pozycję z ostatniego rankingu
-        List<RankingHistory> latestRanking = rankingHistoryRepository.findLatestRanking();
+        // Pobierz pozycję z ostatniego rankingu dla danej ligi
+        List<RankingHistory> latestRanking = rankingHistoryRepository.findLatestRankingByLeague(leagueId);
         Integer position = null;
         for (RankingHistory rh : latestRanking) {
             if (rh.getUser().getId().equals(user.getId())) {
@@ -64,7 +65,7 @@ public class CompareService {
         userComparison.setPosition(position);
 
         List<Prediction> predictions = predictionRepository.findByUserId(user.getId());
-        List<UserPoints> userPointsList = userPointsRepository.findByUserIdOrderByIdDesc(user.getId());
+        List<UserPoints> userPointsList = userPointsRepository.findByUserIdAndLeagueIdOrderByIdDesc(user.getId(), leagueId);
 
         Map<Long, Integer> predictionPointsMap = userPointsList.stream()
                 .collect(Collectors.toMap(
@@ -74,8 +75,13 @@ public class CompareService {
 
         List<CompareDTO.PredictionComparisonDTO> predictionComparisons = new ArrayList<>();
         for (Prediction prediction : predictions) {
-            // Only include finished games
+            // Only include finished games and only games from this league
             if (prediction.getGame().getGameStatus() != pl.xxx.demo.Enum.GameStatus.FINISHED) {
+                continue;
+            }
+
+            // Only include predictions that have points in this league
+            if (!predictionPointsMap.containsKey(prediction.getId())) {
                 continue;
             }
 
@@ -90,7 +96,7 @@ public class CompareService {
             predictionDTO.setActualAwayScore(prediction.getGame().getAwayScore());
             predictionDTO.setPredictedHomeScore(prediction.getPredictedHomeScore());
             predictionDTO.setPredictedAwayScore(prediction.getPredictedAwayScore());
-            predictionDTO.setPoints(predictionPointsMap.getOrDefault(prediction.getId(), 0));
+            predictionDTO.setPoints(predictionPointsMap.get(prediction.getId()));
             predictionComparisons.add(predictionDTO);
         }
 
