@@ -23,15 +23,6 @@ public class PostCommentResponseDTOMapper {
                         .collect(Collectors.toList()))
                 .build();
 
-        // Map parent comment if exists
-        if (comment.getParentComment() != null) {
-            PostComment parent = comment.getParentComment();
-            dto.setParentCommentId(parent.getId());
-            dto.setParentCommentText(parent.getText());
-            dto.setParentCommentUsername(parent.getUser().getUsername());
-            dto.setParentCommentAvatarUrl(parent.getUser().getAvatarUrl());
-        }
-
         // Map quoted comment if exists
         if (comment.getQuotedComment() != null) {
             PostComment quoted = comment.getQuotedComment();

@@ -19,12 +19,6 @@ public class PostCommentResponseDTO {
     private LocalDateTime updatedAt;
     private List<PostCommentReactionDTO> reactions;
 
-    // Parent comment info (for replies)
-    private Long parentCommentId;
-    private String parentCommentText;
-    private String parentCommentUsername;
-    private String parentCommentAvatarUrl;
-
     // Quoted comment info
     private Long quotedCommentId;
     private String quotedCommentText;

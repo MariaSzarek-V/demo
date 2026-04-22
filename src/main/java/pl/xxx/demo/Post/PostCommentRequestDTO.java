@@ -12,6 +12,5 @@ public class PostCommentRequestDTO {
     @NotBlank(message = "Treść komentarza nie może być pusta")
     private String text;
 
-    private Long parentCommentId;
     private Long quotedCommentId;
 }

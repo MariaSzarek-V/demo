@@ -22,7 +22,7 @@ public class PostCommentService {
 
     @Transactional(readOnly = true)
     public List<PostCommentResponseDTO> getCommentsByPostId(Long postId) {
-        List<PostComment> comments = commentRepository.findAllByPostIdOrderByCreatedAtAsc(postId);
+        List<PostComment> comments = commentRepository.findAllByPostIdOrderByCreatedAtDesc(postId);
         return comments.stream()
                 .map(commentMapper::map)
                 .collect(Collectors.toList());
@@ -40,13 +40,6 @@ public class PostCommentService {
                 .user(currentUser)
                 .post(post)
                 .build();
-
-        // Set parent comment if exists (for replies)
-        if (dto.getParentCommentId() != null) {
-            PostComment parentComment = commentRepository.findById(dto.getParentCommentId())
-                    .orElseThrow(() -> new RuntimeException("Komentarz nadrzędny nie znaleziony"));
-            comment.setParentComment(parentComment);
-        }
 
         // Set quoted comment if exists
         if (dto.getQuotedCommentId() != null) {
@@ -70,6 +63,8 @@ public class PostCommentService {
         }
 
         comment.setText(dto.getText());
+        // Reset all reactions after editing
+        comment.getReactions().clear();
         PostComment updatedComment = commentRepository.save(comment);
         return commentMapper.map(updatedComment);
     }
