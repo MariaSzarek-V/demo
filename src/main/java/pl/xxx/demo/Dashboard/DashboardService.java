@@ -1,6 +1,7 @@
 package pl.xxx.demo.Dashboard;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import pl.xxx.demo.Enum.GameStatus;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DashboardService {
@@ -520,7 +522,9 @@ public class DashboardService {
     
     private List<DashboardStatsDTO.MiniRankingDTO> getMiniRanking(User user, List<RankingDTO> currentRanking) {
         try {
+            log.info("=== getMiniRanking NOWA WERSJA START ===");
             if (currentRanking == null || currentRanking.isEmpty()) {
+                log.info("Ranking pusty lub null");
                 return new ArrayList<>();
             }
 
@@ -536,6 +540,7 @@ public class DashboardService {
                     break;
                 }
             }
+            log.info("User: {}, userIndex: {}, total ranking size: {}", currentUsername, userIndex, currentRanking.size());
 
             if (userIndex == -1) {
                 // Użytkownik nie znaleziony w rankingu
@@ -623,8 +628,19 @@ public class DashboardService {
                 addedPositions.add(lastIndex);
             }
 
+            log.info("Mini ranking size: {}", miniRanking.size());
+            for (int i = 0; i < miniRanking.size(); i++) {
+                DashboardStatsDTO.MiniRankingDTO item = miniRanking.get(i);
+                if (item == null) {
+                    log.info("{}. SEPARATOR", i);
+                } else {
+                    log.info("{}. #{} {} ({} pkt) {}", i, item.getPosition(), item.getUsername(), item.getTotalPoints(), (item.getIsCurrentUser() ? "[CURRENT USER]" : ""));
+                }
+            }
+            log.info("=== getMiniRanking NOWA WERSJA END ===");
             return miniRanking;
         } catch (Exception e) {
+            log.error("ERROR in getMiniRanking: {}", e.getMessage(), e);
             return new ArrayList<>();
         }
     }

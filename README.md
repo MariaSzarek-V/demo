@@ -102,7 +102,6 @@ Administrators have the ability to manage games.
   - Docker
   - Docker Compose
   - MySQL 8.0
-  - phpMyAdmin
 
 ---
 
@@ -171,7 +170,6 @@ The application uses Docker Compose which automatically:
 - Builds the React frontend application
 - Creates MySQL database
 - Initializes the database with sample data
-- Starts phpMyAdmin for database management
 
 **Start all containers:**
 
@@ -179,11 +177,10 @@ The application uses Docker Compose which automatically:
 docker-compose up -d
 ```
 
-This single command starts **all 4 containers**:
+This single command starts **all 3 containers**:
 1. MySQL database (`prediction-mysql`)
 2. Spring Boot backend (`prediction-app`)
 3. React frontend (`prediction-frontend`)
-4. phpMyAdmin (`prediction-phpmyadmin`)
 
 ---
 
@@ -219,15 +216,17 @@ After starting the application, you can access it at the following addresses:
 - **React App**: [http://localhost:3000](http://localhost:3000)
 - **Login credentials**:
   - Username: `ania` / Password: `123qweasd`
-  - Username: `admin` / Password: `Password1`
+  - Username: `admin` / Password: `admin123`
 
 ### 🔧 Backend API
 - **API Base URL**: [http://localhost:8080/api](http://localhost:8080/api)
 - **Swagger UI**: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
 ### 🗄️ Database Management
-- **phpMyAdmin**: [http://localhost:8081](http://localhost:8081)
-  - Server: `mysql`
+- **MySQL CLI**: Connect via Docker command
+  ```bash
+  docker exec -it prediction-mysql mysql -uroot -proot betsdb
+  ```
   - Username: `root`
   - Password: `root`
   - Database: `betsdb`
@@ -372,7 +371,6 @@ docker-compose logs -f
 docker logs prediction-app -f         # Backend
 docker logs prediction-frontend -f    # Frontend
 docker logs prediction-mysql -f       # Database
-docker logs prediction-phpmyadmin -f  # phpMyAdmin
 ```
 
 ### View last N lines of logs
@@ -400,7 +398,7 @@ SELECT * FROM league;
 
 ## Docker Structure
 
-### Docker Compose contains 4 services:
+### Docker Compose contains 3 services:
 
 1. **mysql** (`prediction-mysql`)
    - Image: `mysql:8.0`
@@ -421,20 +419,24 @@ SELECT * FROM league;
    - nginx serves static files and proxies `/api` requests to backend
    - Depends on: `app`
 
-4. **phpmyadmin** (`prediction-phpmyadmin`)
-   - Image: `phpmyadmin/phpmyadmin`
-   - Port: `8081`
-   - Web interface for MySQL management
-
 ### Database Initialization
 
 The database is automatically initialized on first startup by SQL scripts in order:
 
-1. `00-create-tables.sql` - Table creation
-2. `02-worldcup-2026-countries-groups.sql` - Countries and groups data
-3. `03-worldcup-2026-matches.sql` - World Cup 2026 matches
-4. `04-users-only.sql` - Sample users
-5. `05-poland-matches.sql` - Poland national team matches
+1. `00-set-encoding.sh` - Character encoding setup
+2. `01-create-tables.sql` - Table creation
+3. `02-league-support.sql` - League system tables
+4. `03-create-leagues.sql` - Initial leagues
+5. `04-create-users.sql` - Sample users
+6. `05-assign-users-to-leagues.sql` - User-league assignments
+7. `06-create-countries.sql` - Countries data
+8. `07-finished-games.sql` - Completed games with results
+9. `08-upcoming-games.sql` - Scheduled games
+10. `09-create-predictions.sql` - Sample predictions
+11. `10-calculate-ranking-history.sql` - Ranking history data
+12. `11-calculate-user-points.sql` - User points calculation
+13. `12-add-chat-messages.sql` - Sample chat messages
+14. `13-add-posts.sql` - Sample posts and comments
 
 ---
 

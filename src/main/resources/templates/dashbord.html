@@ -14,24 +14,26 @@
           </div>
           <div th:if="${stats.miniRanking != null and !stats.miniRanking.isEmpty()}">
             <div class="ranking-list" style="font-size: 0.9rem;">
-              <div th:each="rank, iterStat : ${stats.miniRanking}" 
-                   th:if="${rank != null}"
-                   th:classappend="${rank.isCurrentUser} ? 'font-weight-bold bg-light' : ''"
-                   style="padding: 4px 8px; border-radius: 4px; margin-bottom: 4px;">
-                <span th:class="${iterStat.index == 0} ? 'text-warning' : (${iterStat.index == 1} ? 'text-secondary' : (${iterStat.index == 2} ? 'text-info' : 'text-gray-800'))">
-                  #<span th:text="${rank.position}"></span>
-                </span>
-                <span th:text="${rank.username}" 
-                      th:classappend="${rank.isCurrentUser} ? 'text-primary' : 'text-gray-700'"
-                      class="ml-2"></span>
-                <span class="float-right text-gray-800">
-                  <span th:text="${rank.totalPoints}"></span> pkt
-                </span>
-              </div>
-              <!-- Separator dla top 3 i reszty -->
-              <div th:if="${#lists.contains(stats.miniRanking, null)}" 
-                   style="text-align: center; color: #858796; padding: 2px 0; margin: 4px 0;">
-                ⋯
+              <div th:each="rank, iterStat : ${stats.miniRanking}">
+                <!-- Separator jeśli rank == null -->
+                <div th:if="${rank == null}"
+                     style="text-align: center; color: #858796; padding: 2px 0; margin: 4px 0;">
+                  ⋯
+                </div>
+                <!-- Osoba z rankingu jeśli rank != null -->
+                <div th:if="${rank != null}"
+                     th:classappend="${rank.isCurrentUser} ? 'font-weight-bold bg-light' : ''"
+                     style="padding: 4px 8px; border-radius: 4px; margin-bottom: 4px;">
+                  <span th:class="${iterStat.index == 0} ? 'text-warning' : (${iterStat.index == 1} ? 'text-secondary' : (${iterStat.index == 2} ? 'text-info' : 'text-gray-800'))">
+                    #<span th:text="${rank.position}"></span>
+                  </span>
+                  <span th:text="${rank.username}"
+                        th:classappend="${rank.isCurrentUser} ? 'text-primary' : 'text-gray-700'"
+                        class="ml-2"></span>
+                  <span class="float-right text-gray-800">
+                    <span th:text="${rank.totalPoints}"></span> pkt
+                  </span>
+                </div>
               </div>
             </div>
             <div class="mt-2 text-center">
@@ -91,10 +93,10 @@
 
     <!-- Ostatnie mecze - jedna karta -->
     <div class="card border-left-warning shadow mb-4" th:if="${stats.recentGames != null and !stats.recentGames.isEmpty()}">
+        <div class="py-3 card-header">
+            <h6 class="m-0 fw-bold text-danger text-uppercase">⏱️ Ostatnie mecze</h6>
+        </div>
         <div class="card-body">
-            <div class="text-xs font-weight-bold text-warning text-uppercase mb-2">
-                ⏱️ Ostatnie mecze
-            </div>
             <div class="games-list" style="font-size: 0.9rem;">
                 <div th:each="game : ${stats.recentGames}"
                      style="padding: 8px; border-radius: 4px; margin-bottom: 8px; border-bottom: 1px solid #e3e6f0;">
@@ -135,6 +137,7 @@
                 </div>
             </div>
         </div>
+        </div>
     </div>
 
     <!-- Komunikat gdy brak meczów -->
@@ -153,8 +156,8 @@
         <!-- Wykres pozycji w rankingu (lewa strona) -->
         <div class="col-12">
             <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Historia pozycji w rankingu</h6>
+                <div class="py-3 card-header">
+                    <h6 class="m-0 fw-bold text-primary text-uppercase">📊 Historia pozycji w rankingu</h6>
                 </div>
                 <div class="card-body">
                     <div class="chart-area">
