@@ -17,4 +17,5 @@ public class PredictionResponseDTO  {
     private Integer predictedAwayScore;
     private String homeTeam;
     private String awayTeam;
+    private Integer points;
 }

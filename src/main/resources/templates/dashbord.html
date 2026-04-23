@@ -99,36 +99,38 @@
                 <div th:each="game : ${stats.recentGames}"
                      style="padding: 8px; border-radius: 4px; margin-bottom: 8px; border-bottom: 1px solid #e3e6f0;">
                     <div class="text-muted" style="font-size: 0.85rem;" th:text="${#temporals.format(game.gameDate, 'dd.MM.yyyy HH:mm')}"></div>
-                    <div class="font-weight-bold text-gray-800">
-                        <a th:href="@{/results/{id}(id=${game.gameId})}"
-                           class="text-gray-800 text-decoration-none"
-                           style="transition: color 0.2s;"
-                           onmouseover="this.style.color='#4e73df'"
-                           onmouseout="this.style.color=''"
-                           title="Zobacz szczegóły meczu">
-                            <span th:class="'fi fi-' + ${game.homeCountryCode}" style="margin-right: 4px;"></span>
-                            <span th:text="${game.homeTeam}"></span>
-                            <span th:text="${game.homeScore}"></span>:<span th:text="${game.awayScore}"></span>
-                            <span th:text="${game.awayTeam}"></span>
-                            <span th:class="'fi fi-' + ${game.awayCountryCode}" style="margin-left: 4px;"></span>
+                    <div class="font-weight-bold text-gray-800" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <a th:href="@{/results/{id}(id=${game.gameId})}"
+                               class="text-gray-800 text-decoration-none"
+                               style="transition: color 0.2s;"
+                               onmouseover="this.style.color='#4e73df'"
+                               onmouseout="this.style.color=''"
+                               title="Zobacz szczegóły meczu">
+                                <span th:class="'fi fi-' + ${game.homeCountryCode}" style="margin-right: 4px;"></span>
+                                <span th:text="${game.homeTeam}"></span>
+                                <span th:text="${game.homeScore}"></span>:<span th:text="${game.awayScore}"></span>
+                                <span th:text="${game.awayTeam}"></span>
+                                <span th:class="'fi fi-' + ${game.awayCountryCode}" style="margin-left: 4px;"></span>
 
-                            <!-- Punkty i typ -->
-                            <span th:if="${game.hasPrediction and game.points != null}">
-                                <span th:classappend="${game.points == 3} ? 'text-success' : (${game.points == 1} ? 'text-warning' : 'text-danger')"
-                                      th:text="' +' + ${game.points} + ' pkt'"></span>
-                                (<span th:text="${game.predictedHomeScore}"></span>:<span th:text="${game.predictedAwayScore}"></span>)
-                            </span>
+                                <!-- Typ -->
+                                <span th:if="${game.hasPrediction}" class="text-muted" style="font-size: 0.9rem;">
+                                    <small>(<span th:text="${game.predictedHomeScore}"></span>:<span th:text="${game.predictedAwayScore}"></span>)</small>
+                                </span>
 
-                            <!-- Gdy jest typ ale brak punktów -->
-                            <span th:if="${game.hasPrediction and game.points == null}" class="text-muted">
-                                <small>(<span th:text="${game.predictedHomeScore}"></span>:<span th:text="${game.predictedAwayScore}"></span>)</small>
-                            </span>
+                                <!-- Gdy brak typu -->
+                                <span th:if="${!game.hasPrediction}" class="text-muted">
+                                    <small><i class="fas fa-times-circle"></i> Brak typu</small>
+                                </span>
+                            </a>
+                        </div>
 
-                            <!-- Gdy brak typu -->
-                            <span th:if="${!game.hasPrediction}" class="text-muted">
-                                <small><i class="fas fa-times-circle"></i> Brak typu</small>
-                            </span>
-                        </a>
+                        <!-- Punkty po prawej stronie -->
+                        <div th:if="${game.hasPrediction and game.points != null}" style="margin-left: 10px;">
+                            <span th:classappend="${game.points == 3} ? 'text-success' : (${game.points == 1} ? 'text-warning' : 'text-danger')"
+                                  style="font-weight: bold; font-size: 1.1rem;"
+                                  th:text="'+' + ${game.points} + ' pkt'"></span>
+                        </div>
                     </div>
                 </div>
             </div>

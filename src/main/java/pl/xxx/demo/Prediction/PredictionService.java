@@ -26,6 +26,7 @@ public class PredictionService {
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
     private final PredictionRequestDTOMapper predictionRequestDTOMapper;
+    private final PredictionResponseDTOMapper predictionResponseDTOMapper;
 
 
     public PredictionResponseDTO add(PredictionRequestDTO dto) {
@@ -45,7 +46,7 @@ public class PredictionService {
             } else {
                 Prediction prediction = PredictionRequestDTOMapper.convertToPrediction(dto, game, user);
                 predictionRepository.save(prediction);
-                return PredictionResponseDTOMapper.convertToPredictionResponseDTO(prediction);
+                return predictionResponseDTOMapper.convertToPredictionResponseDTO(prediction);
             }
         }
     }
@@ -54,7 +55,7 @@ public class PredictionService {
     public PredictionResponseDTO get(Long id) {
         Prediction prediction = predictionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Prediction with id " + id + " not found"));
-        return PredictionResponseDTOMapper.convertToPredictionResponseDTO(prediction);
+        return predictionResponseDTOMapper.convertToPredictionResponseDTO(prediction);
     }
 
 
@@ -65,7 +66,7 @@ public class PredictionService {
         User currentUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         List<Prediction> myPredictions = predictionRepository.findByUserId(currentUser.getId());
-        return PredictionResponseDTOMapper.convertToPredictionResponseDTO(myPredictions);
+        return predictionResponseDTOMapper.convertToPredictionResponseDTO(myPredictions);
     }
 
 
@@ -83,7 +84,7 @@ public class PredictionService {
         }
 
         predictionRequestDTOMapper.updatePredictionIfNotNull(existingPrediction, dto);
-        return PredictionResponseDTOMapper.convertToPredictionResponseDTO(existingPrediction);
+        return predictionResponseDTOMapper.convertToPredictionResponseDTO(existingPrediction);
     }
 
 
@@ -138,22 +139,17 @@ public class PredictionService {
         int actualHome = game.getHomeScore();
         int actualAway = game.getAwayScore();
 
-        // Exact score: 5 points
+        // Exact score: 3 points
         if (predHome == actualHome && predAway == actualAway) {
-            return 5;
+            return 3;
         }
 
-        // Correct result (win/draw/loss): 3 points
+        // Correct result (win/draw/loss): 1 point
         int predDiff = predHome - predAway;
         int actualDiff = actualHome - actualAway;
         if ((predDiff > 0 && actualDiff > 0) || // Both home win
             (predDiff == 0 && actualDiff == 0) || // Both draw
             (predDiff < 0 && actualDiff < 0)) {   // Both away win
-            return 3;
-        }
-
-        // Correct goal difference: 1 point
-        if (predDiff == actualDiff) {
             return 1;
         }
 

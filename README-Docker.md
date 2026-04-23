@@ -11,36 +11,21 @@ This document explains how to run the Prediction Cup application using Docker.
 
 ## Quick Start
 
-### 1. Using the Management Script (Recommended)
-
-```bash
-# Make the script executable (if not already done)
-chmod +x docker-run.sh
-
-# Start the application
-./docker-run.sh start
-
-# Check status
-./docker-run.sh status
-
-# View logs
-./docker-run.sh logs
-
-# Stop the application
-./docker-run.sh stop
-```
-
-### 2. Using Docker Compose Directly
-
 ```bash
 # Build and start all services
 docker-compose up --build -d
 
-# Stop all services
-docker-compose down
+# Check status
+docker-compose ps
 
 # View logs
 docker-compose logs -f
+
+# Stop all services
+docker-compose down
+
+# Stop and remove volumes (full cleanup)
+docker-compose down -v
 ```
 
 ## Services
@@ -80,22 +65,32 @@ The application comes with pre-configured users:
 - **Password**: `password123`
 - **Role**: USER
 
-## Management Script Commands
-
-The `docker-run.sh` script provides the following commands:
+## Useful Docker Compose Commands
 
 ```bash
-./docker-run.sh start      # Build and start all services
-./docker-run.sh stop       # Stop all services
-./docker-run.sh restart    # Restart all services
-./docker-run.sh status     # Show container status
-./docker-run.sh logs       # Show logs for all services
-./docker-run.sh logs app   # Show logs for specific service
-./docker-run.sh rebuild    # Rebuild application container
-./docker-run.sh shell      # Open shell in app container
-./docker-run.sh shell mysql # Open shell in MySQL container
-./docker-run.sh clean      # Remove all containers and volumes
-./docker-run.sh help       # Show help
+# Start services
+docker-compose up -d                    # Start in background
+docker-compose up --build -d            # Rebuild and start
+
+# Status and logs
+docker-compose ps                       # Show container status
+docker-compose logs -f                  # Follow all logs
+docker-compose logs -f app              # Follow specific service logs
+
+# Restart
+docker-compose restart                  # Restart all services
+docker-compose restart app              # Restart specific service
+
+# Rebuild specific service
+docker-compose up -d --build app        # Rebuild only app
+
+# Shell access
+docker exec -it prediction-app sh       # Enter app container
+docker exec -it prediction-mysql bash   # Enter MySQL container
+
+# Cleanup
+docker-compose down                     # Stop and remove containers
+docker-compose down -v                  # Stop, remove containers and volumes
 ```
 
 ## Environment Variables
@@ -154,7 +149,7 @@ Aplikacja automatycznie inicjalizuje bazę danych przy pierwszym uruchomieniu ko
 docker-compose down -v
 
 # Uruchom ponownie (baza zostanie utworzona od nowa)
-./docker-run.sh start
+docker-compose up --build -d
 ```
 
 ## Volumes
@@ -174,7 +169,7 @@ After making changes to your Java code:
 
 ```bash
 # Rebuild and restart the application
-./docker-run.sh rebuild
+docker-compose up -d --build app
 ```
 
 ### 2. Database Changes
@@ -186,18 +181,18 @@ If you need to reset the database:
 docker-compose down -v
 
 # Start services (will recreate database)
-./docker-run.sh start
+docker-compose up --build -d
 ```
 
 ### 3. Viewing Logs
 
 ```bash
 # All services
-./docker-run.sh logs
+docker-compose logs -f
 
 # Specific service
-./docker-run.sh logs app
-./docker-run.sh logs mysql
+docker-compose logs -f app
+docker-compose logs -f mysql
 ```
 
 ## Troubleshooting
@@ -215,19 +210,19 @@ docker-compose down -v
 2. **Database Connection Issues**
    ```bash
    # Check if MySQL is ready
-   ./docker-run.sh logs mysql
-   
+   docker-compose logs mysql
+
    # Restart services
-   ./docker-run.sh restart
+   docker-compose restart
    ```
 
 3. **Application Won't Start**
    ```bash
    # Check application logs
-   ./docker-run.sh logs app
-   
+   docker-compose logs app
+
    # Rebuild the application
-   ./docker-run.sh rebuild
+   docker-compose up -d --build app
    ```
 
 ### Health Checks
@@ -244,10 +239,14 @@ curl http://localhost:8080/actuator/health
 
 ### Cleanup
 
-To completely remove all containers, volumes, and images:
+To completely remove all containers and volumes:
 
 ```bash
-./docker-run.sh clean
+# Remove containers and volumes
+docker-compose down -v
+
+# Additionally remove images (optional)
+docker-compose down -v --rmi all
 ```
 
 ## Production Considerations
@@ -282,22 +281,23 @@ For production deployment, consider:
 ├── Dockerfile                 # Application container definition
 ├── docker-compose.yml         # Multi-service configuration
 ├── .dockerignore             # Files to exclude from build
-├── docker-run.sh             # Management script
 ├── docker/
 │   └── mysql/
-│       └── init/
-│           └── 01-init.sql   # Database initialization
+│       └── init/             # Database initialization scripts
+│           ├── 00-create-tables.sql
+│           ├── 01-init.sql
+│           └── 02-sample-data.sql
 └── src/
     └── main/
         └── resources/
-            └── application.properties # Updated with Docker support
+            └── application.properties
 ```
 
 ## Support
 
 If you encounter issues:
 
-1. Check the logs: `./docker-run.sh logs`
+1. Check the logs: `docker-compose logs -f`
 2. Verify Docker is running: `docker info`
-3. Check port availability: `netstat -tulpn | grep :8080`
-4. Restart services: `./docker-run.sh restart`
+3. Check port availability: `lsof -i :8080`
+4. Restart services: `docker-compose restart`

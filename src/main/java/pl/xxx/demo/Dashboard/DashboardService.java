@@ -528,70 +528,102 @@ public class DashboardService {
             String currentUsername = user.getUsername();
             List<Integer> addedPositions = new ArrayList<>();
 
-            // Znajdź pozycję użytkownika
-            int userPosition = -1;
+            // Znajdź pozycję użytkownika (indeks w liście, nie position!)
+            int userIndex = -1;
             for (int i = 0; i < currentRanking.size(); i++) {
                 if (currentRanking.get(i).getUsername().equals(currentUsername)) {
-                    userPosition = i;
+                    userIndex = i;
                     break;
                 }
             }
 
-        // 1. Dodaj top 3
-        for (int i = 0; i < Math.min(3, currentRanking.size()); i++) {
-            RankingDTO rankingDTO = currentRanking.get(i);
-            miniRanking.add(DashboardStatsDTO.MiniRankingDTO.builder()
-                    .position(rankingDTO.getPosition())
-                    .username(rankingDTO.getUsername())
-                    .totalPoints(rankingDTO.getTotalPoints())
-                    .isCurrentUser(rankingDTO.getUsername().equals(currentUsername))
-                    .build());
-            addedPositions.add(i);
-        }
+            if (userIndex == -1) {
+                // Użytkownik nie znaleziony w rankingu
+                return new ArrayList<>();
+            }
 
-        // 2. Jeśli użytkownik nie jest w top 3, dodaj jego pozycję + sąsiadów
-        if (userPosition > 2) {
-            // Dodaj separator (null)
-            miniRanking.add(null);
+            // Indeksy osób do dodania
+            int leaderIndex = 0;
+            int aboveUserIndex = userIndex - 1;
+            int belowUserIndex = userIndex + 1;
+            int lastIndex = currentRanking.size() - 1;
 
-            // Dodaj jednego nad użytkownikiem (jeśli istnieje i nie został już dodany)
-            if (userPosition > 0 && !addedPositions.contains(userPosition - 1)) {
-                RankingDTO aboveUser = currentRanking.get(userPosition - 1);
+            // 1. Dodaj lidera (#1) - zawsze, chyba że user jest liderem
+            if (userIndex != leaderIndex) {
+                RankingDTO leader = currentRanking.get(leaderIndex);
+                miniRanking.add(DashboardStatsDTO.MiniRankingDTO.builder()
+                        .position(leader.getPosition())
+                        .username(leader.getUsername())
+                        .totalPoints(leader.getTotalPoints())
+                        .isCurrentUser(false)
+                        .build());
+                addedPositions.add(leaderIndex);
+            }
+
+            // Sprawdź czy potrzebny separator przed grupą użytkownika
+            boolean needSeparatorBefore = !addedPositions.isEmpty() &&
+                                         (aboveUserIndex > 0 && aboveUserIndex - leaderIndex > 1);
+
+            if (needSeparatorBefore) {
+                miniRanking.add(null); // separator
+            }
+
+            // 2. Dodaj rywala NAD użytkownikiem (jeśli istnieje i nie został dodany)
+            if (aboveUserIndex >= 0 && !addedPositions.contains(aboveUserIndex)) {
+                RankingDTO aboveUser = currentRanking.get(aboveUserIndex);
                 miniRanking.add(DashboardStatsDTO.MiniRankingDTO.builder()
                         .position(aboveUser.getPosition())
                         .username(aboveUser.getUsername())
                         .totalPoints(aboveUser.getTotalPoints())
                         .isCurrentUser(false)
                         .build());
-                addedPositions.add(userPosition - 1);
+                addedPositions.add(aboveUserIndex);
             }
 
-            // Dodaj samego użytkownika (jeśli nie został już dodany)
-            if (!addedPositions.contains(userPosition)) {
-                RankingDTO userRanking = currentRanking.get(userPosition);
-                miniRanking.add(DashboardStatsDTO.MiniRankingDTO.builder()
-                        .position(userRanking.getPosition())
-                        .username(userRanking.getUsername())
-                        .totalPoints(userRanking.getTotalPoints())
-                        .isCurrentUser(true)
-                        .build());
-                addedPositions.add(userPosition);
-            }
+            // 3. Dodaj zalogowanego użytkownika
+            RankingDTO userRanking = currentRanking.get(userIndex);
+            miniRanking.add(DashboardStatsDTO.MiniRankingDTO.builder()
+                    .position(userRanking.getPosition())
+                    .username(userRanking.getUsername())
+                    .totalPoints(userRanking.getTotalPoints())
+                    .isCurrentUser(true)
+                    .build());
+            addedPositions.add(userIndex);
 
-            // Dodaj jednego pod użytkownikiem (jeśli istnieje i nie został już dodany)
-            if (userPosition < currentRanking.size() - 1 && !addedPositions.contains(userPosition + 1)) {
-                RankingDTO belowUser = currentRanking.get(userPosition + 1);
+            // 4. Dodaj rywala POD użytkownikiem (jeśli istnieje i nie został dodany)
+            if (belowUserIndex <= lastIndex && !addedPositions.contains(belowUserIndex)) {
+                RankingDTO belowUser = currentRanking.get(belowUserIndex);
                 miniRanking.add(DashboardStatsDTO.MiniRankingDTO.builder()
                         .position(belowUser.getPosition())
                         .username(belowUser.getUsername())
                         .totalPoints(belowUser.getTotalPoints())
                         .isCurrentUser(false)
                         .build());
-                addedPositions.add(userPosition + 1);
+                addedPositions.add(belowUserIndex);
             }
-        }
 
-        return miniRanking;
+            // Sprawdź czy potrzebny separator przed ostatnią osobą
+            boolean needSeparatorAfter = !addedPositions.contains(lastIndex) &&
+                                        lastIndex > belowUserIndex &&
+                                        (lastIndex - belowUserIndex > 1 || (lastIndex - userIndex > 1 && belowUserIndex > lastIndex));
+
+            if (needSeparatorAfter) {
+                miniRanking.add(null); // separator
+            }
+
+            // 5. Dodaj ostatnią osobę z rankingu (jeśli nie została dodana)
+            if (!addedPositions.contains(lastIndex) && lastIndex != userIndex) {
+                RankingDTO lastPerson = currentRanking.get(lastIndex);
+                miniRanking.add(DashboardStatsDTO.MiniRankingDTO.builder()
+                        .position(lastPerson.getPosition())
+                        .username(lastPerson.getUsername())
+                        .totalPoints(lastPerson.getTotalPoints())
+                        .isCurrentUser(false)
+                        .build());
+                addedPositions.add(lastIndex);
+            }
+
+            return miniRanking;
         } catch (Exception e) {
             return new ArrayList<>();
         }
