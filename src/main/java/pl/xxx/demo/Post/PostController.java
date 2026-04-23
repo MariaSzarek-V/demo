@@ -7,6 +7,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Tag(name = "8. Posts")
 @RestController
@@ -80,5 +90,60 @@ public class PostController {
     public ResponseEntity<Long> getUnreadPostsCount(@RequestParam(required = false) Long leagueId) {
         Long count = postService.getUnreadPostsCount(leagueId);
         return ResponseEntity.ok(count);
+    }
+
+    @PostMapping("/upload-image")
+    public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("image") MultipartFile file) {
+        try {
+            // Validate file
+            if (file.isEmpty()) {
+                Map<String, String> error = new HashMap<>();
+                error.put("error", "Plik jest pusty");
+                return ResponseEntity.badRequest().body(error);
+            }
+
+            // Validate file type
+            String contentType = file.getContentType();
+            if (contentType == null || !contentType.startsWith("image/")) {
+                Map<String, String> error = new HashMap<>();
+                error.put("error", "Plik musi być obrazem");
+                return ResponseEntity.badRequest().body(error);
+            }
+
+            // Validate file size (max 5MB)
+            if (file.getSize() > 5 * 1024 * 1024) {
+                Map<String, String> error = new HashMap<>();
+                error.put("error", "Plik jest za duży (max 5MB)");
+                return ResponseEntity.badRequest().body(error);
+            }
+
+            // Generate unique filename
+            String originalFilename = file.getOriginalFilename();
+            String fileExtension = "";
+            if (originalFilename != null && originalFilename.contains(".")) {
+                fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            }
+            String newFilename = UUID.randomUUID().toString() + fileExtension;
+
+            // Save file
+            Path uploadPath = Paths.get("src/main/resources/static/uploads/images");
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            Path filePath = uploadPath.resolve(newFilename);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            // Return URL
+            String imageUrl = "/uploads/images/" + newFilename;
+            Map<String, String> response = new HashMap<>();
+            response.put("imageUrl", imageUrl);
+            return ResponseEntity.ok(response);
+
+        } catch (IOException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "Błąd podczas zapisywania pliku: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
     }
 }

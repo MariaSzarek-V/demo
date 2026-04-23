@@ -36,3 +36,7 @@ build/
 # macOS Finder files
 .DS_Store
 */.DS_Store
+
+# Uploaded images
+src/main/resources/static/uploads/images/*
+!src/main/resources/static/uploads/images/.gitkeep
