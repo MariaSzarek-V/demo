@@ -27,8 +27,6 @@ public class DashboardStatsDTO {
     private Integer exactMatches;            // Liczba dokładnych trafień (3 pkt)
     private Integer partialMatches;          // Liczba częściowych trafień (1 pkt)
     private Integer noMatches;               // Liczba nietrafień (0 pkt)
-    private Integer almostPerfect;           // Liczba meczów gdzie zabrakło 1 bramki do 3 pkt
-    
     // Dane do wykresu pozycji w rankingu
     private List<String> gameLabels;        // Etykiety meczów ["Mecz 1", "Mecz 2", ...]
     private List<Integer> rankingPositions; // Pozycje w rankingu [8, 7, 5, 5, ...]

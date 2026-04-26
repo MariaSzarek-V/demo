@@ -142,8 +142,6 @@ public class DashboardService {
         int exactMatches = 0;  // 3 pkt
         int partialMatches = 0; // 1 pkt
         int noMatches = 0;      // 0 pkt
-        int almostPerfect = 0;  // zabrakło 1 bramki do 3 pkt
-        
         for (Prediction prediction : userPredictions) {
             int homeScore = prediction.getPredictedHomeScore();
             int awayScore = prediction.getPredictedAwayScore();
@@ -178,18 +176,6 @@ public class DashboardService {
                         exactMatches++;
                     } else if (points == 1) {
                         partialMatches++;
-                        
-                        // Sprawdź czy zabrakło 1 bramki do 3 pkt
-                        int actualHome = game.getHomeScore();
-                        int actualAway = game.getAwayScore();
-                        int predHome = homeScore;
-                        int predAway = awayScore;
-                        
-                        // Przypadki "prawie" - dokładny wynik był o 1 bramkę obok
-                        if ((Math.abs(predHome - actualHome) == 1 && predAway == actualAway) ||
-                            (predHome == actualHome && Math.abs(predAway - actualAway) == 1)) {
-                            almostPerfect++;
-                        }
                     } else if (points == 0) {
                         noMatches++;
                     }
@@ -316,7 +302,6 @@ public class DashboardService {
                 .exactMatches(exactMatches)
                 .partialMatches(partialMatches)
                 .noMatches(noMatches)
-                .almostPerfect(almostPerfect)
                 .gameLabels(gameLabels != null ? gameLabels : new ArrayList<>())
                 .rankingPositions(rankingPositions != null ? rankingPositions : new ArrayList<>())
                 .allUsersRankingHistory(allUsersHistory != null ? allUsersHistory : new ArrayList<>())
@@ -348,7 +333,6 @@ public class DashboardService {
                     .exactMatches(0)
                     .partialMatches(0)
                     .noMatches(0)
-                    .almostPerfect(0)
                     .gameLabels(new ArrayList<>())
                     .rankingPositions(new ArrayList<>())
                     .allUsersRankingHistory(new ArrayList<>())
