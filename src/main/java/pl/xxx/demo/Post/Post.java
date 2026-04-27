@@ -48,6 +48,13 @@ public class Post {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private League league;
 
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean deleted = false;
+
+    @Column(name = "deleted_by")
+    private String deletedBy;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "post_reactions", joinColumns = @JoinColumn(name = "post_id"))
     @Builder.Default

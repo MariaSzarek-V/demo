@@ -16,6 +16,7 @@ public class UserResponseDTOMapper {
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .avatarUrl(user.getAvatarUrl())
+                .avatarColor(user.getAvatarColor())
                 .userRole(user.getUserRole())
                 .build();
     }

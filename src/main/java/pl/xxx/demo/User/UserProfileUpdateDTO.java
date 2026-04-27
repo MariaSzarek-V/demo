@@ -14,4 +14,7 @@ public class UserProfileUpdateDTO {
 
     @Size(max = 500, message = "Avatar URL is too long")
     private String avatarUrl;
+
+    @Size(max = 20, message = "Avatar color is too long")
+    private String avatarColor;
 }

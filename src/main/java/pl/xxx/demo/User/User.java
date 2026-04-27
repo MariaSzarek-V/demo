@@ -38,6 +38,9 @@ public class User {
     @Column(length = 500)
     private String avatarUrl;
 
+    @Column(length = 20)
+    private String avatarColor;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<UserLeague> userLeagues = new ArrayList<>();

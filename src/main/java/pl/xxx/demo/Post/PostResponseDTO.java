@@ -22,4 +22,6 @@ public class PostResponseDTO {
     private LocalDateTime updatedAt;
     private List<PostReactionDTO> reactions;
     private Integer commentsCount;
+    private boolean deleted;
+    private String deletedBy;
 }

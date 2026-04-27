@@ -104,7 +104,9 @@ public class PostService {
             throw new RuntimeException("Brak uprawnień do usunięcia tego posta");
         }
 
-        postRepository.delete(post);
+        post.setDeleted(true);
+        post.setDeletedBy(currentUser.getUsername());
+        postRepository.save(post);
     }
 
     @Transactional

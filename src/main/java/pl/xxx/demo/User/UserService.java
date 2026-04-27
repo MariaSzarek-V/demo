@@ -78,6 +78,11 @@ public class UserService {
             existingUser.setAvatarUrl(dto.getAvatarUrl());
         }
 
+        // Update avatar color if provided
+        if (dto.getAvatarColor() != null) {
+            existingUser.setAvatarColor(dto.getAvatarColor());
+        }
+
         User saved = userRepository.save(existingUser);
         return UserResponseDTOMapper.convertToUserDTO(saved);
     }

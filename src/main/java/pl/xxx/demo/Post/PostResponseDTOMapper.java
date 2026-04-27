@@ -8,6 +8,16 @@ import java.util.stream.Collectors;
 public class PostResponseDTOMapper {
 
     public PostResponseDTO map(Post post, Integer commentsCount) {
+        if (post.isDeleted()) {
+            return PostResponseDTO.builder()
+                    .id(post.getId())
+                    .deleted(true)
+                    .deletedBy(post.getDeletedBy())
+                    .username(post.getUser().getUsername())
+                    .createdAt(post.getCreatedAt())
+                    .commentsCount(0)
+                    .build();
+        }
         return PostResponseDTO.builder()
                 .id(post.getId())
                 .title(post.getTitle())
@@ -24,6 +34,7 @@ public class PostResponseDTOMapper {
                                 .build())
                         .collect(Collectors.toList()))
                 .commentsCount(commentsCount)
+                .deleted(false)
                 .build();
     }
 }

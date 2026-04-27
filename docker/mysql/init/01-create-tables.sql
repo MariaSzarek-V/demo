@@ -182,6 +182,8 @@ CREATE TABLE `post` (
     `title` VARCHAR(255) NOT NULL,
     `content` TEXT NOT NULL,
     `image_url` VARCHAR(500) NULL,
+    `deleted` BOOLEAN NOT NULL DEFAULT FALSE,
+    `deleted_by` VARCHAR(255) NULL,
     `created_at` DATETIME NOT NULL,
     `updated_at` DATETIME NULL,
     `user_id` BIGINT NOT NULL,
