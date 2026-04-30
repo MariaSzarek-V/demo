@@ -49,8 +49,7 @@ public class CompareService {
         userComparison.setUsername(user.getUsername());
         userComparison.setAvatarUrl(user.getAvatarUrl());
 
-        // Pobierz punkty tylko dla danej ligi
-        Integer totalPoints = userPointsRepository.sumPointsByUserIdAndLeagueId(user.getId(), leagueId);
+        Integer totalPoints = userPointsRepository.sumPointsByUserId(user.getId());
         userComparison.setTotalPoints(totalPoints != null ? totalPoints : 0);
 
         // Pobierz pozycję z ostatniego rankingu dla danej ligi
@@ -65,7 +64,7 @@ public class CompareService {
         userComparison.setPosition(position);
 
         List<Prediction> predictions = predictionRepository.findByUserId(user.getId());
-        List<UserPoints> userPointsList = userPointsRepository.findByUserIdAndLeagueIdOrderByIdDesc(user.getId(), leagueId);
+        List<UserPoints> userPointsList = userPointsRepository.findByUserIdOrderByIdDesc(user.getId());
 
         Map<Long, Integer> predictionPointsMap = userPointsList.stream()
                 .collect(Collectors.toMap(
