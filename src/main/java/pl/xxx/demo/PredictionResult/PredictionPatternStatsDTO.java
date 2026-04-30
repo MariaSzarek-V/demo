@@ -10,18 +10,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PredictionPatternStatsDTO {
-    // User's prediction pattern
-    private Integer myDraws;
-    private Integer myWins;
+    // Percentages (0-100) for chart bars
+    private Double myDrawPercent;
+    private Double myWinPercent;
 
-    // Average of other players in the league
-    private Integer othersDraws;
-    private Integer othersWins;
+    private Double othersDrawPercent;
+    private Double othersWinPercent;
 
-    // Actual match results
-    private Integer actualDraws;
-    private Integer actualWins;
+    private Double actualDrawPercent;
+    private Double actualWinPercent;
 
-    // Total games counted
-    private Integer totalGames;
+    // Raw totals for tooltip context
+    private Integer myTotal;
+    private Integer othersPlayerCount;
+    private Integer actualTotal;
 }

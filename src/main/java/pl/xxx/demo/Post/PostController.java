@@ -126,7 +126,7 @@ public class PostController {
             String newFilename = UUID.randomUUID().toString() + fileExtension;
 
             // Save file
-            Path uploadPath = Paths.get("src/main/resources/static/uploads/images");
+            Path uploadPath = Paths.get("/app/uploads");
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
@@ -135,7 +135,7 @@ public class PostController {
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
             // Return URL
-            String imageUrl = "/uploads/images/" + newFilename;
+            String imageUrl = "/uploads/" + newFilename;
             Map<String, String> response = new HashMap<>();
             response.put("imageUrl", imageUrl);
             return ResponseEntity.ok(response);

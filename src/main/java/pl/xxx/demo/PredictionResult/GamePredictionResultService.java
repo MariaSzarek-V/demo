@@ -206,6 +206,7 @@ public class GamePredictionResultService {
     /**
      * Pobiera statystyki profilu typowania: remisy vs wygrane
      * Dla użytkownika, średniej innych graczy w lidze oraz rzeczywistości
+     * 3 queries zamiast N+1
      */
     public PredictionPatternStatsDTO getPredictionPatternStats(Long leagueId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -214,88 +215,51 @@ public class GamePredictionResultService {
         User currentUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        // Pobierz wszystkie przewidywania użytkownika z wynikami
-        List<GamePredictionResultResponseDTO> myResults = getAllPredictionsByUserWithResult();
+        // Query 1: moje typy w tej lidze
+        List<Object[]> myRows = gamePredictionResultRepository.findMyPredictionPattern(currentUser.getId(), leagueId);
+        Object[] myRow = myRows.isEmpty() ? new Object[]{null, null, null} : myRows.get(0);
+        long myDraws = myRow[0] != null ? (Long) myRow[0] : 0L;
+        long myWins  = myRow[1] != null ? (Long) myRow[1] : 0L;
+        long myTotal = myDraws + myWins;
 
-        // Pobierz wszystkich użytkowników z ligi
-        List<User> leagueUsers = userRepository.findUsersByLeagueId(leagueId);
+        // Query 2: rzeczywiste wyniki zagranych meczów w lidze
+        List<Object[]> actualRows = gamePredictionResultRepository.findActualResultsInLeague(leagueId);
+        Object[] actualRow = actualRows.isEmpty() ? new Object[]{null, null, null} : actualRows.get(0);
+        long actualDraws = actualRow[0] != null ? (Long) actualRow[0] : 0L;
+        long actualWins  = actualRow[1] != null ? (Long) actualRow[1] : 0L;
+        long actualTotal = actualDraws + actualWins;
 
-        // Statystyki użytkownika
-        int myDraws = 0;
-        int myWins = 0;
+        // Query 3: typy innych graczy w lidze, zagregowane per gracz
+        List<Object[]> othersRows = gamePredictionResultRepository.findOthersPredictionPattern(currentUser.getId(), leagueId);
+        double othersDrawPctSum = 0.0;
+        double othersWinPctSum  = 0.0;
+        int othersPlayerCount   = 0;
 
-        for (GamePredictionResultResponseDTO result : myResults) {
-            if (result.getPredictedHomeScore() != null && result.getPredictedAwayScore() != null) {
-                if (result.getPredictedHomeScore().equals(result.getPredictedAwayScore())) {
-                    myDraws++;
-                } else {
-                    myWins++;
-                }
+        for (Object[] row : othersRows) {
+            long draws = row[1] != null ? (Long) row[1] : 0L;
+            long wins  = row[2] != null ? (Long) row[2] : 0L;
+            long total = draws + wins;
+            if (total > 0) {
+                othersDrawPctSum += (draws * 100.0) / total;
+                othersWinPctSum  += (wins  * 100.0) / total;
+                othersPlayerCount++;
             }
         }
-
-        // Statystyki innych graczy w lidze
-        int othersDrawsTotal = 0;
-        int othersWinsTotal = 0;
-        int otherPlayersCount = 0;
-
-        for (User user : leagueUsers) {
-            if (!user.getId().equals(currentUser.getId())) {
-                List<GamePredictionResultResponseDTO> userResults =
-                    gamePredictionResultRepository.findAllPredictionsByUserWithResults(user.getId())
-                        .stream()
-                        .map(dto -> {
-                            GamePredictionResultResponseDTO responseDTO = new GamePredictionResultResponseDTO();
-                            responseDTO.setPredictedHomeScore(dto.getPredictedHomeScore());
-                            responseDTO.setPredictedAwayScore(dto.getPredictedAwayScore());
-                            return responseDTO;
-                        })
-                        .toList();
-
-                for (GamePredictionResultResponseDTO result : userResults) {
-                    if (result.getPredictedHomeScore() != null && result.getPredictedAwayScore() != null) {
-                        if (result.getPredictedHomeScore().equals(result.getPredictedAwayScore())) {
-                            othersDrawsTotal++;
-                        } else {
-                            othersWinsTotal++;
-                        }
-                    }
-                }
-                if (!userResults.isEmpty()) {
-                    otherPlayersCount++;
-                }
-            }
-        }
-
-        // Oblicz średnią (zaokrąglenie)
-        int othersDraws = otherPlayersCount > 0 ? Math.round((float) othersDrawsTotal / otherPlayersCount) : 0;
-        int othersWins = otherPlayersCount > 0 ? Math.round((float) othersWinsTotal / otherPlayersCount) : 0;
-
-        // Rzeczywiste wyniki meczów
-        int actualDraws = 0;
-        int actualWins = 0;
-
-        // Pobierz wszystkie zakończone mecze z wynikami
-        for (GamePredictionResultResponseDTO result : myResults) {
-            if (result.getHomeScore() != null && result.getAwayScore() != null) {
-                if (result.getHomeScore().equals(result.getAwayScore())) {
-                    actualDraws++;
-                } else {
-                    actualWins++;
-                }
-            }
-        }
-
-        int totalGames = myDraws + myWins;
 
         return PredictionPatternStatsDTO.builder()
-                .myDraws(myDraws)
-                .myWins(myWins)
-                .othersDraws(othersDraws)
-                .othersWins(othersWins)
-                .actualDraws(actualDraws)
-                .actualWins(actualWins)
-                .totalGames(totalGames)
+                .myDrawPercent(myTotal > 0 ? round((myDraws * 100.0) / myTotal) : 0.0)
+                .myWinPercent( myTotal > 0 ? round((myWins  * 100.0) / myTotal) : 0.0)
+                .othersDrawPercent(othersPlayerCount > 0 ? round(othersDrawPctSum / othersPlayerCount) : 0.0)
+                .othersWinPercent( othersPlayerCount > 0 ? round(othersWinPctSum  / othersPlayerCount) : 0.0)
+                .actualDrawPercent(actualTotal > 0 ? round((actualDraws * 100.0) / actualTotal) : 0.0)
+                .actualWinPercent( actualTotal > 0 ? round((actualWins  * 100.0) / actualTotal) : 0.0)
+                .myTotal((int) myTotal)
+                .othersPlayerCount(othersPlayerCount)
+                .actualTotal((int) actualTotal)
                 .build();
+    }
+
+    private double round(double value) {
+        return Math.round(value * 10.0) / 10.0;
     }
 }

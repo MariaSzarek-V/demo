@@ -30,6 +30,7 @@ CREATE TABLE `user` (
     `password` VARCHAR(255) NOT NULL,
     `user_role` VARCHAR(20) NOT NULL DEFAULT 'USER',
     `avatar_url` VARCHAR(500) NULL,
+    `avatar_color` VARCHAR(50) NULL,
     PRIMARY KEY (`id`),
     INDEX `idx_username` (`username`),
     INDEX `idx_email` (`email`)

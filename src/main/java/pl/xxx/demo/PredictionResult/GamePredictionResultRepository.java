@@ -70,6 +70,38 @@ public interface GamePredictionResultRepository extends JpaRepository<Game, Long
 """)
     List<GamePredictionResultDTO> findGameWithAllUserPredictionsAndPoints(@Param("gameId") Long gameId);
 
+    @Query("""
+        SELECT
+          SUM(CASE WHEN p.predictedHomeScore = p.predictedAwayScore THEN 1L ELSE 0L END),
+          SUM(CASE WHEN p.predictedHomeScore <> p.predictedAwayScore THEN 1L ELSE 0L END),
+          COUNT(p)
+        FROM Prediction p
+        WHERE p.user.id = :userId AND p.league.id = :leagueId
+    """)
+    List<Object[]> findMyPredictionPattern(@Param("userId") Long userId, @Param("leagueId") Long leagueId);
+
+    @Query("""
+        SELECT
+          SUM(CASE WHEN g.homeScore = g.awayScore THEN 1L ELSE 0L END),
+          SUM(CASE WHEN g.homeScore <> g.awayScore THEN 1L ELSE 0L END),
+          COUNT(g.id)
+        FROM Game g
+        WHERE g.gameStatus = pl.xxx.demo.Enum.GameStatus.FINISHED
+          AND EXISTS (SELECT p FROM Prediction p WHERE p.game.id = g.id AND p.league.id = :leagueId)
+    """)
+    List<Object[]> findActualResultsInLeague(@Param("leagueId") Long leagueId);
+
+    @Query("""
+        SELECT
+          p.user.id,
+          SUM(CASE WHEN p.predictedHomeScore = p.predictedAwayScore THEN 1L ELSE 0L END),
+          SUM(CASE WHEN p.predictedHomeScore <> p.predictedAwayScore THEN 1L ELSE 0L END)
+        FROM Prediction p
+        WHERE p.league.id = :leagueId AND p.user.id <> :userId
+        GROUP BY p.user.id
+    """)
+    List<Object[]> findOthersPredictionPattern(@Param("userId") Long userId, @Param("leagueId") Long leagueId);
+
 
     @Query("""
     SELECT new pl.xxx.demo.PredictionResult.GamePredictionResultDTO(
