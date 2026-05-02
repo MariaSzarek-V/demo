@@ -36,8 +36,8 @@ RUN groupadd -r appuser && useradd -r -g appuser appuser
 # Copy the jar file from build stage
 COPY --from=build /app/target/*.jar app.jar
 
-# Change ownership to non-root user
-RUN chown appuser:appuser app.jar
+# Create uploads directory and give ownership to non-root user
+RUN mkdir -p /app/uploads && chown appuser:appuser app.jar /app/uploads
 
 # Switch to non-root user
 USER appuser

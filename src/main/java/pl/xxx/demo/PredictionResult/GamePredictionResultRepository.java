@@ -76,7 +76,9 @@ public interface GamePredictionResultRepository extends JpaRepository<Game, Long
           SUM(CASE WHEN p.predictedHomeScore <> p.predictedAwayScore THEN 1L ELSE 0L END),
           COUNT(p)
         FROM Prediction p
+        JOIN p.game g
         WHERE p.user.id = :userId AND p.league.id = :leagueId
+          AND g.gameStatus = pl.xxx.demo.Enum.GameStatus.FINISHED
     """)
     List<Object[]> findMyPredictionPattern(@Param("userId") Long userId, @Param("leagueId") Long leagueId);
 
@@ -97,7 +99,9 @@ public interface GamePredictionResultRepository extends JpaRepository<Game, Long
           SUM(CASE WHEN p.predictedHomeScore = p.predictedAwayScore THEN 1L ELSE 0L END),
           SUM(CASE WHEN p.predictedHomeScore <> p.predictedAwayScore THEN 1L ELSE 0L END)
         FROM Prediction p
+        JOIN p.game g
         WHERE p.league.id = :leagueId AND p.user.id <> :userId
+          AND g.gameStatus = pl.xxx.demo.Enum.GameStatus.FINISHED
         GROUP BY p.user.id
     """)
     List<Object[]> findOthersPredictionPattern(@Param("userId") Long userId, @Param("leagueId") Long leagueId);

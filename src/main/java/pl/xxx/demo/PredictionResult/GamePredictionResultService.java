@@ -215,19 +215,19 @@ public class GamePredictionResultService {
         User currentUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        // Query 1: moje typy w tej lidze
+        // Query 1: moje typy dla zagranych meczów w tej lidze
         List<Object[]> myRows = gamePredictionResultRepository.findMyPredictionPattern(currentUser.getId(), leagueId);
         Object[] myRow = myRows.isEmpty() ? new Object[]{null, null, null} : myRows.get(0);
         long myDraws = myRow[0] != null ? (Long) myRow[0] : 0L;
         long myWins  = myRow[1] != null ? (Long) myRow[1] : 0L;
-        long myTotal = myDraws + myWins;
+        long myTotal = myRow[2] != null ? (Long) myRow[2] : 0L;
 
         // Query 2: rzeczywiste wyniki zagranych meczów w lidze
         List<Object[]> actualRows = gamePredictionResultRepository.findActualResultsInLeague(leagueId);
         Object[] actualRow = actualRows.isEmpty() ? new Object[]{null, null, null} : actualRows.get(0);
         long actualDraws = actualRow[0] != null ? (Long) actualRow[0] : 0L;
         long actualWins  = actualRow[1] != null ? (Long) actualRow[1] : 0L;
-        long actualTotal = actualDraws + actualWins;
+        long actualTotal = actualRow[2] != null ? (Long) actualRow[2] : 0L;
 
         // Query 3: typy innych graczy w lidze, zagregowane per gracz
         List<Object[]> othersRows = gamePredictionResultRepository.findOthersPredictionPattern(currentUser.getId(), leagueId);

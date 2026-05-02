@@ -3,6 +3,7 @@ package pl.xxx.demo.Post;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,9 @@ import java.util.UUID;
 public class PostController {
 
     private final PostService postService;
+
+    @Value("${app.upload.dir}")
+    private String uploadDir;
 
     @GetMapping
     public ResponseEntity<Page<PostResponseDTO>> getAllPosts(
@@ -126,7 +130,7 @@ public class PostController {
             String newFilename = UUID.randomUUID().toString() + fileExtension;
 
             // Save file
-            Path uploadPath = Paths.get("/app/uploads");
+            Path uploadPath = Paths.get(uploadDir);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
